@@ -1,2 +1,0 @@
-# guardme
-GuardMe Website
