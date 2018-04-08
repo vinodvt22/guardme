@@ -46,14 +46,14 @@ $setid=1;
 		<div class="col-md-12" align="center">
 		<div class="row">
 		
-		<h1 class="headingcolor"> Consider it done. </h1>
+		<h1 class="headingcolor"> Manned Security Freelance Marketplace. </h1>
 		</div>
 		
 		
 		<div class="row">
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
-		<h4 class="headingcolor"> From house painting to personal training, we bring you the right pros for every project on your list. </h4>
+		<h4 class="headingcolor"> Looking for security personnel in the UK? Get accesss to thousands of vetted SIA security personnel. </h4>
 		</div>
 		<div class="col-md-3"></div>
 		</div>
@@ -73,10 +73,10 @@ $setid=1;
 		{!! csrf_field() !!}
 		<div class="col-md-8 paddingoff">
 		
-		<input type="text" name="search_text" class="searchtext validate[required]" id="search_text" placeholder="What service do you need?">
+		<input type="text" name="search_text" class="searchtext validate[required]" id="search_text" placeholder="Start by entering a location">
 		
 		</div>
-		<div class="col-md-4 paddingoff"><input type="submit" name="search" class="searchbtn" value="Get Started"></div>
+		<div class="col-md-4 paddingoff"><input type="submit" name="search" class="searchbtn" value="Search For Security"></div>
 		
 		
 		</div>
@@ -160,170 +160,6 @@ $setid=1;
 	
 	<div class="clearfix"></div>
 	
-	
-	
-	
-	
-	<div class="container">
-	<div class="col-md-1"></div>
-    <div class="col-md-10 nopadding">
-	 <h2 class="sli-head"><?php echo $one[0]->name;?></h2>
-    <div id="flexiselDemo3">
-	<?php 
-			
-		 foreach($first as $newservice){
-			 $subview=strtolower($newservice->subname);
-			$results = preg_replace('/[ ,]+/', '-', trim($subview));
-			 ?>
-    <li>
-	<div class="weightbg">
-	<div>
-	<?php 
-					   $subservicephoto="/subservicephoto/";
-						$path ='/local/images'.$subservicephoto.$newservice->subimage;
-						if($newservice->subimage!=""){
-						?>
-	<a href="<?php echo $url; ?>/search/<?php echo $results;?>"><img src="<?php echo $url.$path;?>" class="img-responsive"/></a>
-						<?php } else {?>
-						<a href="<?php echo $url; ?>/search/<?php echo $results;?>"><img src="<?php echo $url.'/local/images/noimage.jpg';?>" class="img-responsive"></a>
-						<?php } ?>
-	</div>
-	<div><a href="<?php echo $url; ?>/search/<?php echo $results;?>"><?php  echo $newservice->subname;?></a></div>
-	</div>
-	</li>
-		 <?php } ?>
-
-</div>    
-
-</div>
-<div class="col-md-1"></div>
-</div>
-
-
-
-
-<div class="clearfix"></div>
-
-
-
-<div class="container">
-	<div class="col-md-1"></div>
-    <div class="col-md-10 nopadding">
-	 <h2 class="sli-head"><?php echo $two[0]->name;?></h2>
-    <div id="flexiselDemo31">
-	<?php 
-			
-		 foreach($second as $newservice){
-			  $subview=strtolower($newservice->subname);
-			$results = preg_replace('/[ ,]+/', '-', trim($subview));
-			 ?>
-    <li>
-	<div class="weightbg">
-	<div>
-	<?php 
-					   $subservicephoto="/subservicephoto/";
-						$path ='/local/images'.$subservicephoto.$newservice->subimage;
-						if($newservice->subimage!=""){
-						?>
-	<a href="<?php echo $url; ?>/search/<?php echo $results;?>"><img src="<?php echo $url.$path;?>" class="img-responsive" /></a>
-						<?php } else {?>
-						<a href="<?php echo $url; ?>/search/<?php echo $results;?>"><img src="<?php echo $url.'/local/images/noimage.jpg';?>" class="img-responsive"></a>
-						<?php } ?>
-	</div>
-	<div><a href="<?php echo $url; ?>/search/<?php echo $results;?>"><?php  echo $newservice->subname;?></a></div>
-	</div>
-	</li>
-		 <?php } ?>
-
-</div>    
-
-</div>
-<div class="col-md-1"></div>
-</div>
-
-
-
-<div class="clearfix"></div>
-
-
-
-
-<div class="container">
-	<div class="col-md-1"></div>
-    <div class="col-md-10 nopadding">
-	 <h2 class="sli-head"><?php echo $three[0]->name;?></h2>
-    <div id="flexiselDemo32">
-	<?php 
-			
-		 foreach($third as $newservice){
-			 $subview=strtolower($newservice->subname);
-			$results = preg_replace('/[ ,]+/', '-', trim($subview));
-			 ?>
-    <li>
-	<div class="weightbg">
-	<div>
-	<?php 
-					   $subservicephoto="/subservicephoto/";
-						$path ='/local/images'.$subservicephoto.$newservice->subimage;
-						if($newservice->subimage!=""){
-						?>
-	<a href="<?php echo $url; ?>/search/<?php echo $results;?>"><img src="<?php echo $url.$path;?>" class="img-responsive"/></a>
-						<?php } else {?>
-						<a href="<?php echo $url; ?>/search/<?php echo $results;?>"><img src="<?php echo $url.'/local/images/noimage.jpg';?>" class="img-responsive"></a>
-						<?php } ?>
-	</div>
-	<div><a href="<?php echo $url; ?>/search/<?php echo $results;?>"><?php  echo $newservice->subname;?></a></div>
-	</div>
-	</li>
-		 <?php } ?>
-
-</div>    
-
-</div>
-<div class="col-md-1"></div>
-</div>
-
-	
-	
-	
-	<div class="clearfix"></div>
-	
-	
-	
-	<div class="container">
-	<div class="col-md-1"></div>
-    <div class="col-md-10 nopadding">
-	 <h2 class="sli-head"><?php echo $four[0]->name;?></h2>
-    <div id="flexiselDemo33">
-	<?php 
-			
-		 foreach($fourth as $newservice){
-			  $subview=strtolower($newservice->subname);
-			$results = preg_replace('/[ ,]+/', '-', trim($subview));
-			 ?>
-    <li>
-	<div class="weightbg">
-	<div>
-	<?php 
-					   $subservicephoto="/subservicephoto/";
-						$path ='/local/images'.$subservicephoto.$newservice->subimage;
-						if($newservice->subimage!=""){
-						?>
-	<a href="<?php echo $url; ?>/search/<?php echo $results;?>"><img src="<?php echo $url.$path;?>" class="img-responsive" /></a>
-						<?php } else {?>
-						<a href="<?php echo $url; ?>/search/<?php echo $results;?>"><img src="<?php echo $url.'/local/images/noimage.jpg';?>" class="img-responsive"></a>
-						<?php } ?>
-	</div>
-	<div><a href="<?php echo $url; ?>/search/<?php echo $results;?>"><?php  echo $newservice->subname;?></a></div>
-	</div>
-	</li>
-		 <?php } ?>
-
-</div>    
-
-</div>
-<div class="col-md-1"></div>
-</div>
 
 
 	
