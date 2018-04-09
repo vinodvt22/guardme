@@ -98,8 +98,8 @@ class BookingController extends Controller
    
 	
 	public function sangvish_savedata(Request $request) {
-       
-        
+
+
        $data = $request->all();
 	   
 	  
