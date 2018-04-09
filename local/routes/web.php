@@ -1,5 +1,8 @@
 <?php
 
+use Responsive\Channels\SMS;
+use Responsive\Http\Repositories\UsersRepository;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -85,6 +88,8 @@ Route::post('/wallet', ['as'=>'wallet','uses'=>'WalletController@sangvish_saveda
 
 /* Authentication routes */
 Auth::routes();
+
+
 
 /* User Verification */
 Route::get('/user/confirmation', 'Auth\VerificationController@getConfirmation')
@@ -293,16 +298,7 @@ Route::group(['prefix' => '/support/tickets', 'middleware' => 'auth'], function 
         ->name('tickets.messages.store');
 });
 
-Route::get('/test', function () {
-	try{
-		\Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
-		{
-			$message->subject('Test Mailgun Service')->to('yevtha.aw@gmail.com');
-		});
-	} catch (\Exception $e) {
-		echo $e->getMessage();
-	}
-});
+
 
 Route::get('/phone', 'VerificationController@phone')->middleware('auth');
 
