@@ -108,6 +108,37 @@ class AuthController extends Controller
         return response()->json(['authUser' => $user]);
     }
 
+    public function profile()
+    {
+        $user = Auth::user();
+        return response()->json([
+            'username' => $user->name,
+            'first_name' => $user->firstname,
+            'last_name' => $user->lastname,
+            'email' => $user->email,
+            'address_line1' => $user->address ? $user->address->line1 : null,
+            'address_line2' => $user->address ? $user->address->line2 : null,
+            'address_line3' => $user->address ? $user->address->line3 : null,
+            'address_country' => $user->address ? $user->address->country : null,
+            'address_postcode' => $user->address ? $user->address->postcode : null,
+            'address_town' => $user->address ? $user->address->citytown : null,
+            'phone' => $user->phone,
+            'gender' => $user->gender,
+            'dob' => $user->dob,
+            'avatar' => $user->photo ? url("/local/images/userphoto/".$user->photo) : null,
+            'nationality' => $user->nationality ? $user->nationality->name : null,
+            'visa_number' => $user->visa_no,
+            'sia_number' => $user->sia_license,
+            'sia_expiry_date' => $user->sia_expirydate,
+            'work_category' => User::getWorkCategories()[$user->work_category],
+            'passport_photo' => $user->passphoto ? url("/local/images/userdoc/".$user->passphoto) : null,
+            'passport_page' => $user->pass_page ? url("/local/images/userdoc/".$user->pass_page) : null,
+            'visa_page' => $user->visa_page ? url("/local/images/userdoc/".$user->visa_page) : null,
+            'sia_license' => $user->sia_doc ? url("/local/images/userdoc/".$user->sia_doc) : null,
+            'address_proof' => $user->address_proof ? url("/local/images/userdoc/".$user->address_proof) : null,
+        ]);
+    }
+
     protected function credentials(Request $request)
     {
         $usernameInput = trim($request->{$this->username()});

@@ -23,6 +23,7 @@ Route::group(['prefix' => 'account','namespace' => 'Api\Auth'], function(){
     Route::post('auth/social', 'AuthController@apiSocialLogin');
 
     Route::get('details','AuthController@getAuthUserDetails')->middleware('auth:api');
+    Route::get('profile','AuthController@profile')->middleware('auth:api');
 });
 
 Route::group(['prefix' => '/support/tickets', 'middleware' => 'auth:api'], function() {
