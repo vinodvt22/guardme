@@ -123,7 +123,6 @@ class ShopController extends Controller
 
 			  ->get();
 
-
 		$countries = Country::all();
 		$address = Address::where('user_id', Auth::user()->id)->get();
 

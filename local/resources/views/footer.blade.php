@@ -189,6 +189,8 @@ $setid=1;
 	
 	
 	<script type="text/javascript" src="js/jquery.flexisel.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://getaddress.io/js/jquery.getAddress-2.0.7.min.js"></script>
 	
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="https://getaddress.io/js/jquery.getAddress-2.0.7.min.js"></script>
@@ -259,5 +261,4 @@ $("select#nationality").change(function(){
 }).change();
 </script>
 
-	
 	<?php /* ?><script src="{{ asset('js/app.js') }}"></script><?php */?>

@@ -116,7 +116,6 @@ class DashboardController extends Controller
 			$currentphoto=$data['currentphoto'];
 			$firstname = $data['firstname'];
 			$lastname = $data['lastname'];
-  
 			$image = Input::file('photo');
 			if ($image!="") {
 				$userphoto="/userphoto/";
