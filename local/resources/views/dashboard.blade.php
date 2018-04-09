@@ -3,9 +3,21 @@
 <head>
 
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
    @include('style')
 
+
+
+   <style type="text/css">
+.noborder ul,li { margin:0; padding:0; list-style:none;}
+.noborder .label { color:#000; font-size:16px;}
+.update{
+
+	margin-top:10px
+}
+
+</style>
 
 
 
@@ -41,8 +53,29 @@
 	<div class="headerbg">
 	 <div class="col-md-12" align="center"><h1>Freelancer Profile</h1></div>
 	 </div>
-	<div class="container">
+	<div class="container" >
 		<div style="margin-top: 20px;"></div>
+		@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+	@if(! \Auth::user()->verified)
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="alert alert-warning">
+					We have already sent email verification to your email. Please check and confirm via the given link. Have not received yet? <a href="{!! route('user.resend_verification') !!}" class="alert-link">Resend email verification</a>.
+				</div>
+			</div>
+		</div>
+	@endif
+
+
+	@include('shared.message')
 
     <div class="row profile">
 		<div class="col-md-3 ">
@@ -202,17 +235,10 @@
 						<input type="hidden" name="savepassword" value="<?php echo $editprofile[0]->password;?>">
 
 						 <input type="hidden" name="id" value="<?php echo $editprofile[0]->id; ?>">
+						
 
-						 <div class="form-group">
-                            <label for="phoneno" class="col-md-4 control-label">Phone No</label>
-
-                            <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control validate[required] text-input" value="<?php echo $editprofile[0]->phone;?>" name="phone">
-                            </div>
-                        </div>
-
-
-
+		
+		
 						<div class="form-group">
                             <label for="gender" class="col-md-4 control-label">Gender</label>
 
@@ -254,12 +280,16 @@
                             <div class="col-md-6 col-md-offset-4">
 							<?php if(config('global.demosite')=="yes"){?><button type="button" class="btn btn-primary btndisable">Update</button> <span class="disabletxt">( <?php echo config('global.demotxt');?> )</span><?php } else { ?>
 
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary update">
                                     Update
-                                </button>
+								</button>
+								
+								
 							<?php } ?>
                             </div>
-                        </div>
+						</div>
+						
+		
                     </form>
                 </div>
             </div>
@@ -273,6 +303,7 @@
 
 	</div>
 
+
 	</div>
 	</div>
 
@@ -282,6 +313,8 @@
       <div class="clearfix"></div>
 	   <div class="clearfix"></div>
 
-      @include('footer')
+
+	  @include('footer')
+
 </body>
 </html>
