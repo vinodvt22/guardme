@@ -303,3 +303,7 @@ Route::get('/test', function () {
 		echo $e->getMessage();
 	}
 });
+
+Route::get('/phone', 'VerificationController@phone')->middleware('auth');
+
+
