@@ -192,9 +192,7 @@ $setid=1;
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://getaddress.io/js/jquery.getAddress-2.0.7.min.js"></script>
 	
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="https://getaddress.io/js/jquery.getAddress-2.0.7.min.js"></script>
-
+	
 	<script src="<?php echo $url;?>/js/jquery.multiselect.js"></script>
 <script>
 $('#langOpt').multiselect({
