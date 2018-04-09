@@ -83,7 +83,7 @@ $booking = DB::table('booking')
 			$sel=explode("," , $ser_id);
 			$lev=count($sel);
 			$ser_name="";
-			$sum="";
+			$sum=0;
 			$price="";		
 		for($i=0;$i<$lev;$i++)
 			{
@@ -109,7 +109,7 @@ $booking = DB::table('booking')
 				
 				
 				$ser_name=trim($ser_name,",");
-				$price=trim($price,",");	
+				$price=trim($price,",");
 				$sum+=$fet2[0]->price;
 			}
             

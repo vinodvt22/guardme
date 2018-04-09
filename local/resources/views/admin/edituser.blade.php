@@ -82,7 +82,30 @@
 	    </div>
 
 	@endif
-                    
+
+        <form class="form-horizontal form-label-left" role="form" method="POST" action="{{ route('admin.addbalance') }}"novalidate>
+            <?php
+            use Responsive\User;$luser = User::where('id', $users[0]->id)->first();
+            ?>
+            <span class="section">Current balance: {{ $luser->getBalance() }}</span>
+            <div class="item form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="balance">Add points to balance
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="number" min="0" value="0" id="balance" name="balance" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+            </div>
+            <input type="hidden" name="user" value="{{ $users[0]->id }}">
+                {{ csrf_field() }}
+
+            <div class="ln_solid"></div>
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-3">
+                    <button id="send" type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+
+        </form>
                    <form class="form-horizontal form-label-left" role="form" method="POST" action="{{ route('admin.edituser') }}" enctype="multipart/form-data" novalidate>
                      {{ csrf_field() }}  
                       <span class="section">Edit User</span>

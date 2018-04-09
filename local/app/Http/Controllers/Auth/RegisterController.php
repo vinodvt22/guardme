@@ -5,6 +5,7 @@ namespace Responsive\Http\Controllers\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Auth;
+use Responsive\Referral;
 use Responsive\User;
 use Responsive\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -90,15 +91,28 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
 
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-			'gender' => $data['gender'],
-			'phone' => $data['phoneno'],
-			'photo' => '',
-			'admin' => $data['usertype'],
+            'gender' => $data['gender'],
+            'phone' => $data['phoneno'],
+            'photo' => '',
+            'admin' => $data['usertype'],
         ]);
+
+        if ($refEmail = session('referral')) {
+            $refUser = User::where('email', $refEmail)->first();
+
+            if ($refUser && $refUser->id) {
+                Referral::create([
+                    'who' => $user->id,
+                    'to' => $refUser->id
+                ]);
+            }
+        }
+
+        return $user;
     }
 }

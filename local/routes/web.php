@@ -22,6 +22,9 @@ Route::get('/', 'CommonController@home');*/
 
 
 Route::get('/', 'IndexController@sangvish_index');
+Route::get('/referral', 'ReferralController@index');
+Route::get('/redeem', 'ReferralController@redeem');
+Route::get('/redeem/{id}', 'ReferralController@checkout');
 Route::get('/index', 'IndexController@sangvish_index');
 
 Route::get('searchajax',array('as'=>'searchajax','uses'=>'IndexController@sangvish_autoComplete'));
@@ -162,6 +165,9 @@ Route::get('/subservices/{id}','SubservicesController@sangvish_servicefind');
 Route::group(['middleware' => 'admin'], function() {
 
     Route::get('/admin','Admin\DashboardController@index');
+    Route::get('/admin/referral/items', 'Admin\ReferralController@index');
+    Route::post('/admin/referral/item/create', ['as' => 'admin.itemcreate', 'uses' => 'Admin\ReferralController@create']);
+    Route::post('/admin/users/balance/add', ['as' => 'admin.addbalance', 'uses' => 'Admin\ReferralController@balance']);
     Route::get('/admin/index','Admin\DashboardController@index');
 
 	/* user */
