@@ -16,6 +16,12 @@
 
 	margin-top:10px
 }
+h4.page-title {
+    font-size: 15px;
+}
+.shop .phone-input{
+    margin-bottom: 20px; 
+}
 
 </style>
 
@@ -162,8 +168,19 @@
 								<span class="text-success">
 									<i class="fa fa-check-circle"></i> Email verified
 								</span>
-							@endif
-						</div>
+                            @endif
+                           
+                        </div>
+                        <div style="margin-bottom:5px">
+                        @if(Auth::user()->phone_verified)
+                            <span class="text-success">
+                                <i class="fa fa-check-circle"></i> Phone verified
+                            </span>
+                         @endif
+                           
+                        </div>
+                        
+                       
 					</div>
 				</div>
 
@@ -360,7 +377,7 @@
 							 </h4>
 						 </div>
 				 
-										 <div class="form-group">
+										 <div class="form-group phone-input">
 											 <label class="control-label col-md-4 ">
 												 Phone Number <template v-if="action === 'confirm'">(<a href="#" @click.prevent="change">change</a>)</template>
 											 </label>
@@ -379,15 +396,23 @@
 										 </template>
 										 </div>
 										 <div class="form-group">
+                                         <div class="row">
+                                         <div class="col-md-6 col-md-offset-4 alert alert-info">
+                                        <strong>Info!</strong> Please add your phone number in this format +447654321000
+                                    </div>
 
+                                         </div>
 									 <div class=" col-md-6 col-md-offset-4">
 									 <a href="#" @click.prevent="send" class="btn btn-primary text" >
 										 <template v-if="action === 'confirm'">OK!</template>
 										 <template v-else-if="action === 'unbind'">Remove Phone Number</template>
 										 <template v-else-if="action === 'new'">Send confirmation code</template>
 									 </a>
-									 </div>
-										 </div>
+                                     </div>
+                                    
+                                         </div>
+                                        
+                                   
                                          </div>
                         <div class="form-group">
                             <label for="gender" class="col-md-4 control-label">Gender</label>
