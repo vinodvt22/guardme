@@ -86,6 +86,12 @@
                         <a href="<?php if(empty($shcount)){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>"><i
                                     class="fa fa-gear" aria-hidden="true"></i>Dashboard</a>
                     </li>
+                    <li>
+                        <a href="<?php echo $url;?>/referral">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+
+                            Loyalty </a>
+                    </li>
                     <?php if($sta != 1){?>
                     <li>
                         <?php if(config('global.demosite') == "yes"){?>
@@ -114,12 +120,6 @@
 							My Account </a>
 						</li>
                                                 -->
-                    <li>
-                        <a href="<?php echo $url;?>/referral">
-                            <i class="fa fa-sign-out" aria-hidden="true"></i>
-
-                            Loyalty </a>
-                    </li>
                     <li>
                         <a href="<?php echo $url;?>/logout">
                             <i class="fa fa-sign-out" aria-hidden="true"></i>
