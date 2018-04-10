@@ -69,7 +69,7 @@ class BookinginfoController extends Controller
 			$sel=explode("," , $ser_id);
 			$lev=count($sel);
 			$ser_name="";
-			$sum="";
+			$sum=0;
 			$price="";
 			
 		for($i=0;$i<$lev;$i++)
@@ -97,7 +97,7 @@ class BookinginfoController extends Controller
 				
 				
 				$ser_name=trim($ser_name,",");
-				$price=trim($price,",");	
+				$price=trim($price,",");
 				$sum+=$fet2[0]->price;
 				
 				

@@ -28,7 +28,8 @@ $url = URL::to("/");
 					<li><a href="<?php echo $url;?>/admin/completed_withdraw"><i class="fa fa-money" aria-hidden="true"></i> Completed Withdrawal </a></li>
 				  
 				  <li><a href="<?php echo $url;?>/admin/testimonials"><i class="fa fa-comments"></i> Testimonials </a></li>
-				  
+					<li><a href="<?php echo $url;?>/admin/referral/items"><i class="fa fa-sticky-cart"></i>Referral Items</a></li>
+
 				  <li><a href="<?php echo $url;?>/admin/pages"><i class="fa fa-sticky-note"></i> Pages </a></li>
 				  
 				  <li><a href="<?php echo $url;?>/admin/shop"><i class="fa fa-shopping-cart"></i> Shop </a></li>

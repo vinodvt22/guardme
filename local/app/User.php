@@ -7,10 +7,22 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use Carbon\Carbon;
+use Responsive\Exceptions\NoReferralFound;
 
+/**
+ * Class User
+ * Eloquent\Model for table users
+ *
+ * @package Responsive
+ */
 class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
+
+    const WORK_CATEGORY_NONE = 0;
+    const WORK_CATEGORY_DOOR_SUPERVISOR = 1;
+    const WORK_CATEGORY_SECURITY_GUARD = 2;
+    const WORK_CATEGORY_CLOSE_PROTECTION = 3;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +31,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password', 'gender',
-        'admin', 'phone', 'photo', 'verified'
+        'admin', 'phone', 'photo', 'verified',
+        'spent', 'added'
     ];
 
     /**
@@ -55,8 +68,8 @@ class User extends Authenticatable
 
     /**
      * Update and save the model instance with the verification token.
-     *
-     * @return object|boolean
+     * @return bool|object
+     * @throws \Exception
      */
     public function generateToken()
     {
@@ -115,8 +128,9 @@ class User extends Authenticatable
     /**
      * Handle change email
      *
-     * @param $change_email
+     * @param $new_email
      * @return void
+     * @internal param $change_email
      */
     public function changeEmail($new_email)
     {
@@ -167,4 +181,53 @@ class User extends Authenticatable
         return substr(strtoupper($password), 0, 5);
     }
 
+    /**
+     * Get array of users that registered by your link
+     *
+     * @return array
+     */
+    public function getReferrals() {
+        if ($this->id) {
+            $referrals = Referral::where('to', $this->id);
+            $uReferrals = [];
+            foreach ($referrals->get() as $referral) {
+                $uReferrals [] = User::where('id', $referral->who)->first();
+            }
+
+            return $uReferrals;
+        }
+        throw new NoReferralFound('No referral found');
+    }
+
+    /**
+     * Get referral points balance
+     *
+     * @return int
+     */
+    public function getBalance() {
+        $balance = 10 * count($this->getReferrals());
+        $balance -= $this->spent;
+        $balance += $this->added;
+
+        return $balance;
+    }
+
+    public function address()
+    {
+        return $this->hasOne(Address::class, 'id', 'address_id');
+    }
+
+    public function nationality()
+    {
+        return $this->belongsTo(Country::class, 'nation_id');
+    }
+
+    public static function getWorkCategories() {
+        return [
+            User::WORK_CATEGORY_NONE => null,
+            User::WORK_CATEGORY_DOOR_SUPERVISOR => 'Door Supervisor',
+            User::WORK_CATEGORY_SECURITY_GUARD => 'Securoty Guard',
+            User::WORK_CATEGORY_CLOSE_PROTECTION => 'Close Protection'
+        ];
+    }
 }

@@ -57,13 +57,12 @@ class VerificationController extends Controller
             return response()->json(['success' => true]);
         } catch (\Exception $exception) {
             if (! $user->phone_verified) {
-                $ex = $exception->getMessage();
                 $user->phone = null;
                 $user->save();
             }
         }
         
-        return $this->fail('Incorrect number '. $ex);
+        return $this->fail('Incorrect number ');
     }
 
     /**

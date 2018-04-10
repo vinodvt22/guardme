@@ -1,0 +1,36 @@
+=========================================================================
+
+Fetch profile of authenticated user:
+API Uri: /api/account/profile
+Request method: get
+Request headers:
+	Authorization ==> Bearer 'authenticated user token here...'
+Expected data returned:
+{
+    "username": "demo",
+    "first_name": "",
+    "last_name": "",
+    "email": "demo@demo.com",
+    "address_line1": null,
+    "address_line2": null,
+    "address_line3": null,
+    "address_country": null,
+    "address_postcode": null,
+    "address_town": null,
+    "phone": "4654546",
+    "gender": "male",
+    "dob": "",
+    "avatar": [image link],
+    "nationality": null,
+    "visa_number": "",
+    "sia_number": null,
+    "sia_expiry_date": "",
+    "work_category": null,
+    "passport_photo": [image link],
+    "passport_page": [image link],
+    "visa_page": [image link],
+    "sia_license": [image link],
+    "address_proof": [image link]
+}
+
+==========================================================================
