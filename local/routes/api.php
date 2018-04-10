@@ -13,6 +13,7 @@ Route::group(['prefix' => 'account','namespace' => 'Api\Auth'], function(){
 
     Route::get('details','AuthController@getAuthUserDetails')->middleware('auth:api');
     Route::get('profile','AuthController@profile')->middleware('auth:api');
+    Route::put('profile','AuthController@updateProfile')->middleware('auth:api');
 });
 
 Route::group(['prefix' => '/support/tickets', 'middleware' => 'auth:api'], function() {
