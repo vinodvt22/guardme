@@ -38,8 +38,6 @@ class PageController extends Controller
 	
 	public function sangvish_404()
     {
-        var_dump(bcrypt('Zsdxzsdx12'));
-        exit();
 		return view('404');
 	}
 	
