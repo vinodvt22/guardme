@@ -348,12 +348,7 @@
                                 <input id="password" type="password" class="trackprogress form-control"  name="password" value="">
                             </div>
                         </div>		
-                        <div class="form-group">
-                            <label for="phoneno" class="col-md-4 control-label">Phone Number</label>
-                            <div class="col-md-6">
-                                <input id="phone" type="text" class="trackprogress form-control validate[required] text-input" value="<?php echo $editprofile[0]->phone;?>" name="phone">
-                            </div>
-                        </div>
+                       
                                 <div id='phoneVue'>
 						 <div>
 							 <h4 class="text-center page-title">
