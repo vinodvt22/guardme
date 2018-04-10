@@ -19,6 +19,11 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
+    const WORK_CATEGORY_NONE = 0;
+    const WORK_CATEGORY_DOOR_SUPERVISOR = 1;
+    const WORK_CATEGORY_SECURITY_GUARD = 2;
+    const WORK_CATEGORY_CLOSE_PROTECTION = 3;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -205,5 +210,24 @@ class User extends Authenticatable
         $balance += $this->added;
 
         return $balance;
+    }
+
+    public function address()
+    {
+        return $this->hasOne(Address::class, 'id', 'address_id');
+    }
+
+    public function nationality()
+    {
+        return $this->belongsTo(Country::class, 'nation_id');
+    }
+
+    public static function getWorkCategories() {
+        return [
+            User::WORK_CATEGORY_NONE => null,
+            User::WORK_CATEGORY_DOOR_SUPERVISOR => 'Door Supervisor',
+            User::WORK_CATEGORY_SECURITY_GUARD => 'Securoty Guard',
+            User::WORK_CATEGORY_CLOSE_PROTECTION => 'Close Protection'
+        ];
     }
 }
