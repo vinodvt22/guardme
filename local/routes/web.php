@@ -42,8 +42,9 @@ Route::post('/dashboard', ['as'=>'dashboard','uses'=>'DashboardController@sangvi
 
 Route::get('/account', 'ShopController@sangvish_viewshop');
 
-Route::get('/addcompany', 'ShopController@sangvish_addshop');
-
+//Route::get('/addcompany', 'ShopController@sangvish_addshop');
+Route::get('/addcompany', 'CompanyController@sangvish_addcompany');
+Route::post('/savecompany', ['as'=>'savecompany','uses'=>'CompanyController@sangvish_savedata']);
 Route::get('/editshop/{id}', 'ShopController@sangvish_editshop');
 
 Route::post('/editshop', ['as'=>'editshop','uses'=>'ShopController@sangvish_savedata']);

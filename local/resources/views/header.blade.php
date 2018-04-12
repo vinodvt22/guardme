@@ -61,9 +61,9 @@ if(isset(Auth::user()->verification)){
             <li><a href="<?php echo $url;?>/register">Sign Up</a></li>
             <?php } else { ?>
                                                 <?php
-                                                    $sellmail = Auth::user()->email;
-                                                    $shcount = DB::table('shop')
-                                                            ->where('seller_email', '=',$sellmail)
+                                                    $employerid = Auth::user()->id;
+                                                    $shcount = DB::table('company')
+                                                            ->where('user_id', '=',$employerid)
                                                             ->count();
                                                 ?>
 			<!-- Added by Ninja 20180331 start here-->
