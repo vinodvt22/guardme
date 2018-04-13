@@ -230,4 +230,28 @@ class User extends Authenticatable
             User::WORK_CATEGORY_CLOSE_PROTECTION => 'Close Protection'
         ];
     }
+    public function messages()
+    {
+        return Message::where('sender_id', $this->id)->orWhere('receiver_id', $this->id);
+    }
+
+    public function getMessagesAttribute()
+    {
+        return $this->messages()->get();
+    }
+
+    public function messagesSent()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function messagesSentUnviewed()
+    {
+        return $this->hasMany(Message::class, 'sender_id')->where('status','0');
+    }
+
+    public function messagesReceived()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
 }

@@ -1,22 +1,5 @@
-<?php
-use Illuminate\Support\Facades\Route;
-$currentPaths= Route::getFacadeRoot()->current()->uri();
-$url = URL::to("/");
-$setid=1;
-		$setts = DB::table('settings')
-		->where('id', '=', $setid)
-		->get();
-if($currentPaths=="/")
- {
-	 $pagetitle="Home";
- }
- else
- {
-	 $pagetitle=$currentPaths;
- }
-?>
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,12 +8,9 @@ if($currentPaths=="/")
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title><?php echo $setts[0]->site_name;?> - <?php echo $pagetitle;?></title>
-
-
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/apps.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -93,6 +73,8 @@ if($currentPaths=="/")
 
         @yield('content')
     </div>
+
+    <!-- Scripts -->
     <script src="{{ asset('js/apps.js') }}"></script>
     <script>
         (function () {
@@ -107,9 +89,9 @@ if($currentPaths=="/")
                     $('.msg_txt').closest('.form-group').addClass('has-error');
                     return false;
                 }
-                console.log(123);
+            console.log(123);
                 $.ajax({
-                    url: '/messages/send/{{@ \Auth::user()->id}}',
+                    url: '/messages/send/{{\Auth::user()->id}}',
                     method: 'POST',
                     data: {
                         _token: _token,
@@ -139,13 +121,11 @@ if($currentPaths=="/")
             $('.brand-nav').on('click', function () {
                 var id = $(this).find('a').data('id');
                 $(this).find('.user_msg_count').remove();
-                $(this).find('.new_msg_admin').hide();
-                $('.msg_count_nav').text(0)
                 setTimeout(function () {
 //                    $('.all_messages').scrollTop($('#tab' + id + ' .all_messages')[0].scrollHeight);
                 }, 1);
                 $.ajax({
-                    url: '/messages/see/{{@\Auth::user()->id}}',
+                    url: '/messages/see/{{\Auth::user()->id}}',
                     method: "POST",
                     data: {
                         _token: _token,
@@ -164,8 +144,5 @@ if($currentPaths=="/")
             });
         })();
     </script>
-
-    <!-- Scripts -->
-
 </body>
 </html>

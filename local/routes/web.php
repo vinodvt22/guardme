@@ -29,6 +29,11 @@ Route::get('/referral', 'ReferralController@index');
 Route::get('/redeem', 'ReferralController@redeem');
 Route::get('/redeem/{id}', 'ReferralController@checkout');
 Route::get('/index', 'IndexController@sangvish_index');
+Route::group(['middleware' => ['auth', 'message']], function () {
+    Route::get('messages/{id}/{to?}', 'MessagesController@messages')->name('user_messages');
+    Route::post('messages/send/{id}', 'MessagesController@sendMessages')->name('user_send_messages');
+    Route::post('messages/see/{id}', 'MessagesController@seeMessages')->name('user_see_messages');
+});
 
 Route::get('searchajax',array('as'=>'searchajax','uses'=>'IndexController@sangvish_autoComplete'));
 
