@@ -74,7 +74,8 @@ if(isset(Auth::user()->verification)){
 						<li><a href="<?php echo $url;?>/how-it-works">How It Works</a></li>
 			  {{--<li><a href="{{ url('referral') }}">Loyalty</a></li>--}}
 						<li><a style="border-left: 1px solid #b3b0b0;" href="<?php echo $url;?>/#"><i class="fa fa-heart-o"></i></a></li>
-						<li><a href="<?php echo $url;?>/#"><i class="fa fa-envelope-o"></i></a></li>
+
+						<li><a href="{{$url.'/messages/'.@\Auth::user()->id}}" class="{{(@$msg_count>0)?'alert-danger':''}}"><i class="fa fa-envelope-o"></i><span class="msg_count_nav">{{(@$msg_count>0)?@$msg_count:''}}</span></a></li>
 						<li><a href="<?php echo $url;?>/#"><i class="fa fa-bell-o"></i></a></li>
 			<!-- Added by Ninja 20180331 end here-->
 			 <li class="dropdown">

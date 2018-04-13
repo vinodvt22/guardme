@@ -4,6 +4,7 @@ namespace Responsive\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Responsive\Http\Middleware\ApiResponseMiddleware;
+use Responsive\Http\Middleware\MessagesCount;
 
 class Kernel extends HttpKernel
 {
@@ -63,6 +64,7 @@ class Kernel extends HttpKernel
         'guest' => \Responsive\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
          'admin' => \Responsive\Http\Middleware\Admin::class,
-         'phoneConfirmed' =>  \Responsive\Http\Middleware\PhoneVerification::class
+         'phoneConfirmed' =>  \Responsive\Http\Middleware\PhoneVerification::class,
+         'message' => MessagesCount::class,
     ];
 }
