@@ -103,21 +103,37 @@
 						
 						
 						<div class="form-group">
-                            <label for="usertype" class="col-md-4 control-label">User Type</label>
+                            <label for="usertype" class="col-md-4 control-label">Are you an employer</label>
 
                             <div class="col-md-6">
 							<select name="usertype" class="form-control" required>
 							  
 							  <option value=""></option>
-							   <option value="0">Customer</option>
-							   <option value="2">Seller</option>
+							   <option value="0">Yes</option>
+							   <option value="2">No</option>
 							</select>
                                
                             </div>
+							
                         </div>
-						
-						
-						
+						<div class="form-group">
+							<span><i>You can open an employer account any time you want by filling out the employer form on the dashboard.</i></span>
+						</div>
+						<div class="form-group">
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="securityagree" class="validate[required]" value="securityagree" required/> I agree to the security personnel <a href='https://guarddme.com/terms-and-condition' target='_blank'>terms and conditions.</a>
+								</label>
+							</div>
+                        </div>
+						<div class="form-group">
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="employeragree" class="validate[required]" value="employeragree" required/> I agree to the employer <a href='https://guarddme.com/terms-and-condition' target='_blank'>terms and conditions.</a>
+								</label>
+							</div>
+                        </div>
+
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
