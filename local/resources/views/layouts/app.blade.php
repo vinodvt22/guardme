@@ -31,7 +31,6 @@ if($currentPaths=="/")
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/apps.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -93,77 +92,6 @@ if($currentPaths=="/")
 
         @yield('content')
     </div>
-    <script src="{{ asset('js/apps.js') }}"></script>
-    <script>
-        (function () {
-            $('.nav-stacked .brand-nav a').first().trigger('click')
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            $('.msg_btn').on('click', function (e) {
-                e.preventDefault();
-                var text = $(this).closest('.message_input').find('.msg_txt').val(),
-                    reader_id = $('.brand-nav.active a').data('id');
-                var self = $(this);
-                if (text == "") {
-                    $('.msg_txt').closest('.form-group').addClass('has-error');
-                    return false;
-                }
-                console.log(123);
-                $.ajax({
-                    url: '/messages/send/{{@ \Auth::user()->id}}',
-                    method: 'POST',
-                    data: {
-                        _token: _token,
-                        message: text,
-                        reader: reader_id
-                    },
-                    success: function (data) {
-                        $('.msg_txt').val('');
-                        var $msg_area = self.closest('.message_input').closest('#tab' + reader_id).find('.messages_area').last().clone();
-                        $msg_area.insertAfter(self.closest('.message_input').closest('#tab' + reader_id).find('.messages_area').last());
-                        var $msg = self.closest('.message_input').closest('#tab' + reader_id).find('.messages_area').last();
-                        $msg.find('.sender,.reader').removeClass('sender reader pull-left')
-                            .addClass('reader').addClass('pull-right').html('<p>' + text + '</p>');
-                    },
-                    error: function (data) {
-                        $('.msg_txt').closest('.form-group').addClass('has-error');
-                    }
-                })
-            });
-
-
-//            $('.user_msg_count').animate({top: -10}, 300, "easeOutCubic", function(){
-//                $('.user_msg_count').animate({top: 0}, 300, "easeOutCubic");
-//            });
-//            $('.user_msg_count').show().animate({ top: 10 }, {duration: 1000, easing: 'easeOutBounce'});
-
-            $('.brand-nav').on('click', function () {
-                var id = $(this).find('a').data('id');
-                $(this).find('.user_msg_count').remove();
-                $(this).find('.new_msg_admin').hide();
-                $('.msg_count_nav').text(0)
-                setTimeout(function () {
-//                    $('.all_messages').scrollTop($('#tab' + id + ' .all_messages')[0].scrollHeight);
-                }, 1);
-                $.ajax({
-                    url: '/messages/see/{{@\Auth::user()->id}}',
-                    method: "POST",
-                    data: {
-                        _token: _token,
-                        sender: id
-                    },
-                    success: function (data) {
-
-                    }
-                })
-            });
-
-
-            $('textarea').focus(function () {
-                var $row = $(this).closest('.has-error');
-                $row.removeClass('has-error');
-            });
-        })();
-    </script>
 
     <!-- Scripts -->
 
