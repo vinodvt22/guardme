@@ -204,9 +204,9 @@ h4.page-title {
 							Account Settings </a>
 						</li>
                                                 <?php
-                                                    $employerid = Auth::user()->id;
-                                                    $shcount = DB::table('company')
-                                                            ->where('user_id', '=',$employerid)
+                                                    $sellmail = Auth::user()->email;
+                                                    $shcount = DB::table('shop')
+                                                            ->where('seller_email', '=',$sellmail)
                                                             ->count();
                                                 ?>
 
@@ -350,7 +350,7 @@ h4.page-title {
                             <div class="col-md-6">
                                 <div id="postcode_lookup"></div>
                                 <div>Please fetch your address detail using your postcode</div>
-                                @if ($errors->has('address_id')
+                                @if ($errors->has('address_id'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('address_id') }}</strong>
                                     </span>
