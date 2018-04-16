@@ -27,8 +27,20 @@ if(isset(Auth::user()->verification)){
 	</div>
 </div>
 @endif
+<style>
+    @media screen and (max-width: 767px)
+.navbar-collapse {
+background: white!important;
+}
 
-<div class="navbar navbar-fixed-top <?php if($currentPaths=="index" or $currentPaths=="/"){?>homenav<?php } else {?>migrateshop_othernav<?php } ?> navbar-inverse" role="navigation" {!! $isVerified ? 'style="margin-top:45px;"' : '' !!}>
+        #b-menu-1 {
+            background-color: white!important;
+        }
+}
+</style>
+
+
+<div class="navbar navbar-fixed-top <?php if($currentPaths=="index" or $currentPaths=="/"){?>homenav<?php } else {?>migrateshop_othernav<?php } ?> navbar-inverse" role="navigation" {!! $isVerified ? 'style="margin-top:45px; background-color: white!important;"' : '' !!}>
       <div class="container topbottom">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#b-menu-1">
