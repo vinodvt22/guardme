@@ -52,14 +52,17 @@ class VerificationController extends Controller
         if (! \Auth::check()) {
             return redirect('/login')->withSuccess('Your email has been successfully verified. Please login to continue.');
         }
+        if($user->admin == 0){
+            $shop = \DB::table('shop')->where('seller_email', '=', \Auth::user()->email)->first();
 
-        $shop = \DB::table('shop')->where('seller_email', '=', \Auth::user()->email)->first();
+            if ($shop) {
+                return redirect('/account')->withSuccess('Your email has been successfully verified.');
+            }
 
-        if ($shop) {
+            return redirect('/addcompany')->withSuccess('Your email has been successfully verified.');
+        }else if($user->admin == 2){
             return redirect('/account')->withSuccess('Your email has been successfully verified.');
         }
-
-        return redirect('/addcompany')->withSuccess('Your email has been successfully verified.');
     }
 
     /**
