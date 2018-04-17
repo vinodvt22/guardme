@@ -306,7 +306,7 @@ $setts = DB::table('settings')
 <div id="banner" class="frontpage-blocks">
     <div id="overlays"></div>
     <?php if(!empty($setts[0]->site_banner)){?>
-    <img src="https://gigster.com/assets/ebay-0f9911.jpg" class="img-responsive banner-class backimg" id="b1">
+    <img src="https://guarddme.com/img/header-banner.jpg" class="img-responsive banner-class backimg" id="b1">
     <?php } else {?>
     <img src="<?php echo $url;?>/img/banner.jpg" class="img-responsive bannerheight">
     <?php } ?>
@@ -378,7 +378,7 @@ $setts = DB::table('settings')
 
         <div class="col-md-12" align="left">
             <div class="col-md-7" style="padding-left: 0px">
-                <h3 style="font-size: 22px"><strong>GuardME</strong> is a <a href="https://guarddme.com/register&gt;">marketplace for vetted security personnel.</a> Are you SIA licensed or looking for security personnel? Join us by registering </h3>
+                <h4 style="font-size: 20px">Are you SIA licensed or looking for security personnel?</h4>
             </div>
             <div class="col-md-5">
 
