@@ -41,7 +41,7 @@
 	<div class="video">
 	<div class="clearfix"></div>
 	<div class="container">
-	 <h1>Shop</h1>
+	 <h1>Company</h1>
 	 
 	 
 	
@@ -91,10 +91,10 @@
 	 
 	 
     <div class="row profile shop">
-		<div class="col-md-6">
+		<div class="col-md-12">
 		
 		<div class="form-group">
-                            <label for="name" class="col-md-12">Shop Name <span class="require">*</span></label>
+                            <label for="name" class="col-md-12">Company Name <span class="require">*</span></label>
 
                             <div class="col-md-12">
                      <input id="shop_name" type="text" class="form-control validate[required] text-input" name="shop_name" value="" autofocus>
@@ -105,240 +105,84 @@
 		
 		
 		<input type="hidden" name="admin_email_id" value="<?php echo $admin_email_id[0]->email;?>">
+                <input type="hidden" name="addresslat" id="addresslat" value="">	
+                <input type="hidden" name="addresslong" id="addresslong" value="">
+                
+                <style>
+                    #address_id{
+                        width: 85%;
+                        float: left;                                
+                    }
+                    #getaddress_error_message{
+                        float:left;
+                    }
+                </style>
+                <div class="form-group">
+                    <label for="address" class="col-md-12">Address <span class="require">*</span></label>
+                    <div class="col-md-12 littlebit"><span class="require">[Please fetch your address detail using your postcode]</span></div>                    
+                    <div class="col-md-12">
+                        <div id="postcode_lookup"></div>                        
+                        @if(count($address) == 0)
+                        <input id="line1" name="line1" class="form-control text-input validate[required]" type="text" placeholder="Address line1" value="">
+                        <input id="line2" name="line2" class="form-control text-input" type="text" placeholder="Address line2" value="">
+                        <input id="line3" name="line3" class="form-control text-input" type="text" placeholder="Address line3" value="">  
+                        <input id="town" name="town" class="form-control text-input validate[required]" type="text" placeholder="Town" value="">             
+                        <input id="country" name="country" class="form-control text-input  validate[required]" type="text" placeholder="Country" value="">
+                        <input id="postcode" name="postcode" class="form-control text-input  validate[required]" type="text" placeholder="Postalcode" value="">
+                        @endif                                
+                    </div>
+                </div>		
+		
 		
 		<div class="form-group">
-                            <label for="name" class="col-md-12">City <span class="require">*</span></label>
-
-                            <div class="col-md-12">
-                                <input id="shop_city" type="text" class="form-control validate[required] text-input" name="shop_city" value="">
-
-                                
-                            </div>
-        </div>
-		
-		
-		<div class="form-group">
-                            <label for="name" class="col-md-12">Country <span class="require">*</span></label>
-
-                            <div class="col-md-12">
-                                <input id="shop_country" type="text" class="form-control validate[required] text-input" name="shop_country" value="">
-
-                                
-                            </div>
-        </div>
-		
-		
-		
-		<div class="form-group">
-                            <label for="name" class="col-md-12">Shop Phone No <span class="require">*</span></label>
+                            <label for="name" class="col-md-12">Phone Number <span class="require">*</span></label>
 
                             <div class="col-md-12">
                                 <input id="shop_phone_no" type="text" class="form-control validate[required] text-input" name="shop_phone_no" value="">
 
                                 
                             </div>
-        </div>
-		
-		<div class="webheight"></div>
-		
-		
+        </div>		
 		
 		<div class="form-group">
-                            <label for="name" class="col-md-12">Shop Start Time <span class="require">*</span></label>
+                            <label for="name" class="col-md-12">Company Email <span class="require">*</span></label>
 
                             <div class="col-md-12">
-                               
-								<select id="shop_start_time" name="shop_start_time" class="form-control validate[required]">
-								<option value="">None</option>
-								<?php foreach($time as $timekey => $timevalue) {?>
-								<option value="<?php echo $timevalue;?>"><?php echo $timekey;?></option>
-								<?php } ?>
-
-							</select>
-
-                                
-                     </div>
-        </div>
-		
-		
-		
-		
-		<div class="form-group">
-                            <label for="name" class="col-md-12">Shop Cover Photo</label>
-                            <div class="col-md-12 littlebit"><span class="require">[Please select an image 1400px / 300px]</span></div>
-                            <div class="col-md-12">
-                                 <input type="file" id="shop_cover_photo" name="shop_cover_photo" class="form-control">
-                                
-                                
-                            </div>
-							
-							
-							
-        </div>
-		
-		
-		
-		
-		
-		<div class="form-group">
-                            <label for="name" class="col-md-12">Advance Booking upto <span class="require">*</span></label>
-
-                            <div class="col-md-12">
-                               <select id="shop_booking_upto" name="shop_booking_upto" class="form-control validate[required] text-input">
-								<option value="">None</option>
-								<?php foreach($days as $daykey => $dayvalue) {?>
-								<option value="<?php echo $dayvalue;?>"><?php echo $daykey;?></option>
-								<?php } ?>
-
-							</select>
+                                <input id="company_email" type="text" class="form-control validate[required] text-input" name="company_email" value="">
 
                                 
                             </div>
-        </div>
-		
-		
-		
-		
-		<div class="form-group">
-                            <label for="name" class="col-md-12">Allowed Bookings Per Hour <span class="require">*</span></label>
-
-                            <div class="col-md-12">
-                                <input id="shop_booking_hour" type="number" class="form-control validate[required] text-input" name="shop_booking_hour" value="">
-
-                                
-                            </div>
-        </div>
-		
+        </div>		
 		
 			
 		</div>
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		<div class="col-md-6 moves20">
+		<div class="col-md-12 moves20">
             
 			   
 			   
 			   <div class="form-group">
-                            <label for="name" class="col-md-12">Shop Address <span class="require">*</span></label>
-
+                            <label for="category" class="col-md-12">Business Category <span class="require">*</span></label>
                             <div class="col-md-12">
-                                <input id="shop_address" type="text" class="form-control validate[required] text-input" name="shop_address" value="">
-
-                                
+                                    <select name="category" id="category" class="trackprogress form-control text-input">
+                                        <option value=""></option>
+                                        @if($categories->count())
+                                            @foreach($categories as $category)
+                                                <option value="{{$category->id}}" <?php if($category->id==1){?> selected="selected" <?php } ?>>{{$category->name}}</option>                                                    
+                                            @endforeach
+                                        @endif
+                                    </select>                               
                             </div>
-              </div>
-			   
-                   
-               <div class="form-group">
-                            <label for="name" class="col-md-12">Pin Code <span class="require">*</span></label>
-
-                            <div class="col-md-12">
-                                <input id="shop_pin_code" type="text" class="form-control validate[required] text-input" name="shop_pin_code" value="">
-
-                                
-                            </div>
-              </div>
-			  
-			  
+                        </div>
 			  <div class="form-group">
-                            <label for="name" class="col-md-12">State <span class="require">*</span></label>
-
-                            <div class="col-md-12">
-                                <input id="shop_state" type="text" class="form-control validate[required] text-input" name="shop_state" value="">
-
-                                
-                            </div>
-              </div>
-			  
-			  
-			  
-			  <div class="form-group">
-                            <label for="name" class="col-md-12">Shop Description <span class="require">*</span></label>
+                            <label for="name" class="col-md-12">Business Description <span class="require">*</span></label>
 
                             <div class="col-md-12">
                                 <textarea id="shop_desc" class="form-control validate[required] text-input" name="shop_desc"></textarea>
 
                                 
                             </div>
-              </div>
-                        
-				
-
-                <div class="form-group">
-                            <label for="name" class="col-md-12">Shop End Time <span class="require">*</span></label>
-
-                            <div class="col-md-12">
-                                
-								<select id="shop_end_time" name="shop_end_time" class="form-control validate[required]">
-								<option value="">None</option>
-								<?php foreach($time as $timekey => $timevalue) {?>
-								<option value="<?php echo $timevalue;?>" ><?php echo $timekey;?></option>
-								<?php } ?>
-
-							</select>
-
-                                
-                     </div>
-               </div>				
-						
-						
-						
-						
-						
-						<div class="form-group">
-                            <label for="name" class="col-md-12">Shop Profile Photo</label>
-                               <div class="col-md-12 littlebit"><span class="require">[Please select an image 150px / 150px]</span></div>
-                            <div class="col-md-12">
-                                 <input type="file" id="shop_profile_photo" name="shop_profile_photo" class="form-control">
-
-                                
-                            </div>
-							
-							
-							
-							
-							
-							
-                      </div>
-						
-                     
-					  
-					  
-					  <div class="form-group">
-                            <label for="name" class="col-md-12">Shop Working Days <span class="require">*</span></label>
-
-                            <div class="col-md-12">
-							<?php foreach($daytxt as $daytxtkey => $daytxtvalue){?>
-							
-                                 <input type="checkbox" id="shop_working_days" name="shop_working_days[]" class="validate[required]" value="<?php echo $daytxtvalue;?>"> <?php echo $daytxtkey;?><br/>
-							<?php } ?>
-                                
-                            </div>
-                      </div>
-						
-					  
-					  
-					  
+              </div>					  
                         <?php if(!empty($site_setting[0]->site_logo)){
 							 
 							?>

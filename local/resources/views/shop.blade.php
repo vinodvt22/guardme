@@ -78,34 +78,7 @@ h4.page-title {
 
 
 
-	 <?php if($shopcount==1){?>
 	 <div class="profile shop">
-
-
-		<!--<div class="fb-profile">
-	<?php
-					   $shopheader="/shop/";
-						$path ='/local/images'.$shopheader.$shop[0]->cover_photo;
-						if($shop[0]->cover_photo!=""){
-						?>
-        <img align="left" class="fb-image-lg" src="<?php echo $url.$path;?>" alt="cover banner"/>
-						<?php } else { ?>
-						<img align="left" class="fb-image-lg" src="<?php echo $url.'/local/images/no-image-big.jpg';?>" alt="cover banner"/>
-						<?php } ?>
-
-		<?php $shopphoto="/shop/";
-						$paths ='/local/images'.$shopphoto.$shop[0]->profile_photo;
-						if($shop[0]->profile_photo!=""){?>
-        <img align="left" class="fb-image-profile thumbnail" src="<?php echo $url.$paths;?>" alt="Profile Photo"/>
-						<?php } else { ?>
-						<img align="left" class="fb-image-profile thumbnail customwidth" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Profile Photo"/>
-						<?php } ?>
-        <div class="fb-profile-text">
-            <h1><?php echo $shop[0]->shop_name;?></h1>
-            <p><?php echo $shop[0]->address;?></p>
-        </div>
-    </div>-->
-
 		<div class="container">
 	<div class="row">
 
@@ -117,17 +90,20 @@ h4.page-title {
 
 
 
-
-    <ul class="nav nav-tabs" id="myTab">
-      <li class="active"><a href="#inbox" data-toggle="tab"><span class="lnr lnr-user blok"></span> Freelancer Profile</a></li>
-      <li><a href="#sent" data-toggle="tab"><span class="lnr lnr-apartment blok"></span> Employer Profile</a></li>
+    <ul class="nav nav-tabs" id="myTab">        
+      @if($editprofile[0]->admin == 2)
+        <li class="active"><a href="#inbox" data-toggle="tab"><span class="lnr lnr-user blok"></span> Freelancer Profile</a></li>
+      @endif
+      @if($editprofile[0]->admin == 0)
+      <li class="active"><a href="#sent" data-toggle="tab"><span class="lnr lnr-apartment blok"></span> Employer Profile</a></li>
+      @endif
       <li><a href="#assignment" data-toggle="tab"><span class="lnr lnr-star blok"></span> Reviews</a></li>
 
     </ul>
 
     <div class="tab-content">
 
-
+    @if($editprofile[0]->admin == 2)
 	<div class="tab-pane active" id="inbox">
        <div class="clearfix"></div>
 
@@ -672,13 +648,13 @@ h4.page-title {
 	</div>
 	</div>
       </div>
+@endif
 
 
 
 
-
-
-      <div class="tab-pane" id="sent">
+@if($editprofile[0]->admin == 0)
+      <div class="tab-pane  active" id="sent">
            <div class="clearfix"></div>
 
 		 <div class="col-md-12">
@@ -715,7 +691,7 @@ h4.page-title {
 			</div>
 			</div>
 		</div>
-
+                @endif
 
 
 
@@ -774,23 +750,6 @@ h4.page-title {
     </div>
 
 	<div class="clearfix"></div>
-        <!--
-	<div class="form-group">
-		<div class="row">
-		<div class="col-md-12">
-			<div>
-					<a href="<?php echo $url;?>/editshop/<?php echo $shop[0]->id;?>" class="btn btn-success btn-md radiusoff">Edit Shop</a>
-					<a href="<?php echo $url;?>/services" class="btn btn-danger btn-md radiusoff">Edit Services</a>
-
-				</div>
-			</div>
-
-		</div>
-	</div>
-        -->
-
-
-
      </div>
 	</div>
 
@@ -809,23 +768,6 @@ h4.page-title {
 
 
 	</div>
-
-
-	 <?php } ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	 <div class="height30"></div>
 	 <div class="row">
