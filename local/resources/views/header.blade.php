@@ -68,7 +68,7 @@ if(isset(Auth::user()->verification)){
                                                 ?>
 			<!-- Added by Ninja 20180331 start here-->
 						<li><a href="<?php echo $url;?>/">Home</a></li>
-                                                <li><a href="<?php if(empty($shcount)){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>">Dashboard</a></li>
+                                                <li><a href="<?php if($shcount > 0){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>">Dashboard</a></li>
 						<li><a href="<?php echo $url;?>/search">Security Personnel</a></li>
 						<li><a href="<?php echo $url;?>/#">Find Jobs</a></li>
 						<li><a href="<?php echo $url;?>/how-it-works">How It Works</a></li>
