@@ -97,7 +97,7 @@
                             <label for="name" class="col-md-12">Company Name <span class="require">*</span></label>
 
                             <div class="col-md-12">
-                     <input id="shop_name" type="text" class="form-control validate[required] text-input" name="shop_name" value="" autofocus>
+                     <input id="shop_name" type="text" class="form-control validate[required] text-input" name="shop_name" value="{{ old('shop_name') }}" autofocus>
 
                                 
                             </div>
@@ -123,33 +123,41 @@
                     <div class="col-md-12">
                         <div id="postcode_lookup"></div>                        
                         @if(count($address) == 0)
-                        <input id="line1" name="line1" class="form-control text-input validate[required]" type="text" placeholder="Address line1" value="">
-                        <input id="line2" name="line2" class="form-control text-input" type="text" placeholder="Address line2" value="">
-                        <input id="line3" name="line3" class="form-control text-input" type="text" placeholder="Address line3" value="">  
-                        <input id="town" name="town" class="form-control text-input validate[required]" type="text" placeholder="Town" value="">             
-                        <input id="country" name="country" class="form-control text-input  validate[required]" type="text" placeholder="Country" value="">
-                        <input id="postcode" name="postcode" class="form-control text-input  validate[required]" type="text" placeholder="Postalcode" value="">
+                        <input id="line1" name="line1" class="form-control text-input validate[required]" type="text" placeholder="Address line1" value="{{ old('line1') }}">
+                        <input id="line2" name="line2" class="form-control text-input" type="text" placeholder="Address line2" value="{{ old('line2') }}">
+                        <input id="line3" name="line3" class="form-control text-input" type="text" placeholder="Address line3" value="{{ old('line3') }}">  
+                        <input id="town" name="town" class="form-control text-input validate[required]" type="text" placeholder="Town" value="{{ old('town') }}">             
+                        <input id="country" name="country" class="form-control text-input  validate[required]" type="text" placeholder="Country" value="{{ old('country') }}">
+                        <input id="postcode" name="postcode" class="form-control text-input  validate[required]" type="text" placeholder="Postalcode" value="{{ old('postcode') }}">
                         @endif                                
                     </div>
                 </div>		
 		
 		
-		<div class="form-group">
+		<div class="form-group {{ $errors->has('shop_phone_no') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-12">Phone Number <span class="require">*</span></label>
 
                             <div class="col-md-12">
-                                <input id="shop_phone_no" type="text" class="form-control validate[required] text-input" name="shop_phone_no" value="">
-
+                                <input id="shop_phone_no" type="text" class="form-control validate[required] text-input" name="shop_phone_no" value="{{ old('shop_phone_no') }}">
+                                @if ($errors->has('shop_phone_no'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('shop_phone_no') }}</strong>
+                                    </span>
+                                @endif
                                 
                             </div>
         </div>		
 		
-		<div class="form-group">
+		<div class="form-group {{ $errors->has('company_email') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-12">Company Email <span class="require">*</span></label>
 
                             <div class="col-md-12">
-                                <input id="company_email" type="text" class="form-control validate[required] text-input" name="company_email" value="">
-
+                                <input id="company_email" type="text" class="form-control validate[required] text-input" name="company_email" value="{{ old('company_email') }}">
+                                @if ($errors->has('name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('company_email') }}</strong>
+                                    </span>
+                                @endif
                                 
                             </div>
         </div>		
@@ -168,7 +176,11 @@
                                         <option value=""></option>
                                         @if($categories->count())
                                             @foreach($categories as $category)
-                                                <option value="{{$category->id}}" <?php if($category->id==1){?> selected="selected" <?php } ?>>{{$category->name}}</option>                                                    
+                                                @if (Input::old('category') == $category->id)
+                                                    <option value="{{ $category->id }}" selected>{{$category->name}}</option>
+                                                @else
+                                                    <option value="{{ $category->id }}">{{$category->name}}</option>
+                                                @endif                                                
                                             @endforeach
                                         @endif
                                     </select>                               
@@ -178,7 +190,7 @@
                             <label for="name" class="col-md-12">Business Description <span class="require">*</span></label>
 
                             <div class="col-md-12">
-                                <textarea id="shop_desc" class="form-control validate[required] text-input" name="shop_desc"></textarea>
+                                <textarea id="shop_desc" class="form-control validate[required] text-input" name="shop_desc">{{ old('shop_desc') }}</textarea>
 
                                 
                             </div>

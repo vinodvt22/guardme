@@ -335,7 +335,7 @@ class ShopController extends Controller
 
 
 		 $rules = array(
-
+                 'shop_phone_no' => 'unique:shop',
 		'shop_cover_photo' => 'max:1024|mimes:jpg,jpeg,png',
 		'shop_profile_photo' => 'max:1024|mimes:jpg,jpeg,png'
 
@@ -343,7 +343,7 @@ class ShopController extends Controller
         );
 
 		$messages = array(
-
+                    'shop_phone_no.unique' => 'The phonenumber is already exists',
             'email' => 'The :attribute field is already exists',
             'name' => 'The :attribute field must only be letters and numbers (no spaces)'
 
@@ -358,8 +358,8 @@ class ShopController extends Controller
 		if ($validator->fails())
 		{
 			$failedRules = $validator->failed();
-
-			return back()->withErrors($validator);
+			
+                        return back()->withInput()->withErrors($validator);
 		}
 		else
 		{
