@@ -36,3 +36,9 @@ Route::group(['prefix' => 'verify'], function () {
     Route::post('/confirm', 'Api\VerificationController@confirm');
     Route::post('/change', 'Api\VerificationController@change');
 });
+
+/*Routes for jobs*/
+
+Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:api'], function(){
+    Route::post('create','JobsController@create')->name('api.create.job');
+});
