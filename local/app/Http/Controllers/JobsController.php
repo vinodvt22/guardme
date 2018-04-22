@@ -16,8 +16,7 @@ class JobsController extends Controller
         
         return view('jobs.create', compact('all_security_categories', 'all_business_categories'));
     }
-    public function schedule() {
-        
-        return view('jobs.schedule', compact('all_security_categories', 'all_business_categories'));
+    public function schedule($id) {
+        return view('jobs.schedule', compact('id'));
     }
 }

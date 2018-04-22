@@ -41,4 +41,5 @@ Route::group(['prefix' => 'verify'], function () {
 
 Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:api'], function(){
     Route::post('create','JobsController@create')->name('api.create.job');
+    Route::post('schedule/{id}','JobsController@schedule')->name('api.schedule.job');
 });

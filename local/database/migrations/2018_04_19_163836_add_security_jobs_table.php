@@ -27,7 +27,7 @@ class AddSecurityJobsTable extends Migration
             $table->string('country')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            $table->integer('monthly_working_hours')->nullable();
+            $table->integer('daily_working_hours')->nullable();
             $table->integer('monthly_working_days')->nullable();
             $table->float('per_hour_rate',  8, 2)->nullable();
             $table->string('wallet_debit_frequency')->nullable();

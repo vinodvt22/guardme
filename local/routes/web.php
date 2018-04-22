@@ -308,6 +308,7 @@ Route::group(['prefix' => '/support/tickets', 'middleware' => 'auth'], function 
 
 Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/create', 'JobsController@create')->name('job.create');
+	Route::get('/schedule/{id}', 'JobsController@schedule')->name('job.schedule');
 });
 
 

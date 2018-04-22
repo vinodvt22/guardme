@@ -55,8 +55,8 @@
 
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="javascript:void(0)">Create job</a></li>
-                        <li role="presentation"><a href="javascript:void(0)">Create Schedule</a></li>
+                        <li role="presentation"><a href="javascript:void(0)">Create job</a></li>
+                        <li role="presentation" class="active"><a href="javascript:void(0)">Create Schedule</a></li>
                         <li role="presentation"><a href="javascript:void(0)">Broadcast Job</a></li>
                         <li role="presentation"><a href="javascript:void(0)">Payment</a></li>
                     </ul>
@@ -64,64 +64,62 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div class="height30"></div>
-                        <div role="tabpanel" class="tab-pane active" id="create_job">
-                            <label for="">Company name: Test </label>
-                            <form id="create_job_form" method="POST" action="{{ route('api.create.job') }}">
-                                <div class="form-group">
-                                    <label for="job_title">Job Title</label>
-                                    <input type="text" name="title" class="form-control title" id="job_title" placeholder="Job Title">
-                                    <span class="error-span text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="security_category">Security Category</label>
-                                    <select type="text" name="security_category" class="form-control" id="security_category">
-                                        <option value="0">Please Select Security Category</option>
-                                        @foreach($all_security_categories as $sec_cat)
-                                            <option value="{{ $sec_cat->id }}">{{ $sec_cat->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="security_category">Industry</label>
-                                    <select type="text" name="business_category" class="form-control" id="business_category">
-                                        <option value="0">Please Select Business Category</option>
-                                        @foreach($all_business_categories as $bus_cat)
-                                            <option value="{{ $bus_cat->id }}">{{ $bus_cat->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        <div id="postcode_lookup"></div>
-                                    </div>
+                        <div role="tabpanel" class="tab-pane active" id="create_schedule">
+                            <form id="create_job_schedule" method="POST" action="{{ route('api.schedule.job', ['id' => $id]) }}">
 
-                                    <div class="form-group">
-                                        <input id="line1" name="line1" class="form-control text-input validate[required]" type="text" placeholder="Address line1" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input id="line2" name="line2" class="form-control text-input" type="text" placeholder="Address line2" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input id="line3" name="line3" class="form-control text-input" type="text" placeholder="Address line3" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input id="town" name="town" class="form-control text-input validate[required]" type="text" placeholder="Town" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input id="country" name="country" class="form-control text-input  validate[required]" type="text" placeholder="Country" value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <input id="postcode" name="postcode" class="form-control text-input  validate[required]" type="text" placeholder="Postalcode" value="">
-                                        <input id="addresslat" name="addresslat" class="form-control text-input" type="hidden" value="">
-                                        <input id="addresslong" name="addresslong" class="form-control text-input" type="hidden" value="">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="hours_per_day">Number of working hours</label>
+                                    <select name="working_hours" class="form-control working_hours" id="hours_per_day">
+                                        <option value="">Please select number of working hours</option>
+                                        @for($i = 1; $i <=8; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                    <span class="text-danger error-span"></span>
+                                </div>
 
+                                <div class="form-group">
+                                    <label for="days_per_month">Number of working days</label>
+                                    <select name="working_days" class="form-control working_days" id="days_per_month">
+                                        <option value="">Please select number of working days</option>
+                                        @for($i = 1; $i <= 30; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                    <span class="text-danger error-span"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea name="description" rows="10" class="form-control description" id="description" placeholder="Description"></textarea>
-                                    <span class="error-span text-danger"></span>
+                                    <label for="pay_per_hour">Pay per hour - GBP</label>
+                                    <select name="pay_per_hour" class="form-control pay_per_hour" id="pay_per_hour">
+                                        <option value="">Please select per hour</option>
+                                        @for($i = 8; $i <= 20; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                    <span class="text-danger error-span"></span>
                                 </div>
+                                <label for="">Details/Calculations</label>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                    <tr>
+                                        <td>Total working hours</td>
+                                        <td class="total-working-hours"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>VAT fee 20%</td>
+                                        <td class="vat-fee"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Admin fee 14.99%</td>
+                                        <td class="admin-fee"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Your total for this job</td>
+                                        <td class="grand-total-for-job"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
                                 <button type="submit" class="btn btn-primary pull-right">Next</button>
                             </form>
                         </div>
@@ -145,15 +143,36 @@
 
 <script>
     $(document).ready(function(){
-        $("#create_job_form").on("submit", function(e){
+
+        // calculations
+
+        $("select[name='pay_per_hour']").on("change", function(){
+            var hoursPerDay = $("select[name='working_hours']").val();
+            var workingDays = $("select[name='working_days']").val();
+            var payPerHour = $(this).val();
+            // make calculations
+            var totalWorkingHours = hoursPerDay * workingDays;
+            var basicTotal = totalWorkingHours * payPerHour;
+            var VATFee = (basicTotal * 20) / 100;
+            var adminFee = (basicTotal * 14.99) / 100;
+            var grandTotal = basicTotal + VATFee + adminFee;
+            $(".total-working-hours").text(totalWorkingHours);
+            $(".vat-fee").text(VATFee);
+            $(".admin-fee").text(adminFee);
+            $(".grand-total-for-job").text(grandTotal);
+        });
+
+
+        $("form#create_job_schedule").on("submit", function(e){
             formErrors = new Errors();
             e.preventDefault();
             $.ajax({
-                url: $("#create_job_form").attr("action"),
+                url: $(this).attr("action"),
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(data) {
-
+                    var nextUrl = "{{ route('job.schedule', ['id' => $id]) }}";
+                    window.location.href = nextUrl;
                 },
                 error: function(data) {
                     var errors = data.responseJSON;

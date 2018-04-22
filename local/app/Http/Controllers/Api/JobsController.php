@@ -31,13 +31,41 @@ class JobsController extends Controller
         $job->created_by = !empty(auth()->user()->id) ? (auth()->user()->id) : 0;
         $isSaved = $job->save();
         if ($isSaved) {
-            $return = 'Data Saved Successfully';
+            $return = ['message' => 'Data Saved Successfully', 'id' => $job->id];
             $status_code = 200;
         } else {
-            $return = 'Failed to save data';
+            $return = ['message' => 'Failed to save data'];
             $status_code = 500;
         }
         return response()
             ->json($return, $status_code);
+    }
+    public function schedule(Request $request, $id) {
+        $this->validate($request, [
+            'working_hours' => 'required|integer',
+            'working_days' => 'required|integer',
+            'pay_per_hour' => 'required|integer',
+        ]);
+        $posted_data = $request->all();
+        $working_days = !empty($posted_data['working_days']) ? $posted_data['working_days'] : 0;
+        $working_hours = !empty($posted_data['working_hours']) ? $posted_data['working_hours'] : 0;
+        $pay_per_hour = !empty($posted_data['pay_per_hour']) ? $posted_data['pay_per_hour'] : 0;
+
+        $job = Job::find($id);
+        $logged_in_id = !empty(auth()->user()->id) ? (auth()->user()->id) : 0;
+        $return_data = ['Not allowed to perform this action'];
+        $return_status = 500;
+        if (!empty($job) && !empty($job->created_by) && $job->created_by == $logged_in_id) {
+            $job->daily_working_hours = $working_hours;
+            $job->monthly_working_days = $working_days;
+            $job->per_hour_rate = $pay_per_hour;
+            if ($job->save()) {
+                $return_data = ['message' => 'Data saved successfully'];
+                $return_status = 200;
+            }
+
+        }
+        return response()
+            ->json($return_data, $return_status);
     }
 }

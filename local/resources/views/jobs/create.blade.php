@@ -153,7 +153,9 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(data) {
-
+                    var nextUrl = "{{ route('job.schedule', ":id") }}";
+                    nextUrl = nextUrl.replace(":id", data.id);
+                    window.location.href = nextUrl;
                 },
                 error: function(data) {
                     var errors = data.responseJSON;
