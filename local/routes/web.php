@@ -304,6 +304,12 @@ Route::group(['prefix' => '/support/tickets', 'middleware' => 'auth'], function 
         ->name('tickets.messages.store');
 });
 
+/*Start Security Jobs Routes*/
+
+Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
+	Route::get('/create', 'JobsController@create')->name('job.create');
+	Route::get('/schedule/{id}', 'JobsController@schedule')->name('job.schedule');
+});
 
 
 Route::get('/phone', 'VerificationController@phone')->middleware('auth');
