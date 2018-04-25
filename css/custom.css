@@ -102,6 +102,12 @@ a.btn:hover {
 	color: #c1272d;
 }
 
+#download {
+    background-image: url(../img/jar.jpg);
+    }
+.job-bg {
+    background-image:  url(../img/jar.jpg);
+}
 
 @media screen and (max-width: 1920px) and (min-width: 1200px) {
 	 

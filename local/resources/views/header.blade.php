@@ -13,6 +13,9 @@ if(isset(Auth::user()->verification)){
     $new_email = Auth::user()->verification->new_email;
 }
 ?>
+
+ <header id="header" class="clearfix">
+
 @if($isVerified = (Auth::check() && ! Auth::user()->verified && ! session('need_email_confirmation')))
 <div class="alert alert-warning" role="alert" style="position: fixed;top: 0px;left: 0px;width: 100%;z-index:9999;border-radius:0px;padding:5px;">
 	<div class="container">
@@ -166,3 +169,4 @@ if(isset(Auth::user()->verification)){
 		}
 	</style>
 @endif
+</header>
