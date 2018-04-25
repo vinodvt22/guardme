@@ -81,7 +81,7 @@ $setid=1;
 	<div class="footer-bottom clearfix text-center">
 			<div class="container">
 
-				<p><?php if($setts[0]->site_copyright!=""){?><?php echo $setts[0]->site_copyright; } else {?>&copy; <?php echo date('Y');?>. All Rights Reserved. Designed by Migrateshop<?php } ?></p>
+				<p><?php if($setts[0]->site_copyright!=""){?><?php echo $setts[0]->site_copyright; } else {?>&copy; <?php echo date('Y');?>. All Rights Reserved.<?php } ?></p>
 			</div>
 		</div><!-- footer-bottom -->
 

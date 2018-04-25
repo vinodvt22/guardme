@@ -21,9 +21,9 @@ $setts = DB::table('settings')
 
 
 <!-- fixed navigation bar -->
-<header id="header" class="clearfix">
+
     @include('header')
-</header>
+
 
 <!-- slider -->
 
@@ -181,7 +181,7 @@ $setts = DB::table('settings')
 <div class="page">
     <div class="container">
     <div class="works section job-category-items">
-        
+            
             <div class="col-md-12" align="center"><h1>How it works</h1></div>
             <div class="height30"></div>
             <div class="row">
