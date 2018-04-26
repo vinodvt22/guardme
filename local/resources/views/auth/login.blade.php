@@ -55,7 +55,7 @@
 
                         <div class="user-option">
                             <div class="checkbox pull-left">
-                                 <label for="logged"><input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me </label>
+                                 <label><input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me </label>
                             </div>
                         </div>
 

@@ -5,26 +5,34 @@
     @php
         $pageTitle = 'Create ticket';
     @endphp
-    <h1 class="uk-text-right">
-        <a class="btn btn-secondary" href="{{ Route('ticket.index') }}">&larr; Back to tickets</a>
-    </h1>
 
-    @if (session('status') == 500)
-        @foreach (session('errors') as $errors)
-            <div class="alert alert-danger">
-                @foreach ($errors as $error)
-                    {{ $error }}<br />
-                @endforeach
-            </div>
-        @endforeach
-    @elseif (session('status') == 200)
-        <div class="alert alert-success">
-            Ticket successfully created
+
+        <div class="breadcrumb-section">
+            <ol class="breadcrumb">
+                <li><a href="{{URL::to('/')}}">Home</a></li>
+                <li><a href="{{ Route('ticket.index') }}">Tickets</a></li>
+                 <li>Create Ticket</li>
+            </ol>                       
+            <h2 class="title">Create Ticket</h2>
         </div>
-    @endif
-    <div class="panel">
-        <div class="panel-body">
-            <form action="{{ route('ticket.store') }}" method="POST" enctype="multipart/form-data">
+         <div class="resume-content">
+            <div class="profile section clearfix">
+                <a class="btn btn-secondary" href="{{ Route('ticket.index') }}">&larr; Back to tickets</a>
+                 @if (session('status') == 500)
+                    @foreach (session('errors') as $errors)
+                        <div class="alert alert-danger">
+                            @foreach ($errors as $error)
+                                {{ $error }}<br />
+                            @endforeach
+                        </div>
+                    @endforeach
+                @elseif (session('status') == 200)
+                    <div class="alert alert-success">
+                        Ticket successfully created
+                    </div>
+                @endif
+                
+                <form action="{{ route('ticket.store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label class="control-label">Title: <span class="text-danger">*</span></label>
@@ -58,8 +66,11 @@
                     <input type="submit" value="Create Ticket" class="btn btn-primary">
                 </div>
             </form>
+
+            </div>
         </div>
-    </div>
+
+   
 @endsection
 
 @push('styles')
