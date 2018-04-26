@@ -12,20 +12,28 @@
             config('guardme.acl.Super_Admin')
         ]); */
     ?>
-
-    <h1 class="uk-text-right">
-    
-            <a class="btn btn-secondary" href="{{ Route('ticket.create') }}">Create ticket</a>
-       
-    </h1>
-
-    @if (session('type') && session('type') == 'assign')
-        <div class="alert alert-success">
-            Ticket was successfully assigned to you
+        <div class="breadcrumb-section">
+            <ol class="breadcrumb">
+                <li><a href="{{URL::to('/')}}">Home</a></li>
+                <li>Support</li>
+                 <li>Tickets</li>
+            </ol>                       
+            <h2 class="title">Tickets</h2>
         </div>
-    @endif
 
-    @if ($tickets)
+
+        <div class="resume-content">
+            <div class="profile section clearfix">
+
+                 <a class="btn btn-secondary" href="{{ Route('ticket.create') }}">Create ticket</a>
+
+                    @if (session('type') && session('type') == 'assign')
+                        <div class="alert alert-success">
+                            Ticket was successfully assigned to you
+                        </div>
+                    @endif
+
+                   @if ($tickets)
         <table class="ui table">
             <thead>
                 <tr>
@@ -103,7 +111,14 @@
             </ul>
         @endif
 
-    @endif
+    @endif  
+            </div>
+        </div>
+    
+
+    
+
+   
 @endsection
 
 @push('styles')
