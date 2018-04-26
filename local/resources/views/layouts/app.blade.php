@@ -30,11 +30,11 @@ if($currentPaths=="/")
 
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @include('style')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
+       <?php /* <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
 
@@ -62,7 +62,7 @@ if($currentPaths=="/")
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
+                            <li><a href="{{ route('login') }}">Login11</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li class="dropdown">
@@ -88,7 +88,7 @@ if($currentPaths=="/")
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> */?>
 
         @yield('content')
     </div>

@@ -39,7 +39,9 @@ a.btn:hover {
     transition: opacity .8s;
 }
 
-	
+.bottom-mrgn-4{
+	margin-bottom:4px !important; 
+}	
 .innerbg {
     text-align: left !important;
     padding: 20px 20px 0px 20px;
