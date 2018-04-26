@@ -36,6 +36,16 @@
                 </ul>
             </div>
         @endif
+        @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+        @endif
+        @if(session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session()->get('error') }}
+            </div>
+        @endif
         @if(! \Auth::user()->verified)
             <div class="row">
                 <div class="col-lg-12">
@@ -109,7 +119,16 @@
                             </table>
                         </div>
                     </div>
-
+                    @if($available_balance < $jobDetails['grand_total'])
+                        <form action="{{ route('create.paypal.payment', ['id' => $id]) }}" method="post">
+                            {{ csrf_field() }}
+                            <input type="submit" class="btn btn-success" value="Pay with Paypal">
+                        </form>
+                        @else
+                        <form method="post" id="activate_job" action="{{ route('api.activate.job', ['id' => $id]) }}">
+                            <input type="submit" class="btn btn-success" value="Activate Job">
+                        </form>
+                    @endif
                 </div>
 
             </div>
@@ -127,7 +146,24 @@
 @include('footer')
 <script>
     $(document).ready(function(){
-
+        $("form#activate_job").on("submit", function(e){
+            formErrors = new Errors();
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr("action"),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(data) {
+                    var nextUrl = "{{ route('job.confirmation') }}";
+                    window.location.href = nextUrl;
+                },
+                error: function(data) {
+                    var errors = data.responseJSON;
+                    formErrors.record(errors);
+                    formErrors.load();
+                }
+            });
+        });
     });
 </script>
 

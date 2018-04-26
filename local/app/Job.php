@@ -20,10 +20,10 @@ class Job extends Model
         $pay_per_hour = $job->per_hour_rate;
         $total_working_hours = $working_hours * $working_days;
         $basic_total = $total_working_hours * $pay_per_hour;
-        $vat_fee = ($basic_total * 20) / 100;
-        $admin_fee = ($basic_total * 14.99) / 100;
+        $vat_fee = number_format(($basic_total * 20) / 100, 2, '.', '');
+        $admin_fee = number_format(($basic_total * 14.99) / 100, 2, '.', '');
         $grand_total = $basic_total + $vat_fee + $admin_fee;
-        $grand_total = number_format($grand_total, 2, '.', ',');
+        $grand_total = number_format($grand_total, 2, '.', '');
         $return_data = [
             'daily_working_hours' => $working_hours,
             'monthly_working_days' => $working_days,

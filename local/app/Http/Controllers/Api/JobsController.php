@@ -5,7 +5,7 @@ namespace Responsive\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
-
+use Responsive\Transaction;
 class JobsController extends Controller
 {
     //
@@ -123,5 +123,45 @@ class JobsController extends Controller
         $jobDetails = Job::calculateJobAmount($id);
         return response()
             ->json($jobDetails);
+    }
+
+    public function activateJob($job_id) {
+        $returnData = "Un-know error occured";
+        $returnStatus = 500;
+        $user_id = auth()->user()->id;
+        if ($user_id) {
+            // find job
+            $job = Job::find($job_id);
+            if ($job->created_by == $user_id) {
+                $job_details = Job::calculateJobAmount($job_id);
+                $trans = new Transaction();
+                $available_balance = $trans->getWalletAvailableBalance();
+                if ($job_details['grand_total'] > $available_balance) {
+                    $returnStatus = 500;
+                    $returnData = "Your available balance is less than the balance required for this job";
+                } else {
+                    // add 3 credit entries to activate job
+                    $parms['job_id'] = $job_id;
+                    $parms['amount'] = $job_details['basic_total'];
+                    $parms['status'] = 1;
+                    $trans->fundJobFee($parms);
+                    // add vat fee
+                    $parms['amount'] = $job_details['vat_fee'];
+                    $trans->fundVatFee($parms);
+                    // add admin fee
+                    $parms['amount'] = $job_details['admin_fee'];
+                    $trans->fundAdminFee($parms);
+
+                    $job->status = 1;
+                    $job->save();
+                    $returnStatus = 200;
+                    $returnData = 'Job Activated successfully';
+
+                }
+
+            }
+        }
+        return response()
+            ->json($returnData, $returnStatus);
     }
 }
