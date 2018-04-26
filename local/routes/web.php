@@ -199,7 +199,7 @@ Route::group(['middleware' => 'admin'], function() {
 
 	/* sub services */
 
-	Route::get('/admin/subservices','Admin\SubservicesController@index');
+	Route::get('/admin/subservices','Admin\SubservicesController@index'); 
 	Route::get('/admin/addsubservice','Admin\AddsubserviceController@formview');
 	Route::get('/admin/addsubservice','Admin\AddsubserviceController@getservice');
 	Route::post('/admin/addsubservice', ['as'=>'admin.addsubservice','uses'=>'Admin\AddsubserviceController@addsubservicedata']);
@@ -313,5 +313,10 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 
 
 Route::get('/phone', 'VerificationController@phone')->middleware('auth');
+
+Route::group(['middleware' => 'partners'], function() {
+	Route::get('/partners','Partners\DashboardController@index');
+});
+
 
 
