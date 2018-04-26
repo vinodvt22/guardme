@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Responsive\Businesscategory;
 use Responsive\SecurityCategory;
 use Responsive\Job;
+use Responsive\Transaction;
 
 class JobsController extends Controller
 {
@@ -27,8 +28,14 @@ class JobsController extends Controller
     }
 
     public function paymentDetails($id) {
+        $trans = new Transaction();
+        $available_balance = $trans->getWalletAvailableBalance();
         $jobDetails = Job::calculateJobAmount($id);
-        return view('jobs.payment-details', compact('jobDetails'));
+        return view('jobs.payment-details', compact('jobDetails', 'id', 'available_balance'));
+    }
+
+    public function confirmation() {
+        return view('jobs.confirm');
     }
 
 }
