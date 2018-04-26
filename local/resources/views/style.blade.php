@@ -72,6 +72,6 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 	
 	<link href="<?php echo $url;?>/css/jquery-ui.css" rel="stylesheet" type="text/css">
 	
-	
+
 	
 	

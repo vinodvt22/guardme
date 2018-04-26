@@ -211,7 +211,8 @@ $setid=1;
                 }
             });
             if (typeof $('.error-span:eq(0)').closest('.form-group') != 'undefined') {
-                var scrollPosition = $('.error-span:visible:eq(0)').closest('.form-group').offset().top - 70;
+				if (typeof $('.error-span:visible:eq(0)').closest('.form-group').offset() != 'undefined')
+				var scrollPosition = $('.error-span:visible:eq(0)').closest('.form-group').offset().top - 70;
 
                 $("html, body").animate({ scrollTop: scrollPosition }, 1000);
             }
