@@ -25,86 +25,59 @@
     
 	
 	
-	
-	
-	
-	
-	
-	<div class="clearfix"></div>
-	
-	
-	
-	
-	
-	<div class="video">
-	<div class="clearfix"></div>
-	<div class="headerbg">
-	 <div class="col-md-12" align="center"><h1><?php echo $contact[0]->page_title;?></h1></div>
-	 </div>
-	<div class="container">
-	 
-	 <div class="height30"></div>
-	 <div class="row">
-	<div class="col-md-12">
-	
-	
-	<div class="col-md-6">
-	<form class="form-horizontal" role="form" method="POST" action="{{ route('contact') }}" id="formID" enctype="multipart/form-data">
+	<section class=" job-bg ad-details-page">
+		<div class="container">
+
+			<div class="breadcrumb-section">
+				<ol class="breadcrumb">
+					<li><a href="{{URL::to('/')}}">Home</a></li>
+					<li><?php echo $contact[0]->page_title;?></li>
+				</ol>						
+				<h2 class="title"><?php echo $contact[0]->page_title;?></h2>
+			</div>
+
+			<div class="job-postdetails post-resume">
+				<div class="row">	
+					<div class="user-account job-user-account">
+						<h2>Contact Us</h2>
+					<div class="col-md-6 clearfix">
+
+						<form method="POST" action="{{ route('contact') }}" id="formID" enctype="multipart/form-data">
                         {{ csrf_field() }}
 	
-	<div class="col-md-12 cform">
-	
-          <div class="col-lg-6 col-md-6 col-sm-6">
-            <label>Name<span class="star">*</span></label>
-            <input type="text" value=""  class="form-control validate[required] text-input" id="name" name="name" >
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-6">
-            <label>Email<span class="star">*</span> </label>
-            <input type="text" value=""  class="form-control validate[required,custom[email]] text-input" id="email" name="email" >
-          </div>
-		  
-          <div class="col-lg-6 col-md-6 col-sm-6">
-            <label>Phone No<span class="star">*</span></label>
-            <input type="text" value=""  class="form-control validate[required] text-input" id="phone_no" name="phone_no" >
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-6">
-            <label>Message<span class="star">*</span> </label>
-            <input type="text" value=""   class="form-control validate[required] text-input" id="msg" name="msg">
-          </div>
-		  
-          <div class="col-lg-6">
-            <input type="submit" class="btn btn-primary" value="Send">
-          </div>
-		  
-		 </div> 
-        </form>
-	
-	
-	
-	</div>
-	
-	<div class="col-md-6">
-	<?php
-	echo trim($contact[0]->page_desc,"'");
-	?>
-	</div>
-	
-	</div>
-	
-	
-	
-	
-	</div>
-	
-	</div>
-	</div>
-	
-	
-	
+						<div class="form-group">
+							<input type="text" value=""  class="form-control validate[required] text-input" id="name" name="name" placeholder="Name">
+						</div>
+						
+						<div class="form-group">
+							<input type="text" value=""  class="form-control validate[required,custom[email]] text-input" id="email" name="email" placeholder="Email">				
+						</div>
+						<div class="form-group">
+							 <input type="text" value=""  class="form-control validate[required] text-input" id="phone_no" name="phone_no" placeholder="Phone No">
+						</div>
+						<div class="form-group">
+							 <input type="text" value=""   class="form-control validate[required] text-input" id="msg" name="msg" placeholder="Message">
+						</div>
+			
+		  			<button type="submit" class="btn" value="Send">Send</button>
+         
+       				 </form>
+						
+					</div>
+<div class="clearfix visible-xs">&nbsp;</div>
+					<div class="col-md-6">
+						<?php
+						echo trim($contact[0]->page_desc,"'");
+						?>
+					</div>
+				</div>
+				</div>
+			</div>
 
-      <div class="clearfix"></div>
-	   <div class="clearfix"></div>
-
+		
+		</div>
+	</section>
+	
       @include('footer')
 	  <?php if(session()->has('message')){?>
     <script type="text/javascript">

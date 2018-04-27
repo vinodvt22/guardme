@@ -60,76 +60,62 @@ class ShopController extends Controller
 
 	$daytxt=array("Sunday" => "0", "Monday" => "1", "Tuesday" => "2", "Wednesday" => "3", "Thursday" => "4", "Friday" => "5", "Saturday" => "6");
 
-	    $sellermail = Auth::user()->email;
-    	 $shopcount = DB::table('shop')
+        $sellermail = Auth::user()->email;
+        $shopcount = DB::table('shop')
 		 ->where('seller_email', '=', $sellermail)
 		 ->count();
 
+        $uberid=Auth::user()->id;
 
-          $shop = DB::table('shop')
-                ->where('seller_email', '=', $sellermail)
-				->get();
+        $viewservice = DB::table('seller_services')
+        ->where('user_id', $uberid)
+        ->orderBy('id','desc')
+        ->leftJoin('subservices', 'subservices.subid', '=', 'seller_services.subservice_id')
+        ->get();
 
-			if ($shop->isEmpty()) {
-				return redirect('/addcompany');
-			}
+        $set_id=1;
+        $setting = DB::table('settings')->where('id', $set_id)->get();
 
+        $countries = Country::all();
+        $address = Address::where('user_id', Auth::user()->id)->get();
 
-					if($shop[0]->start_time > 12)
-					{
-						$start=$shop[0]->start_time - 12;
-						$stime=$start."PM";
-					}
-					else
-					{
-						$stime=$shop[0]->start_time."AM";
-					}
-					if($shop[0]->end_time>12)
-					{
-						$end=$shop[0]->end_time-12;
-						$etime=$end."PM";
-					}
-					else
-					{
-						$etime=$shop[0]->end_time."AM";
-					}
-
-		$sel=explode(",",$shop[0]->shop_date);
-		$lev=count($sel);
-
-
-		$uberid=Auth::user()->id;
-
-		$viewservice = DB::table('seller_services')
-		->where('user_id', $uberid)
-		->orderBy('id','desc')
-		->leftJoin('subservices', 'subservices.subid', '=', 'seller_services.subservice_id')
-		->get();
-
-		$set_id=1;
-		$setting = DB::table('settings')->where('id', $set_id)->get();
-
-		$shop_id = $shop[0]->id;
-
-		$rating_count = DB::table('rating')
-	          ->where('rshop_id', '=', $shop_id)
-
-			  ->count();
-
-		$rating = DB::table('rating')
-		          ->leftJoin('users', 'users.email', '=', 'rating.email')
-	          ->where('rshop_id', '=', $shop_id)
-			  ->orderBy('rid', 'desc')
-
-			  ->get();
-
-
-                $countries = Country::all();
-                $address = Address::where('user_id', Auth::user()->id)->get();
-
-		$data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt, 'shopcount' => $shopcount, 'shop' => $shop, 'stime' => $stime,
-		'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'viewservice' => $viewservice, 'setting' => $setting, 'rating_count' => $rating_count, 'rating' => $rating);
-            return view('shop', compact('data', 'userid', 'editprofile', 'data','countries','address'))->with($data);
+        $shop = DB::table('shop')->where('seller_email', '=', $sellermail)->get();
+                if($editprofile[0]->admin == 0){ // employer
+                        if ($shop->isEmpty()) {
+                                return redirect('/addcompany');
+                        }
+                        if($shop[0]->start_time > 12)
+                        {
+                                $start=$shop[0]->start_time - 12;
+                                $stime=$start."PM";
+                        }
+                        else
+                        {
+                                $stime=$shop[0]->start_time."AM";
+                        }
+                        if($shop[0]->end_time>12)
+                        {
+                                $end=$shop[0]->end_time-12;
+                                $etime=$end."PM";
+                        }
+                        else
+                        {
+                                $etime=$shop[0]->end_time."AM";
+                        }
+                        $sel=explode(",",$shop[0]->shop_date);
+                        $lev=count($sel);
+                        $shop_id = $shop[0]->id;
+                        $rating_count = DB::table('rating')->where('rshop_id', '=', $shop_id)->count();
+                        $rating = DB::table('rating')->leftJoin('users', 'users.email', '=', 'rating.email')
+                        ->where('rshop_id', '=', $shop_id)->orderBy('rid', 'desc')->get();
+                        $data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt, 'shopcount' => $shopcount, 'shop' => $shop, 'stime' => $stime,
+                            'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'viewservice' => $viewservice, 'setting' => $setting, 'rating_count' => $rating_count, 'rating' => $rating);
+                        return view('shop', compact('data', 'userid', 'editprofile', 'countries','address'))->with($data);
+                    }
+                    else{
+                        $data = array('rating_count' => 0);
+                        return view('shop', compact( 'userid', 'editprofile', 'countries','address'))->with($data);
+                    }
     }
 
 
@@ -187,9 +173,10 @@ class ShopController extends Controller
 
 
 
-
-		$data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt, 'shopcount' => $shopcount, 'shop' => $shop, 'admin_email_id' => $admin_email_id,
-		'site_setting' => $site_setting);
+                $address = Address::where('user_id', Auth::user()->id)->get();
+                $categories = \Responsive\Businesscategory::all();
+		$data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt,'address'=>$address, 'shopcount' => $shopcount, 'shop' => $shop, 'admin_email_id' => $admin_email_id,
+		'site_setting' => $site_setting,'categories'=>$categories);
             return view('addshop')->with($data);
     }
 
@@ -348,7 +335,7 @@ class ShopController extends Controller
 
 
 		 $rules = array(
-
+                 'shop_phone_no' => 'unique:shop',
 		'shop_cover_photo' => 'max:1024|mimes:jpg,jpeg,png',
 		'shop_profile_photo' => 'max:1024|mimes:jpg,jpeg,png'
 
@@ -356,7 +343,7 @@ class ShopController extends Controller
         );
 
 		$messages = array(
-
+                    'shop_phone_no.unique' => 'The phonenumber is already exists',
             'email' => 'The :attribute field is already exists',
             'name' => 'The :attribute field must only be letters and numbers (no spaces)'
 
@@ -371,8 +358,8 @@ class ShopController extends Controller
 		if ($validator->fails())
 		{
 			$failedRules = $validator->failed();
-
-			return back()->withErrors($validator);
+			
+                        return back()->withInput()->withErrors($validator);
 		}
 		else
 		{
@@ -451,25 +438,25 @@ class ShopController extends Controller
 
 
 		$shop_name=$data['shop_name'];
-		$shop_address=$data['shop_address'];
+		//$shop_address=$data['shop_address'];
 
-		$shop_city=$data['shop_city'];
-		$shop_pin_code=$data['shop_pin_code'];
+		//$shop_city=$data['shop_city'];
+		//$shop_pin_code=$data['shop_pin_code'];
 
 
-		$shop_country=$data['shop_country'];
-		$shop_state=$data['shop_state'];
-
+		//$shop_country=$data['shop_country'];
+		//$shop_state=$data['shop_state'];
+                
 		$shop_phone_no=$data['shop_phone_no'];
 		$shop_desc=$data['shop_desc'];
-		$shop_working_days=$data['shop_working_days'];
+		//$shop_working_days=$data['shop_working_days'];
 
-		$shop_start_time=$data['shop_start_time'];
-		$shop_end_time=$data['shop_end_time'];
-
-
+		//$shop_start_time=$data['shop_start_time'];
+		//$shop_end_time=$data['shop_end_time'];
 
 
+
+                /**
 					if($shop_start_time > 12)
 					{
 						$start=$shop_start_time - 12;
@@ -488,28 +475,29 @@ class ShopController extends Controller
 					{
 						$etime=$shop_end_time."AM";
 					}
+                 **/
 
 
 
 
-
-		$shop_booking_upto=$data['shop_booking_upto'];
-		$shop_booking_hour=$data['shop_booking_hour'];
-
+		//$shop_booking_upto=$data['shop_booking_upto'];
+		//$shop_booking_hour=$data['shop_booking_hour'];
 
 
 
-		$workdays="";
-		foreach($shop_working_days as $working_days)
-		{
-			$workdays .=$working_days.',';
-		}
-		$workingdays=rtrim($workdays,",");
+
+		//$workdays="";
+		//foreach($shop_working_days as $working_days)
+		//{
+		//	$workdays .=$working_days.',';
+		//}
+		//$workingdays=rtrim($workdays,",");
 
 		$sellermail = Auth::user()->email;
 
 		$sellerid = Auth::user()->id;
-
+                $business_categoryid=$data['category'];
+                $company_email=$data['company_email'];
 
 		$featured="no";
 
@@ -531,7 +519,35 @@ class ShopController extends Controller
 		$site_logo=$data['site_logo'];
 
 		$site_name=$data['site_name'];
+                $postcode = isset($data['postcode'])?$data['postcode']:'';
+                $houseno = isset($data['houseno'])?$data['houseno']:'';
+                $line1 = isset($data['line1'])?$data['line1']:'';
+                $line2 = isset($data['line2'])?$data['line2']:'';
+                $line3 = isset($data['line3'])?$data['line3']:'';
+                $line4 = isset($data['line4'])?$data['line4']:'';
+                $locality = isset($data['locality'])?$data['locality']:'';
+                $citytown = isset($data['town'])?$data['town']:'';
+                $country = isset($data['country'])?$data['country']:'';
+                $latitude = isset($data['addresslat'])?$data['addresslat']:'';
+                $longitude = isset($data['addresslong'])?$data['addresslong']:'';
 
+                $address = Address::where('user_id', Auth::user()->id)->first();
+                if(!isset($address)){
+                    $address = new Address();
+                    $address->user_id = Auth::user()->id;
+                }
+                $address->postcode = $postcode;
+                $address->houseno = $houseno;
+                $address->line1 = $line1;
+                $address->line2 = $line2;
+                $address->line3 = $line3;
+                $address->line4 = $line4;
+                $address->locality = $locality;
+                $address->longitude = $longitude;
+                $address->latitude = $latitude;
+                $address->citytown = $citytown;
+                $address->country = $country;
+                $address->save();
 
 		$sellermaile = Auth::user()->email;
     	 $shopcnt = DB::table('shop')
@@ -546,17 +562,17 @@ class ShopController extends Controller
 
 
 		DB::insert('insert into shop (shop_name,address,city,pin_code,country,state,shop_phone_no,description,shop_date,start_time,end_time,cover_photo,
-		profile_photo,seller_email,user_id,featured,status,admin_email_status,booking_opening_days,booking_per_hour) values (?, ? , ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-		[$shop_name,$shop_address,$shop_city,$shop_pin_code,$shop_country,$shop_state,$shop_phone_no,$shop_desc,$workingdays,$shop_start_time,
-		$shop_end_time,$namef,$namepro,$sellermail,$sellerid,$featured,$status,$admin_email_status,$shop_booking_upto,$shop_booking_hour]);
+		profile_photo,seller_email,user_id,featured,status,admin_email_status,booking_opening_days,booking_per_hour,business_categoryid,company_email) values (?, ? , ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)',
+		[$shop_name,'','','','','',$shop_phone_no,$shop_desc,'','',
+		'',$namef,$namepro,$sellermail,$sellerid,$featured,$status,$admin_email_status,'','',$business_categoryid,$company_email]);
 
 
 
 
 
-       Mail::send('shopuseremail', ['shop_name' => $shop_name, 'address' => $shop_address, 'city' => $shop_city, 'pin_code' => $shop_pin_code, 'country' => $shop_country,
-	   'state' => $shop_state, 'shop_phone_no' => $shop_phone_no, 'description' => $shop_desc, 'booking_opening_days' => $shop_booking_upto,
-	   'booking_per_hour' => $shop_booking_hour, 'stime' => $stime, 'etime' => $etime, 'site_logo' => $site_logo, 'site_name' => $site_name ], function ($message)
+       Mail::send('shopuseremail', ['shop_name' => '', 'address' => '', 'city' => '', 'pin_code' => '', 'country' => '',
+	   'state' => '', 'shop_phone_no' => $shop_phone_no, 'description' => $shop_desc, 'booking_opening_days' => '', 'business_categoryid'=>$business_categoryid,
+	   'booking_per_hour' => '', 'stime' => '', 'etime' => '', 'site_logo' => $site_logo, 'site_name' => $site_name ,'company_email'=> $company_email], function ($message)
         {
             $message->subject('Shop Created Successfully');
 
@@ -576,9 +592,9 @@ class ShopController extends Controller
 
 
 
-		Mail::send('shopadminemail', ['shop_name' => $shop_name, 'address' => $shop_address, 'city' => $shop_city, 'pin_code' => $shop_pin_code, 'country' => $shop_country,
-	   'state' => $shop_state, 'shop_phone_no' => $shop_phone_no, 'description' => $shop_desc, 'booking_opening_days' => $shop_booking_upto,
-	   'booking_per_hour' => $shop_booking_hour, 'stime' => $stime, 'etime' => $etime, 'site_logo' => $site_logo, 'site_name' => $site_name ], function ($message)
+		Mail::send('shopadminemail', ['shop_name' => '', 'address' => '', 'city' =>'', 'pin_code' => '', 'country' => '',
+	   'state' => '', 'shop_phone_no' => $shop_phone_no, 'description' => $shop_desc, 'booking_opening_days' => '',
+	   'booking_per_hour' => '', 'stime' => '', 'etime' => '', 'site_logo' => $site_logo, 'site_name' => $site_name,'company_email'=>$company_email,'business_category_id'=>$business_categoryid ], function ($message)
         {
             $message->subject('New Shop Created');
 
@@ -602,10 +618,10 @@ class ShopController extends Controller
 		}
 		else if($editid!="")
 		{
-			DB::update('update shop set shop_name="'.$shop_name.'",address="'.$shop_address.'",city="'.$shop_city.'",pin_code="'.$shop_pin_code.'",country="'.$shop_country.'",
-			state="'.$shop_state.'",shop_phone_no="'.$shop_phone_no.'",description="'.$shop_desc.'",shop_date="'.$workingdays.'",start_time="'.$shop_start_time.'",
-			end_time="'.$shop_end_time.'",cover_photo="'.$namef.'",profile_photo="'.$namepro.'",seller_email="'.$sellermail.'",user_id="'.$sellerid.'",featured="'.$featured.'",
-			status="'.$editstatus.'",admin_email_status="'.$admin_email_status.'",booking_opening_days="'.$shop_booking_upto.'",booking_per_hour="'.$shop_booking_hour.'" where id = ?', [$editid]);
+			DB::update('update shop set shop_name="'.$shop_name.'",address="",city="",pin_code="",country="",business_categoryid="'.$business_categoryid.'",
+			state="",shop_phone_no="'.$shop_phone_no.'",description="'.$shop_desc.'",shop_date="",start_time="",company_email="'.$company_email.'",
+			end_time="",cover_photo="'.$namef.'",profile_photo="'.$namepro.'",seller_email="'.$sellermail.'",user_id="'.$sellerid.'",featured="'.$featured.'",
+			status="'.$editstatus.'",admin_email_status="'.$admin_email_status.'",booking_opening_days="",booking_per_hour="" where id = ?', [$editid]);
 		}
 
 
