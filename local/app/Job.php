@@ -36,4 +36,14 @@ class Job extends Model
         ];
         return $return_data;
     }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     * 
+     */
+    public static function getMyJobs() {
+        $user_id = auth()->user()->id;
+        $data = Job::where('created_by', $user_id)->get();
+        return $data;
+    }
 }

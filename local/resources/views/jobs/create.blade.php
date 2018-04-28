@@ -35,15 +35,6 @@
                 </ul>
             </div>
         @endif
-        @if(! \Auth::user()->verified)
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-warning">
-                        We have already sent email verification to your email. Please check and confirm via the given link. Have not received yet? <a href="{!! route('user.resend_verification') !!}" class="alert-link">Resend email verification</a>.
-                    </div>
-                </div>
-            </div>
-        @endif
 
 
         @include('shared.message')

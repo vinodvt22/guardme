@@ -316,6 +316,7 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/payment-status', 'PaypalPaymentController@getPaymentStatus')->name('payment.status');
 
 	Route::get('/job-confirmation', 'JobsController@confirmation')->name('job.confirmation');
+	Route::get('/my', 'JobsController@myJobs')->name('my.jobs');
 });
 
 Route::get('/phone', 'VerificationController@phone')->middleware('auth');
