@@ -29,10 +29,10 @@ class Job extends Model
             'monthly_working_days' => $working_days,
             'per_hour_rate' => $pay_per_hour,
             'total_working_hours_per_month' => $total_working_hours,
-            'basic_total' => $basic_total,
-            'vat_fee' => $vat_fee,
-            'admin_fee' => $admin_fee,
-            'grand_total' => $grand_total
+            'basic_total' => floatValue($basic_total),
+            'vat_fee' => floatValue($vat_fee),
+            'admin_fee' => floatValue($admin_fee),
+            'grand_total' => floatValue($grand_total)
         ];
         return $return_data;
     }

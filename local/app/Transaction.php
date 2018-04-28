@@ -142,7 +142,7 @@ class Transaction extends Model
                 ->get()->first();
             $total_credit = !empty($credit->total) ? ($credit->total) : 0;
             $balance = $total_debit - $total_credit;
-            return $balance;
+            return floatValue($balance);
         }
     }
 
