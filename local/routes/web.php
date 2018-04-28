@@ -85,7 +85,7 @@ Route::get('/my_bookings', 'MybookingsController@sangvish_showpage');
 Route::post('/my_bookings', ['as'=>'my_bookings','uses'=>'MybookingsController@sangvish_savedata']);
 
 
-Route::get('/wallet', 'WalletController@sangvish_showpage');
+Route::get('/wallet', 'WalletController@show');
 
 Route::post('/wallet', ['as'=>'wallet','uses'=>'WalletController@sangvish_savedata']);
 
