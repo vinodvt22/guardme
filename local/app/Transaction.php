@@ -32,17 +32,17 @@ class Transaction extends Model
      * @return bool
      */
     public function addMoney($params) {
-            $defaults = [
-                'debit_credit_type' => 'debit',
-                'type' => 'add_money'
-            ];
-            $defaults['title'] = !empty($params['title']) ? ($params['title']) : 'Adding balance';
-            $defaults['amount'] = !empty($params['amount']) ? ($params['amount']) : 0;
-            $defaults['paypal_id'] = !empty($params['paypal_id']) ? ($params['paypal_id']) : 0;
-            $defaults['user_id'] = !empty($params['user_id']) ? ($params['user_id']) : 0;
-            $defaults['status'] = !empty($params['status']) ? ($params['status']) : 0;
-            $defaults['paypal_payment_status'] = !empty($params['paypal_payment_status']) ? ($params['paypal_payment_status']) : null;
-            return $this->insertTransaction($defaults);
+        $defaults = [
+            'debit_credit_type' => 'debit',
+            'type' => 'add_money'
+        ];
+        $defaults['title'] = !empty($params['title']) ? ($params['title']) : 'Adding balance';
+        $defaults['amount'] = !empty($params['amount']) ? ($params['amount']) : 0;
+        $defaults['paypal_id'] = !empty($params['paypal_id']) ? ($params['paypal_id']) : 0;
+        $defaults['user_id'] = !empty($params['user_id']) ? ($params['user_id']) : 0;
+        $defaults['status'] = !empty($params['status']) ? ($params['status']) : 0;
+        $defaults['paypal_payment_status'] = !empty($params['paypal_payment_status']) ? ($params['paypal_payment_status']) : null;
+        return $this->insertTransaction($defaults);
     }
 
     /**
@@ -101,18 +101,18 @@ class Transaction extends Model
      * @return bool
      */
     protected function insertTransaction($params) {
-            if (empty($params['user_id'])) {
-                if (!empty(auth()->user()) && !empty(auth()->user()->id)) {
-                    $params['user_id'] = auth()->user()->id;
-                }
+        if (empty($params['user_id'])) {
+            if (!empty(auth()->user()) && !empty(auth()->user()->id)) {
+                $params['user_id'] = auth()->user()->id;
             }
-            $isEligible = false;
-            if($this->isEligibleToAddCredit($params)) {
-                $isEligible = true;
-                DB::table($this->table)->insert($params);
-            }
-            // TODO add some message for user
-            return $isEligible;
+        }
+        $isEligible = false;
+        if($this->isEligibleToAddCredit($params)) {
+            $isEligible = true;
+            DB::table($this->table)->insert($params);
+        }
+        // TODO add some message for user
+        return $isEligible;
     }
 
     protected function isEligibleToAddCredit($params) {
