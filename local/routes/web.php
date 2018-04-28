@@ -319,6 +319,10 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/my', 'JobsController@myJobs')->name('my.jobs');
 });
 
+// Guest route for find job
+
+Route::get('/jobs/find', 'JobsController@findJobs')->name('find.jobs');
+
 Route::get('/phone', 'VerificationController@phone')->middleware('auth');
 
 

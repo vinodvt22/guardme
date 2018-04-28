@@ -49,3 +49,7 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     Route::get('my-jobs','JobsController@myJobs')->name('api.my.jobs');
 
 });
+
+// Guest routes for jobs
+
+Route::get('find-jobs','JobsController@findJobs')->name('api.find.jobs');

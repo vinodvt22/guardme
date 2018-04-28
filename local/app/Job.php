@@ -43,7 +43,16 @@ class Job extends Model
      */
     public static function getMyJobs() {
         $user_id = auth()->user()->id;
-        $data = Job::where('created_by', $user_id)->get();
+        $data = Job::where('created_by', $user_id)
+            ->where('status', 1)
+            ->get();
         return $data;
+    }
+
+    public static function findJobs() {
+        $jobs = Job::where('status', 1)
+            ->orderBy('id', 'DESC')
+            ->get();
+        return $jobs;
     }
 }
