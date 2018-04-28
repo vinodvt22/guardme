@@ -142,6 +142,37 @@ class Transaction extends Model
                 ->get()->first();
             $total_credit = !empty($credit->total) ? ($credit->total) : 0;
             $balance = $total_debit - $total_credit;
+            return floatValue($balance);
+        }
+    }
+
+    public function getWalletEscrowBalance() {
+        $user_id = auth()->user()->id;
+        if(!empty($user_id)) {
+            // get sum of all active debits for user
+            $debit = DB::table($this->table)
+                ->select(DB::raw('SUM(amount) as total'))
+                ->groupBy('user_id')
+                ->where('user_id', $user_id)
+                ->where('status', 1)
+                ->where('debit_credit_type', 'debit')
+                ->get()->first();
+            $total_debit = !empty($debit->total) ? ($debit->total) : 0;
+            // get sum of all active credits for user
+            $credit = DB::table($this->table)
+                ->select(DB::raw('SUM(amount) as total'))
+                ->groupBy('user_id')
+                ->where('user_id', $user_id)
+                ->where('status', 1)
+                ->where(function($query){
+                    $query->orWhere('credit_payment_status', 'paid')
+                        ->orWhere('type', 'vat_fee')
+                        ->orWhere('type', 'admin_fee');
+                })
+                ->where('debit_credit_type', 'credit')
+                ->get()->first();
+            $total_credit = !empty($credit->total) ? ($credit->total) : 0;
+            $balance = $total_debit - $total_credit;
             return $balance;
         }
     }
