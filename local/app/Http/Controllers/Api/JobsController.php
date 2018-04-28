@@ -151,4 +151,13 @@ class JobsController extends Controller
         return response()
             ->json($returnData, $returnStatus);
     }
+
+    /**
+     * @return mixed
+     */
+    public function myJobs() {
+        $my_jobs = Job::getMyJobs();
+        return response()
+            ->json($my_jobs);
+    }
 }

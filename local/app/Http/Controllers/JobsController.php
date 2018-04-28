@@ -30,4 +30,12 @@ class JobsController extends Controller
     public function confirmation() {
         return view('jobs.confirm');
     }
+
+    /**
+     * @return mixed
+     */
+    public function myJobs() {
+        $my_jobs = Job::getMyJobs();
+        return view('jobs.my', compact('my_jobs'));
+    }
 }
