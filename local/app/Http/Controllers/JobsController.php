@@ -38,4 +38,12 @@ class JobsController extends Controller
         $my_jobs = Job::getMyJobs();
         return view('jobs.my', compact('my_jobs'));
     }
+
+    /**
+     * @return mixed
+     */
+    public function findJobs() {
+        $jobs = Job::findJobs();
+        return view('jobs.find', compact('jobs'));
+    }
 }
