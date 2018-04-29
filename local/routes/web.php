@@ -157,7 +157,7 @@ Route::get('/search/{id}','SearchController@sangvish_homeindex');
 Route::post('/search', ['as'=>'search','uses'=>'SearchController@sangvish_index']);
 Route::get('/shopsearch','SearchController@sangvish_view');
 Route::post('/shopsearch', ['as'=>'shopsearch','uses'=>'SearchController@sangvish_search']);
-
+Route::post('/personnelsearch', ['as'=>'personnelsearch','uses'=>'SearchController@personnelsearch']);
 
 
 Route::get('/subservices','SubservicesController@sangvish_index');
