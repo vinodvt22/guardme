@@ -5,7 +5,8 @@ namespace Responsive\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
-
+use Responsive\User;
+use Session;
 class SearchController extends Controller
 {
     /**
@@ -24,8 +25,11 @@ class SearchController extends Controller
 	public function sangvish_view()
 
 	{
-		
+		$sec_personnels = User::where('admin','2')->with('person_address')->paginate(10);
 		$viewservices= DB::table('subservices')->orderBy('subname','asc')->get();
+		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
+
+		$locations= DB::table('address')->get();
       
 		$shopview=DB::table('shop')
 		->leftJoin('users', 'users.email', '=', 'shop.seller_email')
@@ -34,10 +38,66 @@ class SearchController extends Controller
 		->groupBy('shop.id')
 		->get();
 				
-		$data = array('viewservices' => $viewservices,'shopview' => $shopview);
+		$data = array('viewservices' => $viewservices,'shopview' => $shopview,'cats'=>$cats, 'locs'=>$locations,'sec_personnels'=>$sec_personnels);
 		return view('search')->with($data);
 	}
 	
+	function personnelsearch(Request $request)
+	{
+		$cat = $request->cat_id;
+		$loc = $request->loc_id;
+		$personnel = $request->sec_personnel;
+
+
+		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
+
+		$locs= DB::table('address')->get();
+
+		if($cat !='' || $loc !='' || $personnel !='')
+		{
+			$persons = User::where('admin','2');
+			if($personnel !='')
+			{
+				$persons->where('name', 'like', "$personnel%");
+				
+			}
+
+			if($cat !='')
+			{
+				$persons->where('work_category', "$cat");
+				
+			}
+
+			if($loc !='')
+			{
+				$persons->with('person_address')->whereHas('person_address',function($query) use ($loc){
+					//dd($query);
+					$query->where('id',$loc);
+
+				});
+
+				
+			}
+			//dd($persons->get());
+			//$sec_personnels = $persons->with('person_address')->get();
+			$sec_personnels = $persons->paginate(10);
+			//dd($persons);
+			//DB::enableQueryLog();
+			//dd(DB::getQueryLog());
+		}
+		else{
+
+			$sec_personnels = User::where('admin','2')->paginate(10);
+
+		}
+
+		//dd($sec_personnels);
+		$request->flash();
+		return view('search',compact('sec_personnels','cats','locs'));
+
+
+		//dd($request->all());
+	}
 	
 	public function sangvish_homeindex($id)
 	{
