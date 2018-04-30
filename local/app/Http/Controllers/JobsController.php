@@ -46,4 +46,19 @@ class JobsController extends Controller
         $jobs = Job::findJobs();
         return view('jobs.find', compact('jobs'));
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function viewJob($id) {
+        if (!$id) {
+            return abort(404);
+        }
+        $job = Job::find($id);
+        if (empty($job)) {
+            return abort(404);
+        }
+        return view('jobs.detail', compact('job'));
+    }
 }
