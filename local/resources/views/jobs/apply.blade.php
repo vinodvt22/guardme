@@ -22,7 +22,7 @@
 <div class="video">
     <div class="clearfix"></div>
     <div class="headerbg">
-        <div class="col-md-12" align="center"><h1>Find Jobs</h1></div>
+        <div class="col-md-12" align="center"><h1>Submit Your Application</h1></div>
     </div>
     <div class="container" >
         <div style="margin-top: 20px;"></div>
@@ -49,9 +49,6 @@
         @include('shared.message')
 
         <div class="row">
-            <div class="col-md-2 pull-right">
-                <a href="{{ route('apply.job', ['id' => $job->id]) }}"><button class="btn btn-info">Apply Job</button></a>
-            </div>
             <div class="col-md-12">
                 <div class="row">
                     <h2>Job Details</h2>
@@ -64,7 +61,19 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <form action="{{ route('api.apply.job', ['id' => $job->id ]) }}" id="apply_on_job" method="post">
+                <div class="form-group">
+                    <label for="">Application Description</label>
+                    <textarea class="form-control" name="application_description" rows="10"></textarea>
+                    <span class="error-span text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info">
+                </div>
 
+            </form>
+        </div>
         <div class="height30"></div>
         <div class="row">
 
@@ -77,7 +86,20 @@
 @include('footer')
 <script>
     $(document).ready(function(){
-
+        $("form#apply_on_job").on("submit", function(e){
+            e.preventDefault();
+            $.ajax({
+               url: $(this).attr('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(data) {
+                    console.log('errors');
+                }
+            });
+        });
     });
 </script>
 

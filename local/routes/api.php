@@ -45,6 +45,7 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     Route::post('broadcast/{id}','JobsController@broadcast')->name('api.broadcast.job');
     Route::post('calculate-job-amount/{id}','JobsController@getJobAmount')->name('api.amount.job');
     Route::post('activate-job/{id}','JobsController@activateJob')->name('api.activate.job');
+    Route::post('apply/{id}','JobsController@applyJob')->name('api.apply.job');
 
     Route::get('my-jobs','JobsController@myJobs')->name('api.my.jobs');
 
