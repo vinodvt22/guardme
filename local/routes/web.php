@@ -317,6 +317,7 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 
 	Route::get('/job-confirmation', 'JobsController@confirmation')->name('job.confirmation');
 	Route::get('/my', 'JobsController@myJobs')->name('my.jobs');
+	Route::get('/apply/{id}', 'JobsController@applyJob')->name('apply.job');
 });
 
 // Guest route for find job

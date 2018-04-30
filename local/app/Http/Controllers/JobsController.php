@@ -61,4 +61,13 @@ class JobsController extends Controller
         }
         return view('jobs.detail', compact('job'));
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function applyJob($id) {
+        $job = Job::find($id);
+        return view('jobs.apply', ['job' => $job]);
+    }
 }
