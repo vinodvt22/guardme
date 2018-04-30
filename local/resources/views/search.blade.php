@@ -44,11 +44,11 @@
 					<li><a href="{{URL::to('/')}}">Home</a></li>
 					<li>Search</li>
 				</ol><!-- breadcrumb -->						
-				<h2 class="title">Search</h2>
+				<h2 class="title">Search Security Personnel</h2>
 			</div>
 
 			<div class="banner-form banner-form-full job-list-form">
-				<form method="POST" action="{{ route('personnelsearch') }}" id="formID">
+				<form method="POST" action="{{ route('post-personnel-search') }}" id="formID">
 					<!-- category-change -->
 					<div class="dropdown category-dropdown">					{!! csrf_field() !!}	
 						<a data-toggle="dropdown" href="#">
@@ -231,9 +231,9 @@
 						
 						$photo_path ='/local/images/userphoto/'.$person->photo;
 						if($person->photo!=""){?>
-       						<a href="#" ><img src="<?php echo $url.$photo_path;?>" class="img-responsive"></a>
+       						<a href="{{ route('person-profile',$person->id) }}" ><img src="<?php echo $url.$photo_path;?>" class="img-responsive"></a>
 						<?php } else { ?>
-						<a href="#" ><img align="center" class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Profile Photo"/></a>
+						<a href="{{ route('person-profile',$person->id) }}" ><img align="center" class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Profile Photo"/></a>
 						<?php } ?>
 							
 
@@ -242,11 +242,15 @@
 				</div>
 					
 				<div class="ad-info">
-					<span><a href="#" class="title"><?php echo $person->name; ?></a> </span>
+					<span><a href="{{ route('person-profile',$person->id) }}" class="title">@if($person->firstname!='')
+					    				{{$person->firstname.' '.$person->lastname}}
+					    			@else
+					    				{{$person->name}}
+					    			@endif</a> </span>
 					<div class="ad-meta">
 						<ul>
-							<li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($person->person_address){{$person->person_address->citytown}} @endif </a></li>
-							<li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>
+							<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($person->person_address){{$person->person_address->citytown}} @endif </a></li>
+							<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
 								<?php //echo $stime; ?> - <?php /*echo $etime; */?>
 							</a></li>
 							<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
@@ -263,7 +267,7 @@
 
 	
 	
-	<div class="col-md-12 noservice" align="center">No services found!</div>
+	<div class="col-md-12 noservice" align="center">No personnels found!</div>
 	
 	<?php } ?>
 		
