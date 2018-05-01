@@ -16,7 +16,7 @@ Route::group(['prefix' => 'account','namespace' => 'Api\Auth'], function(){
     Route::put('profile','AuthController@updateProfile')->middleware('auth:api');
 });
 
-Route::group(['prefix' => '/support/tickets', 'middleware' => 'auth:api'], function() {
+Route::group(['prefix' => '/support/tickets','namespace' => 'Api', 'middleware' => 'auth:api'], function() {
     Route::get('/', 'TicketController@index');
     Route::post('/', 'TicketController@store');
     Route::get('/{id}', 'TicketController@show')->where('id', '[0-9]+');
