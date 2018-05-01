@@ -24,6 +24,7 @@
     <div class="headerbg">
         <div class="col-md-12" align="center"><h1>Submit Your Application</h1></div>
     </div>
+    <div class="clearfix"></div>
     <div class="container" >
         <div style="margin-top: 20px;"></div>
         @if ($errors->any())
@@ -45,9 +46,13 @@
                 {{ session()->get('error') }}
             </div>
         @endif
+        <div class="alert alert-danger hide" role="alert">
 
+        </div>
+        <div class="alert alert-success hide" role="alert">
+
+        </div>
         @include('shared.message')
-
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -65,7 +70,7 @@
             <form action="{{ route('api.apply.job', ['id' => $job->id ]) }}" id="apply_on_job" method="post">
                 <div class="form-group">
                     <label for="">Application Description</label>
-                    <textarea class="form-control" name="application_description" rows="10"></textarea>
+                    <textarea class="form-control application_description" name="application_description" rows="10"></textarea>
                     <span class="error-span text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -87,16 +92,34 @@
 <script>
     $(document).ready(function(){
         $("form#apply_on_job").on("submit", function(e){
+            formErrors = new Errors();
             e.preventDefault();
             $.ajax({
                url: $(this).attr('action'),
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(data) {
-                    console.log(data);
+                    $('.alert-success').text(data[0]);
+                    $('.alert-success').removeClass('hide');
+                    $("html, body").animate({ scrollTop: $('.alert') }, 1000);
                 },
                 error: function(data) {
-                    console.log('errors');
+                    var StatusCode = data.status;
+                    var errors = data.responseJSON;
+                    if (StatusCode == 422) {
+                        formErrors.record(errors);
+                        formErrors.load();
+                    } else {
+                        formErrors.record(errors);
+                        formErrors.load();
+                        var errorText = '';
+                        if (typeof data.responseJSON[0] != 'undefined') {
+                            $('.alert-danger').text(data.responseJSON[0]);
+                            $('.alert-danger').removeClass('hide');
+                        }
+                        $("html, body").animate({ scrollTop: $('.alert') }, 1000);
+                    }
+
                 }
             });
         });
