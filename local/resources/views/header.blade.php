@@ -75,7 +75,7 @@ if(isset(Auth::user()->verification)){
             ?>
 			<!-- Added by Ninja 20180331 start here-->
 				<li class="@if(Route::current()->uri()=='/') {{ 'active' }} @endif"><a href="<?php echo $url;?>/">Home</a></li>
-                <li class="@if(Route::current()->uri()=='addcompany') {{ 'active' }} @endif"><a href="<?php if($shcount > 0){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>">Dashboard</a></li>
+                <li class="@if(Route::current()->uri()=='addcompany') {{ 'active' }} @endif"><a href="<?php if($shcount == 0 && Auth::user()->admin == 0){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>">Dashboard</a></li>
 				<li><a href="<?php echo $url;?>/search">Security Personnel</a></li>
 				<li><a href="{{ route('find.jobs') }}">Find Jobs</a></li>
 				<li><a href="<?php echo $url;?>/how-it-works">How It Works</a></li>
