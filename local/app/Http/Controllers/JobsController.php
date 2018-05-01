@@ -2,6 +2,7 @@
 namespace Responsive\Http\Controllers;
 use Illuminate\Http\Request;
 use Responsive\Businesscategory;
+use Responsive\JobApplication;
 use Responsive\SecurityCategory;
 use Responsive\Job;
 use Responsive\Transaction;
@@ -69,5 +70,37 @@ class JobsController extends Controller
     public function applyJob($id) {
         $job = Job::find($id);
         return view('jobs.apply', ['job' => $job]);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function myJobApplications($id) {
+        $job = Job::find($id);
+        $user_id = auth()->user()->id;
+        if ($user_id != $job->created_by) {
+            return abort(404);
+        }
+        $jobApplications = new JobApplication();
+        $applications = $jobApplications->getJobApplications($id);
+        return view('jobs.applications', ['applications' => $applications]);
+    }
+
+    /**
+     * @param $application_id
+     * @return mixed
+     */
+    public function viewApplication($application_id) {
+        $ja = new JobApplication();
+        $application = $ja->getApplicationDetails($application_id);
+        return view('jobs.application-detail', ['application' => $application]);
+    }
+    public function myProposals() {
+        $ja = new JobApplication();
+        $proposals = $ja->getMyProposals();
+
+        return view('jobs.proposals', ['proposals' => $proposals]);
+        
     }
 }

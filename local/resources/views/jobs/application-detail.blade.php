@@ -22,7 +22,7 @@
 <div class="video">
     <div class="clearfix"></div>
     <div class="headerbg">
-        <div class="col-md-12" align="center"><h1>Submit Your Application</h1></div>
+        <div class="col-md-12" align="center"><h1>Application Details</h1></div>
     </div>
     <div class="clearfix"></div>
     <div class="container" >
@@ -54,30 +54,30 @@
         </div>
         @include('shared.message')
         <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <h2>Job Details</h2>
-                    <h3>Job Title</h3>
-                    <h4>{{ $job->title }}</h4>
-                </div>
-                <div class="row">
-                    <h3>Description</h3>
-                    <p>{{ $job->description }}</p>
-                </div>
-            </div>
+            @if (!$application->is_hired)
+                <button class="btn btn-info pull-right mark-as-hired">Award Job</button>
+            @endif
         </div>
         <div class="row">
-            <form action="{{ route('api.apply.job', ['id' => $job->id ]) }}" id="apply_on_job" method="post">
-                <div class="form-group">
-                    <label for="">Application Description</label>
-                    <textarea class="form-control application_description" name="application_description" rows="10"></textarea>
-                    <span class="error-span text-danger"></span>
+            <div class="col-md-12">
+                <div class="row">
+                    <h2>Application Details</h2>
+                    <h3>Job Title</h3>
+                    <h4>{{ $application->job_title }}</h4>
                 </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-info">
+                <div class="row">
+                    <h3>Job Description</h3>
+                    <p>{{ $application->job_description }}</p>
                 </div>
-
-            </form>
+                <div class="row">
+                    <h3>Applied By</h3>
+                    <p>{{ $application->user_name }}</p>
+                </div>
+                <div class="row">
+                    <h3>Application Description</h3>
+                    <p>{{ $application->description }}</p>
+                </div>
+            </div>
         </div>
         <div class="height30"></div>
         <div class="row">
@@ -91,37 +91,21 @@
 @include('footer')
 <script>
     $(document).ready(function(){
-        $("form#apply_on_job").on("submit", function(e){
-            formErrors = new Errors();
-            e.preventDefault();
+        $(".mark-as-hired").on("click", function(){
+            var route = "{{ route('api.mark.hired', ['id' => $application->id]) }}";
             $.ajax({
-               url: $(this).attr('action'),
+                url: route,
                 type: 'POST',
-                data: $(this).serialize(),
                 success: function(data) {
+                    $('.mark-as-hired').fadeOut('slow');
                     $('.alert-success').text(data[0]);
                     $('.alert-success').removeClass('hide');
-                    $("html, body").animate({ scrollTop: $('.alert') }, 1000);
                 },
                 error: function(data) {
-                    var statusCode = data.status;
-                    var errors = data.responseJSON;
-                    if (statusCode == 422) {
-                        formErrors.record(errors);
-                        formErrors.load();
-                    } else {
-                        formErrors.record(errors);
-                        formErrors.load();
-                        var errorText = '';
-                        if (typeof data.responseJSON[0] != 'undefined') {
-                            $('.alert-danger').text(data.responseJSON[0]);
-                            $('.alert-danger').removeClass('hide');
-                        }
-                        $("html, body").animate({ scrollTop: $('.alert') }, 1000);
-                    }
-
+                    $('.alert-danger').text(data.responseJSON[0]);
+                    $('.alert-danger').removeClass('hide');
                 }
-            });
+            })
         });
     });
 </script>
