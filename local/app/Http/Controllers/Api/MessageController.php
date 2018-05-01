@@ -4,9 +4,10 @@ namespace Responsive\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Modules\Tickets\Traits\MessageTrait;
-use Modules\Tickets\Repositories\TicketRepository;
-use Modules\Tickets\Repositories\TicketMessageRepository;
+use Responsive\Http\Traits\MessageTrait;
+use Responsive\Http\Repositories\TicketRepository;
+use Responsive\Http\Repositories\TicketMessageRepository;
+use Responsive\Http\Repositories\TicketFileMessageRepository;
 
 class MessageController extends Controller
 {
