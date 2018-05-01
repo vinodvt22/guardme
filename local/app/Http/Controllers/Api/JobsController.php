@@ -174,18 +174,34 @@ class JobsController extends Controller
         $return_status = 500;
         $return_data = ['Failed to save data'];
         $posted_data = $request->all();
-        // TODO Apply some checks eg check if user has already applied to the job or if he is already hired on the job or if he is trying to apply on his own created job
+        // apply checks
         $user_id = auth()->user()->id;
         $job_application = new JobApplication();
-        $job_application->application_description = $posted_data['application_description'];
-        $job_application->job_id = $id;
-        $job_application->applied_by = $user_id;
-        $is_saved = $job_application->save();
+        $is_applied = $job_application->is_applied($id);
+        $is_hired = $job_application->is_hired($id);
+        $job = Job::find($id);
+        if ($is_applied) {
+            $return_status = 500;
+            $return_data = ['You have already applied on this job'];
+        } else if ($is_hired) {
+            $return_status = 500;
+            $return_data = ['You have already been hired on this job'];
+        } else if ($job->created_by == $user_id) {
+            $return_status = 500;
+            $return_data = ['You can not apply on your own job'];
+        } else {
+            $job_application = new JobApplication();
+            $job_application->application_description = $posted_data['application_description'];
+            $job_application->job_id = $id;
+            $job_application->applied_by = $user_id;
+            $is_saved = $job_application->save();
 
-        if ($is_saved) {
-            $return_status = 200;
-            $return_data = ['Application has been submitted successfully'];
+            if ($is_saved) {
+                $return_status = 200;
+                $return_data = ['Application has been submitted successfully'];
+            }
         }
+
         return response()
             ->json($return_data, $return_status);
     }
