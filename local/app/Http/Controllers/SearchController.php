@@ -5,7 +5,7 @@ namespace Responsive\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
-
+use Responsive\User;
 class SearchController extends Controller
 {
     /**
@@ -24,7 +24,6 @@ class SearchController extends Controller
 	public function sangvish_view()
 
 	{
-		
 		$viewservices= DB::table('subservices')->orderBy('subname','asc')->get();
       
 		$shopview=DB::table('shop')
@@ -37,7 +36,74 @@ class SearchController extends Controller
 		$data = array('viewservices' => $viewservices,'shopview' => $shopview);
 		return view('search')->with($data);
 	}
+
+function getpersonnelsearch()
+	{
+		$sec_personnels = User::where('admin','2')->with('person_address')->paginate(10);
+		
+		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
+		$locs= DB::table('address')->get();
+//dd($sec_personnels);
+		return view('search',compact('cats','locs','sec_personnels'));
+	}
 	
+	function postpersonnelsearch(Request $request)
+	{
+		$cat = $request->cat_id;
+		$loc = $request->loc_id;
+		$personnel = $request->sec_personnel;
+
+
+		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
+
+		$locs= DB::table('address')->get();
+
+		if($cat !='' || $loc !='' || $personnel !='')
+		{
+			$persons = User::where('admin','2');
+			if($personnel !='')
+			{
+				$persons->where('name', 'like', "$personnel%");
+				
+			}
+
+			if($cat !='')
+			{
+				$persons->where('work_category', "$cat");
+				
+			}
+
+			if($loc !='')
+			{
+				$persons->with('person_address')->whereHas('person_address',function($query) use ($loc){
+					//dd($query);
+					$query->where('id',$loc);
+
+				});
+
+				
+			}
+			$sec_personnels = $persons->paginate(10);
+		}
+		else{
+
+			$sec_personnels = User::where('admin','2')->paginate(10);
+
+		}
+		//dd($sec_personnels);
+		$request->flash();
+		return view('search',compact('sec_personnels','cats','locs'));
+	}
+
+	function personnelprofile($id)
+	{
+
+		$person = User::with(['person_address','sec_work_category'])->find($id);
+		//dd($person->work_category);
+
+		return view('profile',compact('person'));
+
+	}
 	
 	public function sangvish_homeindex($id)
 	{

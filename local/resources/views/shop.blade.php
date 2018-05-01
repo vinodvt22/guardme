@@ -332,13 +332,20 @@ h4.page-title {
                                     </span>
                                 @endif
                                 <!-- Add to your existing form -->
-                                @if(count($address) >0))
+                                @if(count($address) >0)
                                 <input id="line1" name="line1" class="trackprogress form-control text-input validate[required]" type="text" placeholder="Address line1" value="{{$address[0]->line1}}">
                                 <input id="line2" name="line2" class="trackprogress form-control text-input" type="text" placeholder="Address line2" value="{{$address[0]->line2}}">
                                 <input id="line3" name="line3" class="trackprogress form-control text-input" type="text" placeholder="Address line3" value="{{$address[0]->line3}}">  
                                 <input id="town" name="town" class="trackprogress form-control text-input validate[required]" type="text" placeholder="Town" value="{{$address[0]->citytown}}">             
                                 <input id="country" name="country" class="trackprogress form-control text-input  validate[required]" type="text" placeholder="Country" value="{{$address[0]->country}}">
                                 <input id="postcode" name="postcode" class="trackprogress form-control text-input  validate[required]" type="text" placeholder="Postalcode" value="{{$address[0]->postcode}}">
+                                @else
+                                <input id="line1" name="line1" class="trackprogress form-control text-input validate[required]" type="text" placeholder="Address line1" value="">
+                                <input id="line2" name="line2" class="trackprogress form-control text-input" type="text" placeholder="Address line2" value="">
+                                <input id="line3" name="line3" class="trackprogress form-control text-input" type="text" placeholder="Address line3" value="">  
+                                <input id="town" name="town" class="trackprogress form-control text-input validate[required]" type="text" placeholder="Town" value="">             
+                                <input id="country" name="country" class="trackprogress form-control text-input  validate[required]" type="text" placeholder="Country" value="">
+                                <input id="postcode" name="postcode" class="trackprogress form-control text-input  validate[required]" type="text" placeholder="Postalcode" value="">                                
                                 @endif
                             </div>
                         </div>                    
@@ -365,7 +372,7 @@ h4.page-title {
 												 Phone Number <template v-if="action === 'confirm'">(<a href="#" @click.prevent="change">change</a>)</template>
 											 </label>
 											 <div class="col-md-6" >
-												 <input class="form-control" type="text" v-model="phone"
+												 <input class="form-control" type="text" v-model="phone" id='phone' name='phone' value="{{old('phone', $editprofile[0]->phone)}}"
 														:disabled="action === 'unbind' || (action === 'confirm' && user.phone_verified)" />
 											 </div>
 										 </div>
@@ -627,11 +634,13 @@ h4.page-title {
                         <input type="hidden" name="usertype" value="<?php echo $editprofile[0]->admin;?>">                
                         <input type="hidden" name="savepassword" value="<?php echo $editprofile[0]->password;?>">						
                         <input type="hidden" name="id" value="<?php echo $editprofile[0]->id; ?>">
-                        @if(count($address) >0))
-
+                        @if(count($address) >0)
                         <input type="hidden" id="addresslat" name="addresslat" value="{{$address[0]->latitude}}">  
                         <input type="hidden" id="addresslong" name="addresslong" value="{{$address[0]->longitude}}">
-                    @endif
+                        @else
+                        <input type="hidden" id="addresslat" name="addresslat" value="">  
+                        <input type="hidden" id="addresslong" name="addresslong" value="">                        
+                        @endif
                     </form>
                 </div>
             </div>

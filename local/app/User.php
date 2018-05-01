@@ -217,6 +217,14 @@ class User extends Authenticatable
         return $this->hasOne(Address::class, 'id', 'address_id');
     }
 
+    public function person_address()
+    {
+        return $this->hasOne(Address::class);
+    }
+    public function sec_work_category()
+    {
+        return $this->belongsTo(SecurityCategory::class,'work_category');
+    }
     public function nationality()
     {
         return $this->belongsTo(Country::class, 'nation_id');

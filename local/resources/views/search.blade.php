@@ -12,7 +12,21 @@
 .noborder .label { color:#000; font-size:16px;}
 </style>
 
+<script >
+	
+	function set_loc(id,val)
+	{
+		$('#loc_id').val(id);
+		$('#loc_val').val(val);
+	}
+	function set_cat(id,val)
+	{
+		$('#cat_id').val(id);
+		$('#cat_val').val(val);
+	}
 
+	
+</script>
 
 </head>
 <body>
@@ -30,34 +44,49 @@
 					<li><a href="{{URL::to('/')}}">Home</a></li>
 					<li>Search</li>
 				</ol><!-- breadcrumb -->						
-				<h2 class="title">Search</h2>
+				<h2 class="title">Search Security Personnel</h2>
 			</div>
 
 			<div class="banner-form banner-form-full job-list-form">
-				<form method="POST" action="{{ route('shopsearch') }}" id="formID">
+				<form method="POST" action="{{ route('post-personnel-search') }}" id="formID">
 					<!-- category-change -->
 					<div class="dropdown category-dropdown">					{!! csrf_field() !!}	
-						<a data-toggle="dropdown" href="#"><span class="change-text">Category</span> <i class="fa fa-angle-down"></i></a>
-						<ul class="dropdown-menu category-change">
-							<li><a href="#">Customer Service</a></li>
-							<li><a href="#">Software Engineer</a></li>
-							<li><a href="#">Program Development</a></li>
-							<li><a href="#">Project Manager</a></li>
-							<li><a href="#">Graphics Designer</a></li>
-						</ul>								
+						<a data-toggle="dropdown" href="#">
+						<span class="change-text">
+							@if(old('cat_val')!=NULL)
+								{{old('cat_val')}}
+							@else
+								{{'Category'}}
+							@endif
+						</span> <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu category-change cat">
+							@foreach($cats as $cat)
+								<li><a href="#" onclick="set_cat({{$cat->id}},'{{$cat->name}}')" >{{$cat->name}}</a></li>
+							@endforeach
+						</ul>	
+						<input type="hidden" name="cat_id" value="{{old('cat_id')}}" id="cat_id">			
+						<input type="hidden" name="cat_val" value="{{old('cat_val')}}" id="cat_val">				
 					</div><!-- category-change -->
 					
 					<!-- language-dropdown -->
 					<div class="dropdown category-dropdown language-dropdown">
-						<a data-toggle="dropdown" href="#"><span class="change-text">Location</span> <i class="fa fa-angle-down"></i></a>
-						<ul class="dropdown-menu category-change language-change">
-							<li><a href="#">Location 1</a></li>
-							<li><a href="#">Location 2</a></li>
-							<li><a href="#">Location 3</a></li>
-						</ul>								
+						<a data-toggle="dropdown" href="#"><span class="change-text" >
+						@if(old('loc_val')!=NULL)
+								{{old('loc_val')}}
+							@else
+								{{'Location'}}
+							@endif
+						</span> <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu category-change language-change loc">
+							@foreach($locs as $loc)
+								<li><a href="#" onclick="set_loc({{$loc->id}},'{{$loc->citytown}}')">{{$loc->citytown}}</a></li>
+							@endforeach
+						</ul>	
+						<input type="hidden" name="loc_id" value="{{old('loc_id')}}" id="loc_id">	
+						<input type="hidden" name="loc_val" value="{{old('loc_val')}}" id="loc_val">						
 					</div><!-- language-dropdown -->
 				
-					<input type="text" class="form-control" placeholder="Security Personnel">
+					<input type="text" class="form-control" placeholder="Security Personnel" name="sec_personnel" value="{{old('sec_personnel')}}">
 					<button type="submit" class="btn btn-primary" value="Search">Search</button>
 				</form>
 			</div>
@@ -174,7 +203,7 @@
 					<div class="col-sm-8 col-md-7">				
 						<div class="section job-list-item">
 							<div class="featured-top">
-								<h4>Showing 1-25 of 65,712 ads</h4>
+								
 								<div class="dropdown pull-right">
 									<div class="dropdown category-dropdown">
 										<h5>Sort by:</h5>						
@@ -187,56 +216,43 @@
 								</div>							
 							</div><!-- featured-top -->	
 
-<?php if(!empty($search_text)){?>
+
 	
 	
-	<?php if(!empty($count)){?>
+	<?php if($sec_personnels->count()>0){?>
 	
-			<?php foreach($subsearches as $shop){ ?>
+			<?php foreach($sec_personnels as $person){ ?>
 				
 		<div class="job-ad-item">
 			<div class="item-info">
 				<div class="item-image-box">
 					<div class="item-image">
 						<?php 
-						$shopphoto="/shop/";
-						$npaths ='/local/images'.$shopphoto.$shop->profile_photo;
-						if($shop->profile_photo!=""){?>
-       						<a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" ><img src="<?php echo $url.$npaths;?>" class="img-responsive"></a>
+						
+						$photo_path ='/local/images/userphoto/'.$person->photo;
+						if($person->photo!=""){?>
+       						<a href="{{ route('person-profile',$person->id) }}" ><img src="<?php echo $url.$photo_path;?>" class="img-responsive"></a>
 						<?php } else { ?>
-						<a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" ><img align="center" class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Profile Photo"/></a>
+						<a href="{{ route('person-profile',$person->id) }}" ><img align="center" class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Profile Photo"/></a>
 						<?php } ?>
 							
 
 						
 					</div><!-- item-image -->
 				</div>
-					<?php 				
-						if($shop->start_time>12)
-						{
-							$start=$shop->start_time-12;
-							$stime=$start."PM";
-						}
-						else
-						{
-							$stime=$shop->start_time."AM";
-						}
-						if($shop->end_time>12)
-						{
-							$end=$shop->end_time-12;
-							$etime=$end."PM";
-						}
-						else
-						{
-							$etime=$shop->end_time."AM";
-						}
-					?>
+					
 				<div class="ad-info">
-					<span><a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" class="title"><?php echo $shop->shop_name; ?></a> </span>
+					<span><a href="{{ route('person-profile',$person->id) }}" class="title">@if($person->firstname!='')
+					    				{{$person->firstname.' '.$person->lastname}}
+					    			@else
+					    				{{$person->name}}
+					    			@endif</a> </span>
 					<div class="ad-meta">
 						<ul>
-							<li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo $shop->city; ?> </a></li>
-							<li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i><?php echo $stime; ?> - <?php echo $etime; ?></a></li>
+							<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($person->person_address){{$person->person_address->citytown}} @endif </a></li>
+							<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
+								<?php //echo $stime; ?> - <?php /*echo $etime; */?>
+							</a></li>
 							<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
 						</ul>
 					</div><!-- ad-meta -->									
@@ -246,135 +262,20 @@
 	
 			<?php } ?>
 	
-		<?php } ?>
+		<?php } 
+		else{?>
 
-	<?php if(empty($count)){?>
 	
-	<div class="col-md-12 noservice" align="center">No services found!</div>
+	
+	<div class="col-md-12 noservice" align="center">No personnels found!</div>
 	
 	<?php } ?>
-		<?php } if(empty($search_text) && empty($sub_value)) { ?>
-
-			<?php foreach($shopview as $shop){?>
-
-					<div class="job-ad-item">
-						<div class="item-info">
-							<div class="item-image-box">
-								<div class="item-image">
-								<?php 
-									$shopphoto="/shop/";
-									$npaths ='/local/images'.$shopphoto.$shop->profile_photo;
-									if($shop->profile_photo!=""){?>
-			       						<a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" ><img src="<?php echo $url.$npaths;?>" class="img-responsive"></a>
-									<?php } else { ?>
-									<a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" ><img align="center" class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Profile Photo"/></a>
-									<?php } ?>
-							
-								</div><!-- item-image -->
-							</div>
-								<?php 				
-									if($shop->start_time>12)
-									{
-										$start=$shop->start_time-12;
-										$stime=$start."PM";
-									}
-									else
-									{
-										$stime=$shop->start_time."AM";
-									}
-									if($shop->end_time>12)
-									{
-										$end=$shop->end_time-12;
-										$etime=$end."PM";
-									}
-									else
-									{
-										$etime=$shop->end_time."AM";
-									}
-								?>
-							<div class="ad-info">
-								<span><a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" class="title"><?php echo $shop->shop_name; ?></a> </span>
-								<div class="ad-meta">
-									<ul>
-										<li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo $shop->city; ?> </a></li>
-										<li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i><?php echo $stime; ?> - <?php echo $etime; ?></a></li>
-										<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
-									</ul>
-								</div><!-- ad-meta -->									
-							</div><!-- ad-info -->
-						</div><!-- item-info -->
-					</div>
-
-				<?php } ?>
-			<?php } ?>
-			<?php if(!empty($sub_value)){?>
-				<?php foreach($subsearches as $shop){ ?>
-						<div class="job-ad-item">
-							<div class="item-info">
-								<div class="item-image-box">
-									<div class="item-image">
-										<?php 
-											$shopphoto="/shop/";
-											$npaths ='/local/images'.$shopphoto.$shop->profile_photo;
-											if($shop->profile_photo!=""){?>
-					       						<a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" ><img src="<?php echo $url.$npaths;?>" class="img-responsive"></a>
-											<?php } else { ?>
-											<a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" ><img align="center" class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Profile Photo"/></a>
-											<?php } ?>
-							
-									</div><!-- item-image -->
-								</div>
-									<?php 				
-										if($shop->start_time>12)
-										{
-											$start=$shop->start_time-12;
-											$stime=$start."PM";
-										}
-										else
-										{
-											$stime=$shop->start_time."AM";
-										}
-										if($shop->end_time>12)
-										{
-											$end=$shop->end_time-12;
-											$etime=$end."PM";
-										}
-										else
-										{
-											$etime=$shop->end_time."AM";
-										}
-									?>
-								<div class="ad-info">
-									<span><a href="<?php echo $url; ?>/vendor/<?php echo $shop->name;?>" class="title"><?php echo $shop->shop_name; ?></a> </span>
-									<div class="ad-meta">
-										<ul>
-											<li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo $shop->city; ?> </a></li>
-											<li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i><?php echo $stime; ?> - <?php echo $etime; ?></a></li>
-											<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
-										</ul>
-									</div><!-- ad-meta -->									
-								</div><!-- ad-info -->
-							</div><!-- item-info -->
-						</div>
-
-					<?php } ?>
-					<?php } ?>	
+		
+			
 
 					<!-- pagination  -->
 							<div class="text-center">
-								<ul class="pagination ">
-									<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-									<li><a href="#">1</a></li>
-									<li class="active"><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a>...</a></li>
-									<li><a href="#">10</a></li>
-									<li><a href="#">20</a></li>
-									<li><a href="#">30</a></li>
-									<li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-								</ul>
+								{{$sec_personnels->links()}}
 							</div><!-- pagination  -->			
 						</div>
 					</div>

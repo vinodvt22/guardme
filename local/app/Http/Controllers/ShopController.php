@@ -569,16 +569,16 @@ class ShopController extends Controller
 
 
 
-
+/**
        Mail::send('shopuseremail', ['shop_name' => '', 'address' => '', 'city' => '', 'pin_code' => '', 'country' => '',
 	   'state' => '', 'shop_phone_no' => $shop_phone_no, 'description' => $shop_desc, 'booking_opening_days' => '', 'business_categoryid'=>$business_categoryid,
 	   'booking_per_hour' => '', 'stime' => '', 'etime' => '', 'site_logo' => $site_logo, 'site_name' => $site_name ,'company_email'=> $company_email], function ($message)
         {
             $message->subject('Shop Created Successfully');
 
-           /* $message->from(Auth::user()->email, Auth::user()->name);
+            $message->from(Auth::user()->email, Auth::user()->name);
 
-            $message->to(Input::get('admin_email_id')); */
+            $message->to(Input::get('admin_email_id')); 
 
 
 			$message->from(Input::get('admin_email_id'), 'Admin');
@@ -604,7 +604,7 @@ class ShopController extends Controller
 
         });
 
-
+**/
 
 
 

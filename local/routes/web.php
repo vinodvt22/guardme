@@ -150,14 +150,25 @@ Route::get('/gallery/{id}','GalleryController@sangvish_editdata');
 Route::get('/gallery/{did}/delete','GalleryController@sangvish_destroy');
 
 
-Route::get('/search','SearchController@sangvish_view');
+//Route::get('/search','SearchController@sangvish_view');
+
+
 
 Route::get('/search/{id}','SearchController@sangvish_homeindex');
 
-Route::post('/search', ['as'=>'search','uses'=>'SearchController@sangvish_index']);
+//Route::post('/search', ['as'=>'search','uses'=>'SearchController@sangvish_index']);
 Route::get('/shopsearch','SearchController@sangvish_view');
 Route::post('/shopsearch', ['as'=>'shopsearch','uses'=>'SearchController@sangvish_search']);
 
+/****************** new search functionality(added by Adnan)****/
+Route::get('/search','SearchController@getpersonnelsearch');
+
+Route::post('/search', ['as'=>'post-personnel-search','uses'=>'SearchController@postpersonnelsearch']);
+
+
+Route::get('/personnel-profile/{id}',['as'=>'person-profile','uses'=>'SearchController@personnelprofile']);
+
+/************************* End Adnan code**************/
 
 
 Route::get('/subservices','SubservicesController@sangvish_index');
@@ -317,11 +328,13 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 
 	Route::get('/job-confirmation', 'JobsController@confirmation')->name('job.confirmation');
 	Route::get('/my', 'JobsController@myJobs')->name('my.jobs');
+	Route::get('/apply/{id}', 'JobsController@applyJob')->name('apply.job');
 });
 
 // Guest route for find job
 
 Route::get('/jobs/find', 'JobsController@findJobs')->name('find.jobs');
+Route::get('/job/{id}', 'JobsController@viewJob')->name('view.job');
 
 Route::get('/phone', 'VerificationController@phone')->middleware('auth');
 

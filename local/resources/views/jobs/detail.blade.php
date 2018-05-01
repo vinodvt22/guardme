@@ -49,32 +49,19 @@
         @include('shared.message')
 
         <div class="row">
+            <div class="col-md-2 pull-right">
+                <a href="{{ route('apply.job', ['id' => $job->id]) }}"><button class="btn btn-info">Apply Job</button></a>
+            </div>
             <div class="col-md-12">
-                <div>
-
-                    <!-- Tab panes -->
-                    <div class="height30"></div>
-                    <table class="table table-bordered table-responsive">
-                        <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($jobs as $job)
-                            <tr>
-                                <td>{{ $job->title }}</td>
-                                <td>{{ $job->description }}</td>
-                                <td><a href="{{ route('view.job', ['id' => $job->id]) }}"><button class="btn btn-success">View</button></a></td>
-                            </tr>
-
-                        @endforeach
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <h2>Job Details</h2>
+                    <h3>Job Title</h3>
+                    <h4>{{ $job->title }}</h4>
                 </div>
-
+                <div class="row">
+                    <h3>Description</h3>
+                    <p>{{ $job->description }}</p>
+                </div>
             </div>
         </div>
 

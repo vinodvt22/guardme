@@ -3,6 +3,7 @@ namespace Responsive\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
+use Responsive\JobApplication;
 use Responsive\Transaction;
 class JobsController extends Controller
 {
@@ -159,5 +160,33 @@ class JobsController extends Controller
         $my_jobs = Job::getMyJobs();
         return response()
             ->json($my_jobs);
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
+    public function applyJob($id, Request $request) {
+        $this->validate($request, [
+            'application_description' => 'required'
+        ]);
+        $return_status = 500;
+        $return_data = ['Failed to save data'];
+        $posted_data = $request->all();
+        // TODO Apply some checks eg check if user has already applied to the job or if he is already hired on the job or if he is trying to apply on his own created job
+        $user_id = auth()->user()->id;
+        $job_application = new JobApplication();
+        $job_application->application_description = $posted_data['application_description'];
+        $job_application->job_id = $id;
+        $job_application->applied_by = $user_id;
+        $is_saved = $job_application->save();
+
+        if ($is_saved) {
+            $return_status = 200;
+            $return_data = ['Application has been submitted successfully'];
+        }
+        return response()
+            ->json($return_data, $return_status);
     }
 }
