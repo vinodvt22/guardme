@@ -22,7 +22,7 @@
 <div class="video">
     <div class="clearfix"></div>
     <div class="headerbg">
-        <div class="col-md-12" align="center"><h1>My Jobs</h1></div>
+        <div class="col-md-12" align="center"><h1>Job Applications</h1></div>
     </div>
     <div class="container" >
         <div style="margin-top: 20px;"></div>
@@ -57,18 +57,21 @@
                     <table class="table table-bordered table-responsive">
                         <thead>
                         <tr>
-                            <th>Title</th>
+                            <th>Applicant Name</th>
                             <th>Description</th>
+                            <th>Is Hired</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($my_jobs as $job)
+                        @foreach($applications as $application)
                             <tr>
-                                <td>{{ $job->title }}</td>
-                                <td>{{ $job->description }}</td>
-                                <td><a href="{{ route('my.job.applications', ['id' => $job->id]) }}"><button class="btn btn-success">View Applications</button></a></td>
+                                <td>{{ $application->user_name }}</td>
+                                <td>{{ $application->description }}</td>
+                                <td>{{ ($application->is_hired) ? 'yes' : 'no' }}</td>
+                                <td><a href="{{ route('view.application', ['id' => $application->id]) }}"><button class="btn btn-success">View</button></a></td>
                             </tr>
+
                         @endforeach
                         </tbody>
                     </table>

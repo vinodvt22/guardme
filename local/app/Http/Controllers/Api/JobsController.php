@@ -205,4 +205,28 @@ class JobsController extends Controller
         return response()
             ->json($return_data, $return_status);
     }
+
+    public function markHired($application_id) {
+
+        // check if user is authorized to mark this application as hired.
+        $job_application = new JobApplication();
+        $is_eligible_to_hire = $job_application->isEligibleToMarkHired($application_id);
+        if ($is_eligible_to_hire) {
+            $ja = JobApplication::find($application_id);
+            $ja->is_hired = 1;
+            if($ja->save()) {
+                $return_data = ['Hired Successfully'];
+                $return_status = 200;
+            } else {
+                $return_data = ['Un know error occureds'];
+                $return_status = 500;
+            }
+        } else {
+            $return_data = ['You are not authorized to hire on this application'];
+            $return_status = 500;
+        }
+
+        return response()
+            ->json($return_data, $return_status);
+    }
 }
