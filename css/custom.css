@@ -111,6 +111,22 @@ a.btn:hover {
     background-image:  url(../img/jar.jpg);
 }
 
+.ico-30{
+	font-size: 30px;
+    top: 5px;
+    position: relative;
+    margin-left: 10px;
+
+
+}
+.green{
+	color:#00a651;
+
+}
+.red{
+	color:red;
+}
+
 @media screen and (max-width: 1920px) and (min-width: 1200px) {
 	 
     .banner-class {

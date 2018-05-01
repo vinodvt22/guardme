@@ -150,14 +150,25 @@ Route::get('/gallery/{id}','GalleryController@sangvish_editdata');
 Route::get('/gallery/{did}/delete','GalleryController@sangvish_destroy');
 
 
-Route::get('/search','SearchController@sangvish_view');
+//Route::get('/search','SearchController@sangvish_view');
+
+
 
 Route::get('/search/{id}','SearchController@sangvish_homeindex');
 
-Route::post('/search', ['as'=>'search','uses'=>'SearchController@sangvish_index']);
+//Route::post('/search', ['as'=>'search','uses'=>'SearchController@sangvish_index']);
 Route::get('/shopsearch','SearchController@sangvish_view');
 Route::post('/shopsearch', ['as'=>'shopsearch','uses'=>'SearchController@sangvish_search']);
-Route::post('/personnelsearch', ['as'=>'personnelsearch','uses'=>'SearchController@personnelsearch']);
+
+/****************** new search functionality(added by Adnan)****/
+Route::get('/search','SearchController@getpersonnelsearch');
+
+Route::post('/search', ['as'=>'post-personnel-search','uses'=>'SearchController@postpersonnelsearch']);
+
+
+Route::get('/personnel-profile/{id}',['as'=>'person-profile','uses'=>'SearchController@personnelprofile']);
+
+/************************* End Adnan code**************/
 
 
 Route::get('/subservices','SubservicesController@sangvish_index');

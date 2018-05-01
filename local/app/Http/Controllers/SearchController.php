@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Responsive\User;
-use Session;
 class SearchController extends Controller
 {
     /**
@@ -25,11 +24,7 @@ class SearchController extends Controller
 	public function sangvish_view()
 
 	{
-		$sec_personnels = User::where('admin','2')->with('person_address')->paginate(10);
 		$viewservices= DB::table('subservices')->orderBy('subname','asc')->get();
-		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
-
-		$locations= DB::table('address')->get();
       
 		$shopview=DB::table('shop')
 		->leftJoin('users', 'users.email', '=', 'shop.seller_email')
@@ -38,11 +33,21 @@ class SearchController extends Controller
 		->groupBy('shop.id')
 		->get();
 				
-		$data = array('viewservices' => $viewservices,'shopview' => $shopview,'cats'=>$cats, 'locs'=>$locations,'sec_personnels'=>$sec_personnels);
+		$data = array('viewservices' => $viewservices,'shopview' => $shopview);
 		return view('search')->with($data);
 	}
+
+function getpersonnelsearch()
+	{
+		$sec_personnels = User::where('admin','2')->with('person_address')->paginate(10);
+		
+		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
+		$locs= DB::table('address')->get();
+//dd($sec_personnels);
+		return view('search',compact('cats','locs','sec_personnels'));
+	}
 	
-	function personnelsearch(Request $request)
+	function postpersonnelsearch(Request $request)
 	{
 		$cat = $request->cat_id;
 		$loc = $request->loc_id;
@@ -78,25 +83,26 @@ class SearchController extends Controller
 
 				
 			}
-			//dd($persons->get());
-			//$sec_personnels = $persons->with('person_address')->get();
 			$sec_personnels = $persons->paginate(10);
-			//dd($persons);
-			//DB::enableQueryLog();
-			//dd(DB::getQueryLog());
 		}
 		else{
 
 			$sec_personnels = User::where('admin','2')->paginate(10);
 
 		}
-
 		//dd($sec_personnels);
 		$request->flash();
 		return view('search',compact('sec_personnels','cats','locs'));
+	}
 
+	function personnelprofile($id)
+	{
 
-		//dd($request->all());
+		$person = User::with(['person_address','sec_work_category'])->find($id);
+		//dd($person->work_category);
+
+		return view('profile',compact('person'));
+
 	}
 	
 	public function sangvish_homeindex($id)
