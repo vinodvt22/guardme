@@ -356,54 +356,51 @@ h4.page-title {
                             </div>
                         </div>		
                        
-                                <div id='phoneVue'>
-						 <div>
-							 <h4 class="text-center page-title">
-								 <i class="fa fa-phone"></i>
+                        <div id='phoneVue'>
+    						<div>
+    							<h4 class="text-center page-title">
+    								 <i class="fa fa-phone"></i>
+    				 
+    								 <template v-if="action === 'new'"> Phone verification</template>
+    								 <template v-if="action === 'unbind'"> Remove phone number</template>
+    								 <template v-if="action === 'confirm'"> SMS Confirmation</template>
+    							</h4>
+    						</div>
 				 
-								 <template v-if="action === 'new'"> Phone verification</template>
-								 <template v-if="action === 'unbind'"> Remove phone number</template>
-								 <template v-if="action === 'confirm'"> SMS Confirmation</template>
-							 </h4>
-						 </div>
-				 
-										 <div class="form-group phone-input">
-											 <label class="control-label col-md-4 ">
+							<div class="form-group phone-input">
+								<label class="control-label col-md-4 ">
 												 Phone Number <template v-if="action === 'confirm'">(<a href="#" @click.prevent="change">change</a>)</template>
 											 </label>
-											 <div class="col-md-6" >
-												 <input class="form-control" type="text" v-model="phone" id='phone' name='phone' value="{{old('phone', $editprofile[0]->phone)}}"
+								<div class="col-md-6" >
+									<input class="form-control" type="text" v-model="phone" id='phone' name='phone' value="{{old('phone', $editprofile[0]->phone)}}"
 														:disabled="action === 'unbind' || (action === 'confirm' && user.phone_verified)" />
 											 </div>
-										 </div>
+							</div>
 				 
-										 <div v-if="action === 'confirm'"  class="form-group" id="confirmation-code">
-										 <template v-if="action === 'confirm'">
+							<div v-if="action === 'confirm'"  class="form-group" id="confirmation-code">
+								<template v-if="action === 'confirm'">
 											 <label  class="control-label col-md-4">Confirmation code</label>
 											 <div class="col-md-6">
 												 <input class="form-control" type="text" v-model="code" />
 											 </div>
 										 </template>
-										 </div>
-										 <div class="form-group">
-                                         <div class="row">
-                                         <div class="col-md-6 col-md-offset-4 alert alert-info">
+							</div>
+							<div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-4 alert alert-info">
                                         <strong>Info!</strong> Please add your phone number in this format +447654321000
                                     </div>
 
-                                         </div>
-									 <div class=" col-md-6 col-md-offset-4">
+                                </div>
+							     <div class=" col-md-6 col-md-offset-4">
 									 <a href="#" @click.prevent="send" class="btn btn-primary text" >
 										 <template v-if="action === 'confirm'">OK!</template>
 										 <template v-else-if="action === 'unbind'">Remove Phone Number</template>
 										 <template v-else-if="action === 'new'">Send confirmation code</template>
 									 </a>
-                                     </div>
-                                    
-                                         </div>
-                                        
-                                   
-                                         </div>
+                               </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="gender" class="col-md-4 control-label">Gender</label>
                             <div class="col-md-6">

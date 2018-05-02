@@ -37,10 +37,14 @@ Route::get('dateavailable/{val}',array('as'=>'dateavailable','uses'=>'BookingCon
 
 
 Route::get('/logout', 'DashboardController@sangvish_logout');
+Route::get('/delete_account', 'DashboardController@sangvish_delaccount');
 Route::get('/delete-account', 'DashboardController@sangvish_deleteaccount');
 Route::post('/dashboard', ['as'=>'dashboard','uses'=>'DashboardController@sangvish_edituserdata']);
 
 Route::get('/account', 'ShopController@sangvish_viewshop');
+
+Route::get('/verification','ShopController@sangvish_verification');
+Route::get('/account-old', 'ShopController@sangvish_viewshop_old');
 
 Route::get('/addcompany', 'ShopController@sangvish_addshop');
 
