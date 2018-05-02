@@ -44,10 +44,16 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     Route::post('schedule/{id}','JobsController@schedule')->name('api.schedule.job');
     Route::post('broadcast/{id}','JobsController@broadcast')->name('api.broadcast.job');
     Route::post('calculate-job-amount/{id}','JobsController@getJobAmount')->name('api.amount.job');
+
+    // add balance to wallet
+    Route::post('add-money','JobsController@addMoney')->name('api.add.money');
+    // activate job, it will add 3 credit entries i) job fee ii) admin fee iii) vat fee
     Route::post('activate-job/{id}','JobsController@activateJob')->name('api.activate.job');
     Route::post('apply/{id}','JobsController@applyJob')->name('api.apply.job');
     Route::post('mark/hired/{id}','JobsController@markHired')->name('api.mark.hired');
-
+    
+  
+    
     Route::get('my-jobs','JobsController@myJobs')->name('api.my.jobs');
 
 });
