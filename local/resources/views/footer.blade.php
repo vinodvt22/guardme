@@ -219,7 +219,7 @@ $('#postcode_lookup').getAddress({
     input_id : 'address_id',
     input_name : 'address_id',
     input_class :'form-control validate[required]',
-    button_class : 'btn btn-primary',
+    button_class : 'btn',
     dropdown_class:'form-control',
     <!--  Or use your own endpoint - api_endpoint:https://your-web-site.com/getAddress, -->
     output_fields:{

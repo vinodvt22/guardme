@@ -131,8 +131,28 @@ a.btn:hover {
 	max-height: 72px !important;
 }
 
+.addr-line{
+	margin-bottom: 10px;
+}
 
 
+.profile .btn, .buttons .btn {
+    background-color: #00a651;
+    color: #fff;
+    padding: 6px 26px 7px;
+    border: 1px solid #00a651;
+        border-top-color: rgb(0, 166, 81);
+        border-right-color: rgb(0, 166, 81);
+        border-bottom-color: rgb(0, 166, 81);
+        border-left-color: rgb(0, 166, 81);
+    margin: 9px 0 0;
+        margin-top: 9px;
+        margin-bottom: 0px;
+    margin-bottom: 30px;
+}
+.height-10{
+	height: 10px !important;
+}
 @media screen and (max-width: 1920px) and (min-width: 1200px) {
 	 
     .banner-class {
@@ -193,11 +213,15 @@ a.btn:hover {
 	#address_id{
 	width:60%;
 	float: left;
-}
-#getaddress_button{
-	float: right;
-	padding: 8px 40px 8px;
-}
+	}
+	#getaddress_button{
+		float: right;
+		padding: 8px 40px 8px;
+	}
+
+	.radio-box{
+		margin-top:10px;
+	}
 
 }
 @media screen and (max-width: 1920px) and (min-width: 1400px) {

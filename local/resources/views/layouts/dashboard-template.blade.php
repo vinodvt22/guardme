@@ -38,7 +38,7 @@
                         @if($editprofile[0]->photo!="")
                             <img src="<?php echo $url.$path;?>" alt="User Images" class="img-responsive profile-img">
                         @else
-                            <img src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="User Images" class="img-responsive">
+                            <img src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="User Images" class="img-responsive profile-img">
                         @endif
                     </div>
                     <div class="user">
@@ -61,10 +61,10 @@
 
                 <ul class="user-menu">
                     <li  class="@if(Route::current()->uri()=='account') {{'active'}} @endif"><a href="{{URL::to('account')}}">Profile </a></li>
-                    <li><a href="resume.html">Verification</a></li>
+                    <li class="@if(Route::current()->uri()=='verification') {{'active'}} @endif"><a href="{{URL::to('verification')}}">Verification</a></li>
                     <li><a href="edit-resume.html">My Jobs</a></li>
-                    <li><a href="{{URL::to('referral')}}">Loyalty</a></li>
-                    <li><a href="{{URL::to('delete-account')}}" onclick="return confirm('Are you sure you want to delete your account?');">Close account</a></li>
+                    <li class="@if(Route::current()->uri()=='referral') {{'active'}} @endif"><a href="{{URL::to('referral')}}">Loyalty</a></li>
+                    <li><a href="{{URL::to('delete_account')}}" >Close account</a></li>
                 </ul>
             </div>
 

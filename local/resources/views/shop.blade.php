@@ -40,6 +40,20 @@
 
                 <form method="POST" action="{{ route('dashboard') }}" id="formID" enctype="multipart/form-data">
                         {{ csrf_field() }}
+
+                        <input type="hidden" name="profile_page" value="yes">
+
+                         <input type="hidden" name="id" value="<?php echo $editprofile[0]->id; ?>">
+                        <input type="hidden" name="usertype" value="<?php echo $editprofile[0]->admin;?>">                
+                        <input type="hidden" name="savepassword" value="<?php echo $editprofile[0]->password;?>">
+                        @if(count($address) >0)
+                        <input type="hidden" id="addresslat" name="addresslat" value="{{$address[0]->latitude}}">  
+                        <input type="hidden" id="addresslong" name="addresslong" value="{{$address[0]->longitude}}">
+                        @else
+                        <input type="hidden" id="addresslat" name="addresslat" value="">  
+                        <input type="hidden" id="addresslong" name="addresslong" value="">                        
+                        @endif
+
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label>Username</label>
                         <input id="name" type="text" class="trackprogress form-control validate[required] text-input" name="name" value="<?php echo $editprofile[0]->name;?>" autofocus>
@@ -90,14 +104,103 @@
                                 @endif
                                 <!-- Add to your existing form -->
                                 @if(count($address) >0)
-                                <input id="line1" name="line1" class="trackprogress form-control text-input validate[required]" type="text" placeholder="Address line1" value="{{$address[0]->line1}}">
-                                <input id="line2" name="line2" class="trackprogress form-control text-input" type="text" placeholder="Address line2" value="{{$address[0]->line2}}">
-                                <input id="line3" name="line3" class="trackprogress form-control text-input" type="text" placeholder="Address line3" value="{{$address[0]->line3}}">  
-                                <input id="town" name="town" class="trackprogress form-control text-input validate[required]" type="text" placeholder="Town" value="{{$address[0]->citytown}}">             
-                                <input id="country" name="country" class="trackprogress form-control text-input  validate[required]" type="text" placeholder="Country" value="{{$address[0]->country}}">
-                                <input id="postcode" name="postcode" class="trackprogress form-control text-input  validate[required]" type="text" placeholder="Postalcode" value="{{$address[0]->postcode}}">
+                                <input id="line1" name="line1" class="trackprogress form-control text-input validate[required] addr-line" type="text" placeholder="Address line1" value="{{$address[0]->line1}}">
+                                <input id="line2" name="line2" class="trackprogress form-control text-input addr-line" type="text" placeholder="Address line2" value="{{$address[0]->line2}}">
+                                <input id="line3" name="line3" class="trackprogress form-control text-input addr-line" type="text" placeholder="Address line3" value="{{$address[0]->line3}}">  
+                                <input id="town" name="town" class="trackprogress form-control text-input validate[required] addr-line" type="text" placeholder="Town" value="{{$address[0]->citytown}}">             
+                                <input id="country" name="country" class="trackprogress form-control text-input  validate[required] addr-line" type="text" placeholder="Country" value="{{$address[0]->country}}">
+                                <input id="postcode" name="postcode" class="trackprogress form-control text-input  validate[required] addr-line" type="text" placeholder="Postalcode" value="{{$address[0]->postcode}}">
+
+                                @else
+                                <input id="line1" name="line1" class="trackprogress form-control text-input validate[required] addr-line" type="text" placeholder="Address line1" value="">
+                                <input id="line2" name="line2" class="trackprogress form-control text-input addr-line" type="text" placeholder="Address line2" value="">
+                                <input id="line3" name="line3" class="trackprogress form-control text-input addr-line" type="text" placeholder="Address line3" value="">  
+                                <input id="town" name="town" class="trackprogress form-control text-input validate[required] addr-line" type="text" placeholder="Town" value="">             
+                                <input id="country" name="country" class="trackprogress form-control text-input  validate[required] addr-line" type="text" placeholder="Country" value="">
+                                <input id="postcode" name="postcode" class="trackprogress form-control text-input  validate[required] addr-line" type="text" placeholder="Postalcode" value="">                 
                                 @endif
+                        </div>
+                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" >Password</label>
+                            <input id="password" type="password" class="trackprogress form-control"  name="password" value="">
                         </div> 
+                        <div id='phoneVue'>
+                            
+                                <h4 class="text-center page-title">
+                                     <i class="fa fa-phone"></i>
+                     
+                                     <template v-if="action === 'new'"> Phone verification</template>
+                                     <template v-if="action === 'unbind'"> Remove phone number</template>
+                                     <template v-if="action === 'confirm'"> SMS Confirmation</template>
+                                </h4>
+                       
+                 
+                            <div class="form-group phone-input">
+                                <label class="control-label">
+                                                 Phone Number <template v-if="action === 'confirm'">(<a href="#" @click.prevent="change">change</a>)</template>
+                                             </label>
+                                
+                                    <input class="form-control" type="text" v-model="phone" id='phone' name='phone' value="{{old('phone', $editprofile[0]->phone)}}" :disabled="action === 'unbind' || (action === 'confirm' && user.phone_verified)" />
+                            </div>
+                 
+                            <div v-if="action === 'confirm'"  class="form-group" id="confirmation-code">
+                                <template v-if="action === 'confirm'">
+                                             <label  class="control-label col-md-4">Confirmation code</label>
+                                             
+                                                 <input class="form-control" type="text" v-model="code" />
+                                        
+                                         </template>
+                            </div>
+                            <div class="form-group">
+                                
+                                <div class="col-md-6 col-md-offset-2 alert alert-info">
+                                    <strong>Info!</strong> Please add your phone number in this format +447654321000
+                                </div>
+                                <a href="#" @click.prevent="send" class="btn  text pull-right" >
+                                     <template v-if="action === 'confirm'">OK!</template>
+                                     <template v-else-if="action === 'unbind'">Remove Phone Number</template>
+                                     <template v-else-if="action === 'new'">Send confirmation code</template>
+                                 </a>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label for="gender" >Gender</label>
+                           
+                                <select name="gender" class="trackprogress form-control validate[required] text-input">                           
+                                        <option value=""></option>
+                                        <option value="male" <?php if($editprofile[0]->gender=='male'){?> selected="selected" <?php } ?>>Male</option>
+                                        <option value="female" <?php if($editprofile[0]->gender=='female'){?> selected="selected" <?php } ?>>Female</option>
+                                </select>
+                        </div>
+                        <div class="form-group{{ $errors->has('dob') ? ' has-error' : '' }}">
+                            <label for="dob" >DOB</label>
+                               <?php                            
+                                    echo Form::input('date', 'dob', old('dob', $editprofile[0]->dob), ['class' => 'trackprogress validate[required] form-control', 'placeholder' => 'dob']);
+                                ?>
+                                @if ($errors->has('dob'))
+                                    <span class="help-block" style="color:red;">
+                                        <strong>{{ $errors->first('dob') }}</strong>
+                                    </span>
+                                @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="photo" >Avatar</label>
+                            <input type="file" id="photo" name="photo" class="trackprogress form-control {{empty($editprofile[0]->photo)?'validate[required]':''}}" value="{{old('photo', $editprofile[0]->photo)}}">
+                                @if ($errors->has('photo'))
+                                    <span class="help-block" style="color:red;">
+                                        <strong>{{ $errors->first('photo') }}</strong>
+                                    </span>
+                                @endif
+                        </div>
+                        <div class="buttons pull-right">
+                            <?php if(config('global.demosite')=="yes"){?>
+                                    <button type="button" class="btn btndisable">Update</button> <span class="disabletxt">( <?php echo config('global.demotxt');?> )</span>
+                                <?php } else { ?>
+                                    <button type="submit" class="btn">
+                                        Update
+                                    </button>
+                                <?php } ?>
+                        </div>
                 </form>
             </div>
         </div>
