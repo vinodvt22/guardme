@@ -126,6 +126,12 @@ a.btn:hover {
 .red{
 	color:red;
 }
+.profile-img{
+	max-width: 73px !important;
+	max-height: 72px !important;
+}
+
+
 
 @media screen and (max-width: 1920px) and (min-width: 1200px) {
 	 
@@ -179,7 +185,19 @@ a.btn:hover {
 	.justmove{
 		min-height: 295px;
 	}
+	.left-112{
+		position: relative;
+		left: 112px;
+	}
 
+	#address_id{
+	width:60%;
+	float: left;
+}
+#getaddress_button{
+	float: right;
+	padding: 8px 40px 8px;
+}
 
 }
 @media screen and (max-width: 1920px) and (min-width: 1400px) {
@@ -221,6 +239,12 @@ a.btn:hover {
    
     top: 56%;
 }
+
+		#getaddress_button{
+			margin-top: 10px;
+			position: relative;
+			left: 45px;
+		}
 }
 /*************** ipad ************/
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
@@ -230,6 +254,13 @@ a.btn:hover {
 	.bottom-mrgn-10{
 		margin-bottom: 6%;
 	}
+
+	#getaddress_button{
+			margin-top: 10px;
+			position: relative;
+			float: right;
+			margin-bottom: 10px;
+		}
 	}
 @media(max-width: 767px){
 	h1.h-responsive{
