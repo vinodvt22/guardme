@@ -3,7 +3,7 @@
 namespace Responsive\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Responsive\Http\Controllers\Controller;
 use Responsive\Http\Traits\TicketTrait;
 use Responsive\Http\Traits\MessageTrait;
 use Responsive\Http\Repositories\TicketRepository;
