@@ -5,6 +5,9 @@ use Responsive\Businesscategory;
 use Responsive\JobApplication;
 use Responsive\SecurityCategory;
 use Responsive\Job;
+
+use Responsive\User;
+use Auth;
 use Responsive\Transaction;
 class JobsController extends Controller
 {
@@ -36,8 +39,10 @@ class JobsController extends Controller
      * @return mixed
      */
     public function myJobs() {
+        $userid = Auth::user()->id;
+        $editprofile = User::where('id',$userid)->get();
         $my_jobs = Job::getMyJobs();
-        return view('jobs.my', compact('my_jobs'));
+        return view('jobs.my', compact('my_jobs','editprofile'));
     }
 
     /**

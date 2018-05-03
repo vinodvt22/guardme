@@ -57,6 +57,9 @@ Route::get('/addcompany', 'ShopController@sangvish_addshop');
 
 Route::get('/editshop/{id}', 'ShopController@sangvish_editshop');
 
+Route::get('/company', 'ShopController@editcompany');
+Route::post('/updatecompany', ['as'=>'update-company','uses'=>'ShopController@updatecompany']);
+
 Route::post('/editshop', ['as'=>'editshop','uses'=>'ShopController@sangvish_savedata']);
 
 Route::post('/addcompany', ['as'=>'addshop','uses'=>'ShopController@sangvish_savedata']);
