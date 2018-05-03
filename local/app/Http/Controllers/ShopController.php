@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Validator;
 
 use Responsive\Country;
 use Responsive\Address;
-
+use Responsive\User;
+use Responsive\Businesscategory;
+use Responsive\Shop;
 class ShopController extends Controller
 {
     /**
@@ -213,9 +215,32 @@ public function sangvish_viewshop_old()
 
 
 
+    function editcompany()
+    {
+        $userid = Auth::user()->id;
+        $editprofile = User::where('id',$userid)->with(['address','company','company.bcategory'])->get();
 
+        $b_cats = Businesscategory::all();
+        //$data = array('editprofile' => $editprofile);
+        //dd($editprofile);
+        return view('company', compact( 'b_cats','userid', 'editprofile'));
+    }
 
+function updatecompany(Request $request)
+{
+    //dd($request->all());
 
+    $company = Shop::find($request->company_id);
+    $company->shop_name = $request->shop_name;
+    $company->business_categoryid = $request->shop_category;
+    $company->shop_phone_no = $request->phone;
+    $company->company_email = $request->company_email;
+    $company->address = $request->address;
+    $company->description = $request->description;
+    $company->save();
+
+    return back()->with('success', 'Company Info has been updated');
+}
 
 
  public function sangvish_addshop()

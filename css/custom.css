@@ -145,15 +145,34 @@ a.btn:hover {
         border-right-color: rgb(0, 166, 81);
         border-bottom-color: rgb(0, 166, 81);
         border-left-color: rgb(0, 166, 81);
-    margin: 9px 0 0;
+    /* margin: 9px 0 0;
         margin-top: 9px;
-        margin-bottom: 0px;
-    margin-bottom: 30px;
+        margin-bottom: 0px; */
+    margin-bottom: 20px !important;
 }
 .height-10{
 	height: 10px !important;
 }
+
+
+
+	#getaddress_error_message{margin-top: 1px;
+
+	clear: both;
+
+	float: left;
+
+
+	color: red;}
 @media screen and (max-width: 1920px) and (min-width: 1200px) {
+
+	#getaddress_error_message{
+
+	position: relative;
+
+	left: 135px;
+	}
+
 	 
     .banner-class {
 			position: absolute; 
@@ -269,6 +288,12 @@ a.btn:hover {
 			position: relative;
 			left: 45px;
 		}
+		#getaddress_error_message{
+		
+	position: relative;
+
+	left: 45px;
+	}
 }
 /*************** ipad ************/
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {

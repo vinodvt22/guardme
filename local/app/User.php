@@ -221,6 +221,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Address::class);
     }
+
+    public function company()
+    {
+        return $this->hasOne(Shop::class);
+    }
+
     public function sec_work_category()
     {
         return $this->belongsTo(SecurityCategory::class,'work_category');
