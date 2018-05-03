@@ -21,7 +21,14 @@ use Responsive\Http\Repositories\UsersRepository;
 Route::get('/', 'CommonController@home');*/
 
 
+//social login
+Route::group(['prefix' => 'account', 'namespace' => 'Auth'], function(){
+    Route::get('login/{provider}', 'SocialAuthController@socialLogin')
+        ->where('provider', 'google|facebook');
 
+    Route::get('login/{provider}/callback', 'SocialAuthController@handleProviderCallback')
+        ->where('provider', 'google|facebook');
+});
 
 
 Route::get('/', 'IndexController@sangvish_index');

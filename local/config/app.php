@@ -172,7 +172,7 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-
+        \Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -235,7 +235,7 @@ return [
       'Html' => Collective\Html\HtmlFacade::class,
 	  'Input'     => Illuminate\Support\Facades\Input::class,
 	  'Image' => Intervention\Image\Facades\Image::class,
-
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];
