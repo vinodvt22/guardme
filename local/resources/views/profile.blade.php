@@ -50,7 +50,12 @@
 					    	@endif
 					    </h1>
 					    <address>
-					        <p>City: {{$person->person_address->citytown}} <br> Category: {{$person->sec_work_category->name}} <br> Email:<a href="#"> {{$person->email}}</a></p>
+					        <p>@if($person->person_address)
+					        		City: {{$person->person_address->citytown}} <br>
+								@endif
+								@if($person->sec_work_category)
+									Category: {{$person->sec_work_category->name}} 
+								@endif
 					    </address>
 					</div>					
 				</div>
