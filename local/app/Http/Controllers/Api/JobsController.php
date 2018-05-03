@@ -229,4 +229,73 @@ class JobsController extends Controller
         return response()
             ->json($return_data, $return_status);
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function addMoney(Request $request) {
+        $return_data = ['Unknown Error'];
+        $return_status = 500;
+        $posted_data = $request->all();
+        $user_id = auth()->user()->id;
+        $this->validate($request, [
+            'paypal_id' => 'required',
+            'amount' => 'required',
+            'paypal_payment_status' => 'required',
+            'status' => 'required',
+        ]);
+
+        $add_money_params = [
+            'paypal_id' => $posted_data['paypal_id'],
+            'amount' => $posted_data['amount'],
+            'user_id' => $user_id,
+            'paypal_payment_status' => $posted_data['paypal_payment_status'],
+            'status' => $posted_data['status']
+        ];
+
+        // add money
+        $walletTransaction = new Transaction();
+        $re = $walletTransaction->addMoney($add_money_params);
+
+        if ($re) {
+            $return_data = ['Data Saved Successfully'];
+            $return_status = 200;
+        }
+        return response()
+            ->json($return_data, $return_status);
+    }
+
+    public function fundJobFee(Request $request) {
+        $return_data = ['Unknown Error'];
+        $return_status = 500;
+        $posted_data = $request->all();
+        $user_id = auth()->user()->id;
+        $this->validate($request, [
+            'paypal_id' => 'required',
+            'amount' => 'required',
+            'paypal_payment_status' => 'required',
+            'status' => 'required',
+        ]);
+
+        $add_money_params = [
+            'paypal_id' => $posted_data['paypal_id'],
+            'amount' => $posted_data['amount'],
+            'user_id' => $user_id,
+            'paypal_payment_status' => $posted_data['paypal_payment_status'],
+            'status' => $posted_data['status']
+        ];
+
+        // add money
+        $walletTransaction = new Transaction();
+        $re = $walletTransaction->addMoney($add_money_params);
+
+        if ($re) {
+            $return_data = ['Data Saved Successfully'];
+            $return_status = 200;
+        }
+        return response()
+            ->json($return_data, $return_status);
+    }
+
 }
