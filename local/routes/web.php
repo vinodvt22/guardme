@@ -28,6 +28,9 @@ Route::group(['prefix' => 'account', 'namespace' => 'Auth'], function(){
 
     Route::get('login/{provider}/callback', 'SocialAuthController@handleProviderCallback')
         ->where('provider', 'google|facebook');
+
+    Route::post('login/{provider}/callback', 'SocialAuthController@completeSocialAuth')
+        ->where('provider', 'google|facebook');
 });
 
 
