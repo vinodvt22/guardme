@@ -20,6 +20,9 @@
                 <h2>
                     My Jobs
                 </h2>
+                @if(Auth::user()->admin==0)
+                    <a class="btn pull-right" href="{{URL::route('job.create')}}"> Create Job</a>
+                @endif
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>

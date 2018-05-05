@@ -1,6 +1,9 @@
 @extends('layouts.dashboard-template')
   
-
+@section('script')
+ <script src="{{ asset('js/vue_axios.js') }}"></script>
+    <script src="{{ asset('js/phone.min.js') }}"></script>
+@endsection
 
 @section('bread-crumb')
     <div class="breadcrumb-section">
@@ -42,7 +45,7 @@
                 @endif
                 
                 
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-info" role="alert">
                         Please complete your profile below. You will only be eligible to apply for work after your profile is complete and your documents are approved.
                 </div>
                 <form method="POST" action="{{ route('dashboard') }}" id="formID" enctype="multipart/form-data">
