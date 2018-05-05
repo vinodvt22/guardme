@@ -160,7 +160,7 @@ $setid=1;
 </script>
 	
 	
-	<script type="text/javascript" src="js/jquery.flexisel.js"></script>
+	<script type="text/javascript" src="<?php echo $url;?>/js/jquery.flexisel.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://getaddress.io/js/jquery.getAddress-2.0.7.min.js"></script>
 	

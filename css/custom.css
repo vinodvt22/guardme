@@ -1,3 +1,93 @@
+/************* steps css*******************/
+.wizard {
+    margin-bottom: 15px;
+    border: 1px solid #f2f2f2;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.wizard a {
+    padding: 15px 0px 15px 23px;
+    margin-right: 12px;
+    background: #efefef;
+    position: relative;
+    display: inline-block;
+    margin-bottom:5px;
+}
+
+
+.wizard a:before {
+    width: 0;
+    height: 0;
+    border-top: 26px inset transparent;
+    border-bottom: 26px inset transparent;
+    border-left: 40px solid #fff;
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+}
+.wizard a:after {
+    width: 0;
+    height: 0;
+    border-top: 26px inset #f0e9e900;
+	border-bottom: 26px inset transparent;
+	border-left: 40px solid #efefef;
+    position: absolute;
+    content: "";
+    top: 0;
+    right: -40px;
+    z-index: 2;
+}
+
+.wizard a.completed{
+	color: #fff;
+	background-color: #02743a;
+}
+
+.wizard a.completed::after{
+	color: #fff;
+	border-left: 40px solid #02743a;
+}
+
+.wizard a:first-child:before,
+.wizard a:last-child:after {
+    border: none;
+}
+.wizard a:first-child {
+    -webkit-border-radius: 4px 0 0 4px;
+       -moz-border-radius: 4px 0 0 4px;
+            border-radius: 4px 0 0 4px;
+}
+.wizard a:last-child {
+    -webkit-border-radius: 0 4px 4px 0;
+       -moz-border-radius: 0 4px 4px 0;
+            border-radius: 0 4px 4px 0;
+            margin-right:5px;
+}
+.wizard .badge {
+    margin: 0 5px 0 15px;
+    margin-left: 20px;
+    position: relative;
+    top: -1px;
+    background-color: #eae0e0;
+    color: #00a651;
+    padding: 5px;
+    font-size: 12px;
+}
+.wizard a:first-child .badge {
+    margin-left: 0;
+}
+.wizard .current {
+    background: #0072bc;
+    color: #fff;
+}
+.wizard .current:after {
+    border-left-color: #0072bc;
+}
+/********************* end Step CSS ******************/
+
+
 .sign-in li.li-last::before{
 	background-image: none !important;
 }
@@ -166,6 +256,10 @@ a.btn:hover {
 	color: red;}
 @media screen and (max-width: 1920px) and (min-width: 1200px) {
 
+	.col-md-quarter {
+    	width: 23%;
+	}
+
 	#getaddress_error_message{
 
 	position: relative;
@@ -242,6 +336,10 @@ a.btn:hover {
 		margin-top:10px;
 	}
 
+	.wizard {
+    margin-bottom: 30px;
+	}
+
 }
 @media screen and (max-width: 1920px) and (min-width: 1400px) {
 
@@ -293,6 +391,10 @@ a.btn:hover {
 	position: relative;
 
 	left: 45px;
+	}
+
+	.section {
+		padding: 35px 5px;
 	}
 }
 /*************** ipad ************/
