@@ -9,6 +9,7 @@ use Responsive\Job;
 use Responsive\User;
 use Auth;
 use Responsive\Transaction;
+
 class JobsController extends Controller
 {
     //
@@ -49,8 +50,55 @@ class JobsController extends Controller
      * @return mixed
      */
     public function findJobs() {
-        $jobs = Job::findJobs();
-        return view('jobs.find', compact('jobs'));
+
+        $b_cats = Businesscategory::all();
+        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
+        //dd($locs);
+        $joblist = Job::where('status','1')->paginate(10);
+        return view('jobs.find', compact('joblist','b_cats','locs'));
+    }
+
+    public function postfindJobs(Request $request) 
+    {
+        //dd($request->all());
+        $cat = $request->cat_id;
+        $loc = $request->loc_val;
+        $keyword = $request->keyword;
+
+        $b_cats = Businesscategory::all();
+        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get(); 
+
+        if($cat !='' || $loc !='' || $keyword !='')
+        {
+            $jobs = Job::where('status','1');
+            if($keyword !='')
+            {
+                $jobs->where('title', 'like', "$keyword%");
+                
+            }
+
+            if($cat !='')
+            {
+                $jobs->where('business_category_id', "$cat");
+                
+            }
+
+            if($loc !='')
+            {
+                $jobs->where('city_town', "$loc");
+
+                
+            }
+            $joblist = $jobs->paginate(10);
+        }
+        else{
+
+            $joblist = Job::where('status','1')->paginate(10);
+
+        }
+        //dd($joblist);
+        $request->flash();
+        return view('jobs.find',compact('joblist','b_cats','locs'));
     }
 
     /**
@@ -61,11 +109,17 @@ class JobsController extends Controller
         if (!$id) {
             return abort(404);
         }
-        $job = Job::find($id);
+         $b_cats = Businesscategory::all();
+        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
+        //$job = Job::find($id);
+
+        $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
+        //dd($job);
+
         if (empty($job)) {
             return abort(404);
         }
-        return view('jobs.detail', compact('job'));
+        return view('jobs.detail', compact('job','b_cats','locs'));
     }
 
     /**

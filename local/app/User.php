@@ -222,6 +222,12 @@ class User extends Authenticatable
         return $this->hasOne(Address::class);
     }
 
+     public function jobs()
+    {
+        return $this->hasMany(Job::class,'created_by');
+    }
+
+
     public function company()
     {
         return $this->hasOne(Shop::class);
