@@ -2,28 +2,39 @@
 
 namespace Responsive\Http\Controllers\Auth;
 
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Laravel\Socialite\Facades\Socialite;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Http\Repositories\SocialAuthRepository;
-use \Socialite;
+use Responsive\Http\Repositories\UsersRepository;
+use Responsive\User;
 
 
 class SocialAuthController extends Controller
 {
+    use AuthenticatesUsers;
+
     /**
      * @var SocialAuthRepository
      */
     private $socialAuthRepository;
     private $socialite;
+    /**
+     * @var UsersRepository
+     */
+    private $usersRepository;
 
     /**
      * SocialAuthController constructor.
      * @param SocialAuthRepository $socialAuthRepository
-     * @param Socialite $socialite
+     * @param UsersRepository $usersRepository
      */
-    public function __construct(SocialAuthRepository $socialAuthRepository)
+    public function __construct(SocialAuthRepository $socialAuthRepository, UsersRepository $usersRepository)
     {
         $this->socialAuthRepository = $socialAuthRepository;
+        $this->usersRepository = $usersRepository;
     }
 
 
@@ -45,52 +56,70 @@ class SocialAuthController extends Controller
     {
         $userSocial = Socialite::driver($provider)->user();
 
-        if ($userSocial->getEmail()) {
-            $details['id'] = $userSocial->getId();
-            $details['username'] = $userSocial->getName();
-            $details['email'] = $userSocial->getEmail();
-            $details['provider'] = $provider;
-            $user = $this->socialAuthRepository->saveSocialDetail($details);
+        $user = $this->usersRepository->getUserByEmail($userSocial->getEmail());
 
-            $redirect_route = $user->requiresInitialSetup() ?
-                '/welcome/setup' :
-                redirect()->intended()->getTargetUrl();
-
-            auth()->guard('web')->login($user, true);
-
-            return redirect()->to($redirect_route);
-
+        if($user){
+            // log user in
+            return $this->logAndRedirectUser($user);
         } else {
-            return redirect('login?email=false&provider=twitter&id=' .
-                $userSocial->getId() . '&name=' . $userSocial->getName());
+            // todo: create a new user
+            // first determine whether user should be a freelancer or an employer
+            $new_user = $this->initUserFromSocialAuthProvider($provider, $userSocial);
+
+            return view('auth.complete-social-auth', compact('new_user'));
+        }
+
+    }
+
+    public function completeSocialAuth($provider)
+    {
+        $data = \request()->all();
+
+        $user = $this->usersRepository->getUserById($data['uid']);
+
+        $user->admin = $data['usertype'];
+
+        $user->save();
+
+        return $this->logAndRedirectUser($user);
+    }
+
+    private function logAndRedirectUser($user)
+    {
+        auth()->guard('web')->login($user);
+
+        if(auth()->check() && auth()->user()->id == 1){
+
+            return redirect('/admin');
+        }
+        else
+        {
+            return redirect('/account');
         }
     }
 
-    public function loginUser(User $user)
+    private function initUserFromSocialAuthProvider($provider, $social_user)
     {
-        auth()->guard('web')->login($user, true);
+        if(!$social_user) return;
 
-        publish(new UserHasLoggedIn($user));
+        $user = new User();
 
-        /** @var User $user */
-        $user = TalkstuffUser::find($user->id);
+        switch ($provider){
+            case 'facebook':
+                $user->name = $social_user->getName();
+                $user->email = $social_user->getEmail();
+                $user->gender = $social_user->user['gender'];
+                $user->photo = $social_user->profileUrl;
 
-        if($user->requiresInitialSetup()){
-            return view('welcome::setup.profile');
-        }else{
-            return redirect()->intended()->getTargetUrl();
+                break;
+
+            case 'google':
+
+                break;
         }
-    }
 
-    public function NoSocialmediaEmail()
-    {
-        $details['id'] = request()->input('id');
-        $details['username'] = request()->input('name');
-        $details['email'] = request()->input('email');
-        $details['provider'] = request()->input('provider');
+        $user->save();
 
-        $user = $this->socialAuthRepository->saveSocialDetail($details);
-
-        return $this->loginUser($user);
+        return $user;
     }
 }
