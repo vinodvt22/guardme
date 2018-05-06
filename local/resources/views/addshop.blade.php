@@ -38,7 +38,7 @@
 			<div class="profile job-profile">
        			<div class="user-pro-section">
 	            	<div class="profile-details section">
-		                <h2>Profile Details</h2>
+		                <h2>Company Details</h2>
 						@if(Session::has('success'))
 						    <div class="alert alert-success">
 						      {{ Session::get('success') }}
@@ -124,15 +124,15 @@
 								<?php } ?>
 									<input type="hidden" name="site_name" value="<?php echo $site_setting[0]->site_name;?>">		
 								
-								<div class="buttons pull-right">
-								<a href="<?php echo $url;?>/addshop" class="btn">
+								<div class="row">
+								<a href="<?php echo $url;?>/addshop" class="btn pull-left">
 		                                   Reset
 		                                </a>		
 								<?php if(config('global.demosite')=="yes"){?>
-									<button type="button" class="btn radiusoff btndisable">Add</button> 
+									<button type="button" class="btn radiusoff pull-right btndisable">Add</button> 
 										<span class="disabletxt">( <?php echo config('global.demotxt');?> )</span>
 								<?php } else { ?>
-									<button type="submit" class="btn  radiusoff">
+									<button type="submit" class="btn  radiusoff pull-right">
 		                                    Add
 		                                </button>
 								<?php } ?>
