@@ -55,4 +55,12 @@ class Job extends Model
             ->get();
         return $jobs;
     }
+
+    function industory(){
+        return $this->belongsTo(Businesscategory::class,'business_category_id');
+    }
+
+    function poster(){
+        return $this->belongsTo(User::class,'created_by');
+    }
 }
