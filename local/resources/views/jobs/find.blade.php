@@ -230,7 +230,7 @@
                             <li><a href="{{ route('view.job',$job->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
                                 {{date('d/m/Y',strtotime($job->created_at))}}
                             </a></li>
-                            <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>${{$job->per_hour_rate}}</a></li> 
+                            <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a></li> 
                         </ul>
                     </div><!-- ad-meta -->                                  
                 </div><!-- ad-info -->

@@ -21,49 +21,7 @@
                 <h2 class="title">{{$job->title}}</h2>
             </div>
 
-            <div class="banner-form banner-form-full job-list-form">
-                <form method="POST" action="{{ route('post.find.jobs') }}" id="formID">
-                    <!-- category-change -->
-                    <div class="dropdown category-dropdown">                    {!! csrf_field() !!}    
-                        <a data-toggle="dropdown" href="#">
-                        <span class="change-text">
-                            @if(old('cat_val')!=NULL)
-                                {{old('cat_val')}}
-                            @else
-                                {{'Industry'}}
-                            @endif
-                        </span> <i class="fa fa-angle-down"></i></a>
-                        <ul class="dropdown-menu category-change cat">
-                            @foreach($b_cats as $cat)
-                                <li><a href="#" onclick="set_cat({{$cat->id}},'{{$cat->name}}')" >{{$cat->name}}</a></li>
-                            @endforeach
-                        </ul>   
-                        <input type="hidden" name="cat_id" value="{{old('cat_id')}}" id="cat_id">           
-                        <input type="hidden" name="cat_val" value="{{old('cat_val')}}" id="cat_val">                
-                    </div><!-- category-change -->
-                    
-                    <!-- language-dropdown -->
-                    <div class="dropdown category-dropdown language-dropdown">
-                        <a data-toggle="dropdown" href="#"><span class="change-text" >
-                        @if(old('loc_val')!=NULL)
-                                {{old('loc_val')}}
-                            @else
-                                {{'Location'}}
-                            @endif
-                        </span> <i class="fa fa-angle-down"></i></a>
-                        <ul class="dropdown-menu category-change language-change loc">
-                            @foreach($locs as $loc)
-                                <li><a href="#" onclick="set_loc('{{$loc->city_town}}')">{{$loc->city_town}}</a></li>
-                            @endforeach
-                        </ul>   
-                        
-                        <input type="hidden" name="loc_val" value="{{old('loc_val')}}" id="loc_val">                        
-                    </div><!-- language-dropdown -->
-                
-                    <input type="text" class="form-control" placeholder="Job search" name="keyword" value="{{old('keyword')}}">
-                    <button type="submit" class="btn btn-primary" value="Search">Search</button>
-                </form>
-            </div>
+            
             <div class="job-details">
                 <div class="section job-ad-item">
                     <div class="item-info">
@@ -77,9 +35,9 @@
                             <span><span><a href="#" class="title">{{$job->title}}</a></span> @ <a href="#"> {{$job->poster->company->shop_name}}</a></span>
                             <div class="ad-meta">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($job->cit_town){{$job->cit_town}},@endif {{$job->country}}</a></li>
+                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($job->city_town){{$job->city_town}},@endif {{$job->country}}</a></li>
                                     <!-- <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li> -->
-                                    <li><i class="fa fa-money" aria-hidden="true"></i>${{$job->per_hour_rate}}</li>
+                                    <li><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</li>
                                     <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory->name}}</a></li>
                                     <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Posted on : {{date('M d, Y',strtotime($job->created_at))}}</li>
                                 </ul>
