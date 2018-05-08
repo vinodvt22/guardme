@@ -113,6 +113,9 @@ class JobsController extends Controller
 
     public function getJobAmount($id) {
         $jobDetails = Job::calculateJobAmount($id);
+        $trans = new Transaction();
+        $available_balance = $trans->getWalletAvailableBalance();
+        $jobDetails['available_balance'] = $available_balance;
         return response()
             ->json($jobDetails);
     }
@@ -301,5 +304,26 @@ class JobsController extends Controller
         return response()
             ->json($return_data, $return_status);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSecurityCategories() {
+        $return_status = 200;
+        $return_data = SecurityCategory::get();
+        return response()
+            ->json($return_data, $return_status);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBusinessCategories() {
+        $return_status = 200;
+        $return_data = Businesscategory::get();
+        return response()
+            ->json($return_data, $return_status);
+    }
+
 
 }
