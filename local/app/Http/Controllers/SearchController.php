@@ -39,11 +39,28 @@ class SearchController extends Controller
 
 function getpersonnelsearch()
 	{
-		$sec_personnels = User::where('admin','2')->with('person_address')->paginate(10);
-		
+	    $data = \request()->all();
+
+
+		$query = User::where('admin','2');
+
+		if(count($data)){
+		    $personnel_query = $data['sec_personnel'] ?? '';
+
+		    $query = $query
+                ->orWhere('name', 'LIKE', "%$personnel_query%")
+                ->orWhere('email', 'LIKE', "%$personnel_query%")
+                ->orWhere('firstname', 'LIKE', "%$personnel_query%")
+                ->orWhere('lastname', 'LIKE', "%$personnel_query%")
+            ;
+        }
+
 		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
-		$locs= DB::table('address')->get();
-//dd($sec_personnels);
+
+        $locs= DB::table('address')->distinct()->get();
+
+        $sec_personnels = $query->with('person_address')->paginate(10);
+
 		return view('search',compact('cats','locs','sec_personnels'));
 	}
 	
