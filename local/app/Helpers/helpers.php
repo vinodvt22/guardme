@@ -1,6 +1,5 @@
 <?php
 
-use DB;
 
 function getUserType() {
     return auth()->user()->admin;
