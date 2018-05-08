@@ -133,7 +133,7 @@ class AuthController extends Controller
             'avatar' => $user->photo ? url("/local/images/userphoto/".$user->photo) : null,
             'nationality' => $user->nationality ? $user->nationality->name : null,
             'visa_number' => $user->visa_no,
-            'sia_number' => $user->sia_license,
+			'sia_number' => $user->sia_licence,
             'sia_expiry_date' => $user->sia_expirydate,
             'work_category' => User::getWorkCategories()[$user->work_category],
             'passport_photo' => $user->passphoto ? url("/local/images/userdoc/".$user->passphoto) : null,
