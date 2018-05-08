@@ -180,7 +180,11 @@ class JobsController extends Controller
         $is_applied = $job_application->is_applied($id);
         $is_hired = $job_application->is_hired($id);
         $job = Job::find($id);
-        if ($is_applied) {
+
+        if (!isFreelancer()) {
+            $return_status = 500;
+            $return_data = ['Only freelancers can apply on jobs'];
+        } else if ($is_applied) {
             $return_status = 500;
             $return_data = ['You have already applied on this job'];
         } else if ($is_hired) {
