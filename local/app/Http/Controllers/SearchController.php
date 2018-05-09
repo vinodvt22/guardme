@@ -45,14 +45,34 @@ function getpersonnelsearch()
 		$query = User::where('admin','2');
 
 		if(count($data)){
-		    $personnel_query = $data['sec_personnel'] ?? '';
 
-		    $query = $query
-                ->orWhere('name', 'LIKE', "%$personnel_query%")
-                ->orWhere('email', 'LIKE', "%$personnel_query%")
-                ->orWhere('firstname', 'LIKE', "%$personnel_query%")
-                ->orWhere('lastname', 'LIKE', "%$personnel_query%")
-            ;
+		    // todo: filter location
+            $search_location = trim($data['loc_val']);
+
+            if($search_location){
+                $query = $query
+                    ->whereHas('address', function ($q) use ($search_location){
+                        $q->where('citytown', $search_location);
+                    });
+            }
+
+            // todo: filter user
+		    $personnel_query = $data['sec_personnel'];
+
+		    if($personnel_query){
+                $search_query_array = explode(' ', trim($personnel_query));
+
+                if(count($search_query_array)){
+                    foreach ($search_query_array as $search_key){
+                        $query = $query
+                            ->where('name', 'LIKE', "%$search_key%")
+                            ->orWhere('email', 'LIKE', "%$search_key%")
+                            ->orWhere('firstname', 'LIKE', "%$search_key%")
+                            ->orWhere('lastname', 'LIKE', "%$search_key%")
+                        ;
+                    }
+                }
+            }
         }
 
 		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
