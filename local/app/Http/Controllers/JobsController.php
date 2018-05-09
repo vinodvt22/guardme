@@ -42,7 +42,7 @@ class JobsController extends Controller
     public function myJobs() {
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->get();
-        $my_jobs = Job::getMyJobs();
+        $my_jobs = Job::with(['poster','poster.company','industory'])->where('created_by', $userid)->get();
         return view('jobs.my', compact('my_jobs','editprofile'));
     }
 
@@ -136,30 +136,54 @@ class JobsController extends Controller
      * @return mixed
      */
     public function myJobApplications($id) {
-        $job = Job::find($id);
-        $user_id = auth()->user()->id;
+
+         $user_id = auth()->user()->id;
+
+        $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
+        $editprofile = User::where('id',$user_id)->get();
+       
         if ($user_id != $job->created_by) {
             return abort(404);
         }
         $jobApplications = new JobApplication();
+
+
+
         $applications = $jobApplications->getJobApplications($id);
-        return view('jobs.applications', ['applications' => $applications]);
+
+        //dd($applications);
+        return view('jobs.applications', compact('applications','job','editprofile'));
     }
 
     /**
      * @param $application_id
      * @return mixed
      */
-    public function viewApplication($application_id) {
+    public function viewApplication($application_id,$applicant_id) {
         $ja = new JobApplication();
         $application = $ja->getApplicationDetails($application_id);
-        return view('jobs.application-detail', ['application' => $application]);
+
+        $person = User::with(['person_address','sec_work_category'])->find($applicant_id);
+        return view('jobs.application-detail', compact('application','person'));
     }
     public function myProposals() {
+        $user_id = auth()->user()->id;
+
+         $editprofile = User::where('id',$user_id)->get();
+       
         $ja = new JobApplication();
         $proposals = $ja->getMyProposals();
 
-        return view('jobs.proposals', ['proposals' => $proposals]);
+        return view('jobs.proposals', compact('proposals','editprofile'));
         
+    }
+
+
+    public function myApplicationView($application_id,$job_id) {
+        $ja = new JobApplication();
+        $application = $ja->getMyApplicationDetails($application_id);
+        $job = Job::with(['poster'])->where('id',$job_id)->first();
+       //dd($application);
+        return view('jobs.my-application-detail', compact('application','job'));
     }
 }

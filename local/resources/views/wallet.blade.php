@@ -1,22 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    
+
    @include('style')
+	
+
+
+
+
 </head>
 <body>
-    <!-- fixed navigation bar -->
-    @include('header')
 
-	<div class="clearfix"></div>
-	<div class="video">
-		<div class="clearfix"></div>
-		<div class="headerbg">
-			<div class="col-md-12" align="center"><h1>Wallet</h1></div>
+    
+
+    <!-- fixed navigation bar -->
+   
+    	@include('header')
+
+    <!-- slider -->
+    
+
+<section class="clearfix job-bg  ad-profile-page">
+	<div class="container">
+		<div class="breadcrumb-section">
+			<ol class="breadcrumb">
+				<li><a href="{{URL::to('/')}}">Home</a></li>
+				<li>Wallet</li>
+			</ol>						
+			<h2 class="title">Wallet</h2>
 		</div>
-		<div class="container">
-			<div class="height30"></div>
-		<div class="err-msg" align="center">Your Escrow balance is : £{{ $escrow_balance }}</div>
-		<div class="height30"></div>
+	
+	
+
+
+	<div class="career-objective section">
+		<div class="user-pro-section">
+
+
+			<!-- profile-details -->
+			<div class="profile-details section">
+
+
+				<h2>Wallet</h2>
+			</div>
+		</div>
+<div class="err-msg" align="center">Your Escrow balance is : £{{ $escrow_balance }}</div>
+<div class="clearfix">&nbsp;</div>
 		<table class="table table-stripped">
 			<thead>
 				<tr>
@@ -35,8 +66,12 @@
 			@endforeach
 			</tbody>
 		</table>
-		</div>
+
 	</div>
-    @include('footer')
+</div>
+</section>
+
+
+      @include('footer')
 </body>
 </html>
