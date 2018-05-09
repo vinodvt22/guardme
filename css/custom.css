@@ -89,55 +89,6 @@
 
 
 
-/********top nav search form************/
-
-.input-group.input-group-navbar .input-group-btn {
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
-    right: -36px;
-    z-index: 2;
-}
- .nav-search-form .input-group.input-group-navbar .input-group-btn .btn {
-    height: 100%;
-    border: none;
-    background: transparent;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
- .nav-search-form .input-group .input-group-addon .glyphicon, .input-group .input-group-btn .glyphicon {
-    margin: 0 14px;
-}
-
-.btn>.glyphicon {
-    vertical-align: top;
-}
-.glyphicon {
-    position: relative;
-    top: 0;
-    display: inline-block;
-}
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-}
-
-
-
-.input-group.input-group-navbar .form-control {
-    padding-right: 19px;
-    padding-left: 45px;
-    z-index: 1;
-}
-/************ end top nav search form*********/
-
 
 .sign-in li.li-last::before{
 	background-image: none !important;
@@ -305,6 +256,24 @@ a.btn:hover {
 
 
 	color: red;}
+
+
+	.profile .del  {
+	    background-color: #f26522;
+	    color: #fff;
+	    padding: 6px 26px 7px;
+	    border: 1px solid #f26522;
+	}
+
+	.profile .del:hover {
+
+    background-color: transparent;
+    color: #f26522;
+    border: 1px solid #f26522;
+
+}
+
+
 @media screen and (max-width: 1920px) and (min-width: 1200px) {
 
 	.col-md-quarter {
@@ -391,17 +360,26 @@ a.btn:hover {
     margin-bottom: 30px;
 	}
 
-	.nav-search-form {
-	    float: left;
-	    width: 25%;
-	    margin-top: 12px;
-		}
-
-	.input-group.input-group-navbar .form-control {
-    width: 210px;
-    height: 38px;
+	
+	.nav-btn{
+		top: 10px;
 	}
 
+	.top-30{
+		top: 30px;
+		position: relative;
+	}
+
+	.top-22{
+		margin-top: 22px;
+	}
+	.top-25{
+		top : 25px;
+	}
+
+	.right-10{
+		margin-right : 10px;
+	}
 }
 @media screen and (max-width: 1920px) and (min-width: 1400px) {
 
@@ -458,6 +436,19 @@ a.btn:hover {
 	.section {
 		padding: 35px 5px;
 	}
+
+	#header a.btn {
+    	position: absolute;
+		top: auto;
+		right: auto;
+		padding: 4px 15px 6px;
+		bottom: 8px;
+
+	}
+}
+
+.bottom-50{
+    margin-bottom: 50px;
 }
 /*************** ipad ************/
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
