@@ -30,35 +30,47 @@
 					    	@else
 					    		{{$person->name}}
 					    	@endif Profile</h2>
+
+
 			</div>
 			<div class="resume-content">
 				<div class="profile section clearfix">
-					<div class="profile-logo">
-						<?php $photo_path ='/local/images/userphoto/'.$person->photo;?>
-						@if($person->photo!="")
-					    	<img class="img-responsive" src="<?php echo $url.$photo_path;?>" alt="Image">
-					    @else
-							<img class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Image">
-					    @endif
+					<div class="col-md-10">
+						<div class="profile-logo">
+							<?php $photo_path ='/local/images/userphoto/'.$person->photo;?>
+							@if($person->photo!="")
+						    	<img class="img-responsive" src="<?php echo $url.$photo_path;?>" alt="Image">
+						    @else
+								<img class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Image">
+						    @endif
+						</div>
+						<div class="profile-info">
+						    <h1>
+						    	@if($person->firstname!='')
+						    		{{$person->firstname.' '.$person->lastname}}
+						    	@else
+						    		{{$person->name}}
+						    	@endif
+						    </h1>
+						    <address>
+						        <p>@if($person->person_address)
+						        		City: {{$person->person_address->citytown}} <br>
+									@endif
+									@if($person->sec_work_category)
+										Category: {{$person->sec_work_category->name}} 
+									@endif
+								</p>
+						    </address>
+						</div>
 					</div>
-					<div class="profile-info">
-					    <h1>
-					    	@if($person->firstname!='')
-					    		{{$person->firstname.' '.$person->lastname}}
-					    	@else
-					    		{{$person->name}}
-					    	@endif
-					    </h1>
-					    <address>
-					        <p>@if($person->person_address)
-					        		City: {{$person->person_address->citytown}} <br>
-								@endif
-								@if($person->sec_work_category)
-									Category: {{$person->sec_work_category->name}} 
-								@endif
-							</p>
-					    </address>
-					</div>					
+					@if(Auth::user())
+						@if(Auth::user()->admin==0)
+							<div class="col-md-2">
+								<a class="btn pull-right"> Hire</a>			
+							</div>
+						@endif
+					@endif
+							
 				</div>
 
 				<div class="career-objective section">

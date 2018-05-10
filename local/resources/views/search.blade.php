@@ -26,6 +26,23 @@
 	}
 
 	
+$(function(){
+
+	//setTimeout(function(){ }, 3000);
+
+});
+
+$(document).ready(function(){
+ //$('.content-data').hide(); 
+$('.skeleton').show();
+
+ }); 
+
+ $(window).load(function(){
+		$('.content-data').show(); 
+ 		$('.skeleton').hide();
+ 	});
+	
 </script>
 
 </head>
@@ -200,8 +217,94 @@
 
 
 					<!-- recommended-ads -->
-					<div class="col-sm-8 col-md-7">				
-						<div class="section job-list-item">
+					<div class="col-sm-8 col-md-7">
+
+					<div class="section job-list-item skeleton">
+
+						<div class="featured-top clearfix">
+								
+								<div class="dropdown pull-right">
+									<div class="dropdown category-dropdown">
+										<h5>Sort by:</h5>						
+										<a data-toggle="dropdown" href="#"><span class="change-text">Most Relevant</span><i class="fa fa-caret-square-o-down"></i></a>
+										<ul class="dropdown-menu category-change">
+											<li><a href="#">Most Relevant</a></li>
+											<li><a href="#">Most Popular</a></li>
+										</ul>								
+									</div><!-- category-change -->		
+								</div>							
+							</div>
+
+						<div class="timeline-item">
+						    <div class="animated-background facebook">
+						      <div class="background-masker header-top"></div>
+						      <div class="background-masker header-left"></div>
+						      <div class="background-masker header-right"></div>
+						      <div class="background-masker header-bottom"></div>
+						      <div class="background-masker subheader-left"></div>
+						      <div class="background-masker subheader-right"></div>
+						      <div class="background-masker subheader-bottom"></div>
+						      <div class="background-masker content-top"></div>
+						      <div class="background-masker content-first-end"></div>
+						      <div class="background-masker content-second-line"></div>
+						      <div class="background-masker content-second-end"></div>
+						      <div class="background-masker content-third-line"></div>
+						      <div class="background-masker content-third-end"></div>
+						    </div>
+						</div>
+						<div class="timeline-item">
+						    <div class="animated-background facebook">
+						      <div class="background-masker header-top"></div>
+						      <div class="background-masker header-left"></div>
+						      <div class="background-masker header-right"></div>
+						      <div class="background-masker header-bottom"></div>
+						      <div class="background-masker subheader-left"></div>
+						      <div class="background-masker subheader-right"></div>
+						      <div class="background-masker subheader-bottom"></div>
+						      <div class="background-masker content-top"></div>
+						      <div class="background-masker content-first-end"></div>
+						      <div class="background-masker content-second-line"></div>
+						      <div class="background-masker content-second-end"></div>
+						      <div class="background-masker content-third-line"></div>
+						      <div class="background-masker content-third-end"></div>
+						    </div>
+						</div>
+						<div class="timeline-item">
+						    <div class="animated-background facebook">
+						      <div class="background-masker header-top"></div>
+						      <div class="background-masker header-left"></div>
+						      <div class="background-masker header-right"></div>
+						      <div class="background-masker header-bottom"></div>
+						      <div class="background-masker subheader-left"></div>
+						      <div class="background-masker subheader-right"></div>
+						      <div class="background-masker subheader-bottom"></div>
+						      <div class="background-masker content-top"></div>
+						      <div class="background-masker content-first-end"></div>
+						      <div class="background-masker content-second-line"></div>
+						      <div class="background-masker content-second-end"></div>
+						      <div class="background-masker content-third-line"></div>
+						      <div class="background-masker content-third-end"></div>
+						    </div>
+						</div>
+						<div class="timeline-item">
+						    <div class="animated-background facebook">
+						      <div class="background-masker header-top"></div>
+						      <div class="background-masker header-left"></div>
+						      <div class="background-masker header-right"></div>
+						      <div class="background-masker header-bottom"></div>
+						      <div class="background-masker subheader-left"></div>
+						      <div class="background-masker subheader-right"></div>
+						      <div class="background-masker subheader-bottom"></div>
+						      <div class="background-masker content-top"></div>
+						      <div class="background-masker content-first-end"></div>
+						      <div class="background-masker content-second-line"></div>
+						      <div class="background-masker content-second-end"></div>
+						      <div class="background-masker content-third-line"></div>
+						      <div class="background-masker content-third-end"></div>
+						    </div>
+						</div>
+					</div>			
+						<div class="section job-list-item content-data" style="display:none">
 							<div class="featured-top">
 								
 								<div class="dropdown pull-right">

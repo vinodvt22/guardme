@@ -22,7 +22,7 @@
     <!-- slider -->
     
 
-<section class="clearfix job-bg  ad-profile-page">
+<section class=" job-bg ad-details-page">
 	<div class="container">
 		<div class="breadcrumb-section">
 			<ol class="breadcrumb">
@@ -35,40 +35,112 @@
 	
 
 
-	<div class="career-objective section">
-		<div class="user-pro-section">
+		<div class="adpost-details post-resume">
+			
+
+			<div class="row">
+				<div class="col-md-8">
+					<div class="section postdetails">
+						<div class="description-info">
+							<h2>Wallet</h2>
+							
+							
+							<table class="table table-stripped">
+								<!-- <thead>
+									<tr>
+										<th>Title</th>
+										<th>Debit/Credit</th>
+										<th>Amount</th>
+									</tr>
+								</thead> -->
+								<tbody>
+								@if($all_transactions->count() >0)
+									@foreach($all_transactions as $trans)
+										<tr>
+											<td>{{ $trans->title }}</td>
+											<td>{{ $trans->debit_credit_type }}</td>
+											<td>£{{ $trans->amount }}</td>
+										</tr>
+									@endforeach
+								
+									<!-- <tr >
+										<td>title</td>
+										<td>credit/debit</td>
+										<td>amount</td>
+									</tr> -->
+								@endif
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="section job-short-info center balance">
+						<h5>Escrow Balance</h5>
+						<ul>
+							<li>
+								<p class="font-35">£
+									@if($escrow_balance==0)
+										0.00
+									@else
+										{{ $escrow_balance }}
+									@endif
+								</p>
+							</li>
+							
+							
+						</ul>
+					</div>
+
+					<div class="section quick-rules job-postdetails">
+						<h4>Heading1</h4>
+						<ul>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							
+						</ul>
+					</div>
 
 
-			<!-- profile-details -->
-			<div class="profile-details section">
-
-
-				<h2>Wallet</h2>
+					<div class="section quick-rules job-postdetails">
+						<h4>Heading2</h4>
+						<ul>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							<li>
+								lorem ipsum dolor sit amet, consectetur adipiscing elit
+							</li>
+							
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
-<div class="err-msg" align="center">Your Escrow balance is : £{{ $escrow_balance }}</div>
-<div class="clearfix">&nbsp;</div>
-		<table class="table table-stripped">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Debit/Credit</th>
-					<th>Amount</th>
-				</tr>
-			</thead>
-			<tbody>
-			@foreach($all_transactions as $trans)
-				<tr style="@if($trans->debit_credit_type == 'debit') background: #90EE90; @else background: #FFB6C1;  @endif">
-					<td>{{ $trans->title }}</td>
-					<td>{{ $trans->debit_credit_type }}</td>
-					<td>{{ $trans->amount }}</td>
-				</tr>
-			@endforeach
-			</tbody>
-		</table>
-
 	</div>
-</div>
 </section>
 
 

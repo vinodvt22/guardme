@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Responsive\Url;
+use Responsive\Businesscategory;
+use Responsive\Job;
 
 class IndexController extends Controller
 {
@@ -38,7 +40,8 @@ class IndexController extends Controller
 		$fourth = DB::select('select * from subservices where service = ?',[$four[0]->id]);
 
 
-		
+		 $b_cats = Businesscategory::all();
+        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
 		
 		
 		
@@ -47,7 +50,7 @@ class IndexController extends Controller
       
 		
 		$data = array('services' => $services, 'one' => $one, 'first'=>$first, 'two' => $two,'second' =>$second, 'three'=> $three,'third'=>$third, 'four' => $four, 
-		'fourth' => $fourth, 'testimonials' => $testimonials);
+		'fourth' => $fourth, 'testimonials' => $testimonials,'b_cats'=>$b_cats,'locs'=>$locs);
             return view('index')->with($data);
     }
 	
