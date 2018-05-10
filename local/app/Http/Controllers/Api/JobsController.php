@@ -5,6 +5,8 @@ use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
 use Responsive\JobApplication;
 use Responsive\Transaction;
+use Responsive\SecurityCategory;
+
 class JobsController extends Controller
 {
     //
