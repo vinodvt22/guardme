@@ -6,6 +6,7 @@ use Responsive\Job;
 use Responsive\JobApplication;
 use Responsive\Transaction;
 use Responsive\SecurityCategory;
+use Responsive\Businesscategory;
 
 class JobsController extends Controller
 {
