@@ -68,8 +68,18 @@
 					<input type="hidden" name="cat_val" value="{{old('cat_val')}}" id="cat_val">
 				</div><!-- category-change -->
 
-				<!-- language-dropdown -->
 				<div class="dropdown category-dropdown language-dropdown">
+					<a data-toggle="dropdown" href="#">
+						<span class="change-text" >Gender</span> <i class="fa fa-angle-down"></i></a>
+					<ul class="dropdown-menu category-change language-change loc">
+						<li><a href="#" onclick="set_loc('gender','male')">Male</a></li>
+						<li><a href="#" onclick="set_loc('gender','female')">Female</a></li>
+					</ul>
+
+					<input type="hidden" name="gender" value="" id="loc_val">
+				</div>
+
+				{{--<div class="dropdown category-dropdown language-dropdown">
 					<a data-toggle="dropdown" href="#"><span class="change-text" >
 						@if(old('loc_val')!=NULL)
 								{{old('loc_val')}}
@@ -84,7 +94,9 @@
 					</ul>
 					<input type="hidden" name="loc_id" value="{{old('loc_id')}}" id="loc_id">
 					<input type="hidden" name="loc_val" value="{{old('loc_val')}}" id="loc_val">
-				</div><!-- language-dropdown -->
+				</div>--}}
+
+				<!-- language-dropdown -->
 
 				<input type="text" class="form-control" placeholder="Security Personnel" name="sec_personnel" value="{{old('sec_personnel')}}">
 				<button type="submit" class="btn btn-primary" value="Search">Search</button>
