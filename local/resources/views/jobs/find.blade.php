@@ -35,6 +35,7 @@
 <!-- fixed navigation bar -->
 @include('header')
 
+
     <section class="job-bg page job-list-page">
         <div class="container">
             <div class="breadcrumb-section">
@@ -50,7 +51,8 @@
             <div class="banner-form banner-form-full job-list-form">
                 <form method="POST" action="{{ route('post.find.jobs') }}" id="formID">
                     <!-- category-change -->
-                    <div class="dropdown category-dropdown">                    {!! csrf_field() !!}    
+                    <div class="dropdown category-dropdown">                   
+                     {!! csrf_field() !!}    
                         <a data-toggle="dropdown" href="#">
                         <span class="change-text">
                             @if(old('cat_val')!=NULL)

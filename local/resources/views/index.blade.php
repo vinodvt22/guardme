@@ -59,7 +59,8 @@ $setts = DB::table('settings')
             <h3>Looking for security personnel in the UK?</h3>
             <h4>Get access to thousands of vetted SIA security personnel.</h4>
             <div class="banner-form">
-                <form action="{{ route('post.find.jobs') }}">
+                <form action="{{ route('post.find.jobs') }}" method="POST">
+                    {!! csrf_field() !!} 
                      <input type="text" class="form-control" placeholder="Type Keyword" name="keyword" value="">  
                    <div class="dropdown category-dropdown language-dropdown">
                         <a data-toggle="dropdown" href="#"><span class="change-text" >
@@ -75,7 +76,7 @@ $setts = DB::table('settings')
                             @endforeach
                         </ul>   
                         
-                        <input type="hidden" name="loc_val" value="{{old('loc_val')}}" id="loc_val">                        
+                        <input type="hidden" name="loc_val" value="" id="loc_val">                        
                     </div><!-- category-change -->
                     <button type="submit" class="btn btn-primary" value="Search">Search</button>
                 </form>

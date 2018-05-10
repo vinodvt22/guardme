@@ -45,7 +45,7 @@
 							<h2>Wallet</h2>
 							
 							
-							<table class="table table-stripped">
+							<table class="table table-striped">
 								<!-- <thead>
 									<tr>
 										<th>Title</th>
@@ -59,7 +59,7 @@
 										<tr>
 											<td>{{ $trans->title }}</td>
 											<td>{{ $trans->debit_credit_type }}</td>
-											<td>£{{ $trans->amount }}</td>
+											<td>£ {{ $trans->amount }}</td>
 										</tr>
 									@endforeach
 								
