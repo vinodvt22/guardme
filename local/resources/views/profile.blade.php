@@ -56,6 +56,7 @@
 								@if($person->sec_work_category)
 									Category: {{$person->sec_work_category->name}} 
 								@endif
+							</p>
 					    </address>
 					</div>					
 				</div>
