@@ -46,15 +46,29 @@ function getpersonnelsearch()
 
 		if(count($data)){
 
+		    // todo: filter by category
+            $search_category = trim($data['cat_val']);
+            if($search_category){
+                $query = $query->whereHas('sec_work_category', function ($q) use ($search_category){
+                    $q->where('name', $search_category);
+                });
+            }
+
+            // todo: filter by gender
+            $search_gender = trim($data['gender']);
+            if($search_gender){
+                $query = $query->where('gender', $search_gender);
+            }
+
 		    // todo: filter location
-            $search_location = trim($data['loc_val']);
+            /*$search_location = trim($data['loc_val']);
 
             if($search_location){
                 $query = $query
                     ->whereHas('address', function ($q) use ($search_location){
                         $q->where('citytown', $search_location);
                     });
-            }
+            }*/
 
             // todo: filter user
 		    $personnel_query = $data['sec_personnel'];
