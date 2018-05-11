@@ -63,7 +63,7 @@ if(isset(Auth::user()->verification)){
 				<li class="@if(Route::current()->uri()=='/') {{ 'active' }} @endif"><a href="<?php echo $url;?>/">Home</a></li>
 				<li class="@if(Route::current()->uri()=='search') {{ 'active' }} @endif"><a href="<?php echo $url;?>/search">Hire Security</a></li>
 				<li><a href="{{ route('find.jobs') }}">Find Jobs</a></li>
-				
+				<li><a href="{{URL::route('job.create')}}" class="btn nav-btn">Post a Job</a></li>
 				<!-- Added by Ninja 20180331 end here-->
            		
             <?php } else { ?>
@@ -78,7 +78,7 @@ if(isset(Auth::user()->verification)){
                 <li class="@if(Route::current()->uri()=='addcompany') {{ 'active' }} @endif"><a href="<?php if($shcount == 0 && Auth::user()->admin == 0){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>">Dashboard</a></li>
 				<li><a href="<?php echo $url;?>/search">Hire Security</a></li>
 				<li><a href="{{ route('find.jobs') }}">Find Jobs</a></li>
-				
+				<li><a href="{{URL::route('job.create')}}" class="btn nav-btn">Post a Job</a></li>
 							
 			<!-- Added by Ninja 20180331 end here-->
 			
@@ -119,7 +119,7 @@ if(isset(Auth::user()->verification)){
 
 
 			    <?php if(Auth::user()->admin==2) {
-			    	
+
 					$sellmail = Auth::user()->email;
 			    	 $shcount = DB::table('shop')
 					 ->where('seller_email', '=',$sellmail)
@@ -152,10 +152,7 @@ if(isset(Auth::user()->verification)){
             </li>
             
             	<?php } ?>
-			</ul><!-- sign-in -->
-			
-					<a href="{{URL::route('job.create')}}" class="btn nav-btn">Post a Job</a>
-				
+			</ul><!-- sign-in -->					
 			
 			
 		</div>

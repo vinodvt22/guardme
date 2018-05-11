@@ -3,49 +3,6 @@
 <html lang="en">
 <head>
 
-<<<<<<< HEAD
-    
-
-   @include('style')
-	
-<style type="text/css">
-.noborder ul,li { margin:0; padding:0; list-style:none;}
-.noborder .label { color:#000; font-size:16px;}
-</style>
-
-<script >
-	
-	function set_loc(id,val)
-	{
-		$('#loc_id').val(id);
-		$('#loc_val').val(val);
-	}
-	function set_cat(id,val)
-	{
-		$('#cat_id').val(id);
-		$('#cat_val').val(val);
-	}
-
-	
-$(function(){
-
-	//setTimeout(function(){ }, 3000);
-
-});
-
-$(document).ready(function(){
- //$('.content-data').hide(); 
-$('.skeleton').show();
-
- }); 
-
- $(window).load(function(){
-		$('.content-data').show(); 
- 		$('.skeleton').hide();
- 	});
-	
-</script>
-=======
 
 
 	@include('style')
@@ -70,7 +27,6 @@ $('.skeleton').show();
 
 
 	</script>
->>>>>>> 41f0921193af5fa50db6a0b8dfc23951c77d7c76
 
 </head>
 <body>
@@ -255,137 +211,6 @@ $('.skeleton').show();
 				</div>
 
 
-<<<<<<< HEAD
-					<!-- recommended-ads -->
-					<div class="col-sm-8 col-md-7">
-
-					<div class="section job-list-item skeleton">
-
-						<div class="featured-top clearfix">
-								
-								<div class="dropdown pull-right">
-									<div class="dropdown category-dropdown">
-										<h5>Sort by:</h5>						
-										<a data-toggle="dropdown" href="#"><span class="change-text">Most Relevant</span><i class="fa fa-caret-square-o-down"></i></a>
-										<ul class="dropdown-menu category-change">
-											<li><a href="#">Most Relevant</a></li>
-											<li><a href="#">Most Popular</a></li>
-										</ul>								
-									</div><!-- category-change -->		
-								</div>							
-							</div>
-
-						<div class="timeline-item">
-						    <div class="animated-background facebook">
-						      <div class="background-masker header-top"></div>
-						      <div class="background-masker header-left"></div>
-						      <div class="background-masker header-right"></div>
-						      <div class="background-masker header-bottom"></div>
-						      <div class="background-masker subheader-left"></div>
-						      <div class="background-masker subheader-right"></div>
-						      <div class="background-masker subheader-bottom"></div>
-						      <div class="background-masker content-top"></div>
-						      <div class="background-masker content-first-end"></div>
-						      <div class="background-masker content-second-line"></div>
-						      <div class="background-masker content-second-end"></div>
-						      <div class="background-masker content-third-line"></div>
-						      <div class="background-masker content-third-end"></div>
-						    </div>
-						</div>
-						<div class="timeline-item">
-						    <div class="animated-background facebook">
-						      <div class="background-masker header-top"></div>
-						      <div class="background-masker header-left"></div>
-						      <div class="background-masker header-right"></div>
-						      <div class="background-masker header-bottom"></div>
-						      <div class="background-masker subheader-left"></div>
-						      <div class="background-masker subheader-right"></div>
-						      <div class="background-masker subheader-bottom"></div>
-						      <div class="background-masker content-top"></div>
-						      <div class="background-masker content-first-end"></div>
-						      <div class="background-masker content-second-line"></div>
-						      <div class="background-masker content-second-end"></div>
-						      <div class="background-masker content-third-line"></div>
-						      <div class="background-masker content-third-end"></div>
-						    </div>
-						</div>
-						<div class="timeline-item">
-						    <div class="animated-background facebook">
-						      <div class="background-masker header-top"></div>
-						      <div class="background-masker header-left"></div>
-						      <div class="background-masker header-right"></div>
-						      <div class="background-masker header-bottom"></div>
-						      <div class="background-masker subheader-left"></div>
-						      <div class="background-masker subheader-right"></div>
-						      <div class="background-masker subheader-bottom"></div>
-						      <div class="background-masker content-top"></div>
-						      <div class="background-masker content-first-end"></div>
-						      <div class="background-masker content-second-line"></div>
-						      <div class="background-masker content-second-end"></div>
-						      <div class="background-masker content-third-line"></div>
-						      <div class="background-masker content-third-end"></div>
-						    </div>
-						</div>
-						<div class="timeline-item">
-						    <div class="animated-background facebook">
-						      <div class="background-masker header-top"></div>
-						      <div class="background-masker header-left"></div>
-						      <div class="background-masker header-right"></div>
-						      <div class="background-masker header-bottom"></div>
-						      <div class="background-masker subheader-left"></div>
-						      <div class="background-masker subheader-right"></div>
-						      <div class="background-masker subheader-bottom"></div>
-						      <div class="background-masker content-top"></div>
-						      <div class="background-masker content-first-end"></div>
-						      <div class="background-masker content-second-line"></div>
-						      <div class="background-masker content-second-end"></div>
-						      <div class="background-masker content-third-line"></div>
-						      <div class="background-masker content-third-end"></div>
-						    </div>
-						</div>
-					</div>			
-						<div class="section job-list-item content-data" style="display:none">
-							<div class="featured-top">
-								
-								<div class="dropdown pull-right">
-									<div class="dropdown category-dropdown">
-										<h5>Sort by:</h5>						
-										<a data-toggle="dropdown" href="#"><span class="change-text">Most Relevant</span><i class="fa fa-caret-square-o-down"></i></a>
-										<ul class="dropdown-menu category-change">
-											<li><a href="#">Most Relevant</a></li>
-											<li><a href="#">Most Popular</a></li>
-										</ul>								
-									</div><!-- category-change -->		
-								</div>							
-							</div><!-- featured-top -->	
-
-
-	
-	
-	<?php if($sec_personnels->count()>0){?>
-	
-			<?php foreach($sec_personnels as $person){ ?>
-				
-		<div class="job-ad-item">
-			<div class="item-info">
-				<div class="item-image-box">
-					<div class="item-image">
-						<?php 
-						
-						$photo_path ='/local/images/userphoto/'.$person->photo;
-						if($person->photo!=""){?>
-       						<a href="{{ route('person-profile',$person->id) }}" ><img src="<?php echo $url.$photo_path;?>" class="img-responsive"></a>
-						<?php } else { ?>
-						<a href="{{ route('person-profile',$person->id) }}" ><img align="center" class="img-responsive" src="<?php echo $url.'/local/images/nophoto.jpg';?>" alt="Profile Photo"/></a>
-						<?php } ?>
-							
-
-						
-					</div><!-- item-image -->
-				</div>
-					
-				<div class="ad-info">
-=======
 				<!-- recommended-ads -->
 				<div class="col-sm-8 col-md-7">
 					<div class="section job-list-item">
@@ -426,7 +251,6 @@ $('.skeleton').show();
 								</div>
 
 								<div class="ad-info">
->>>>>>> 41f0921193af5fa50db6a0b8dfc23951c77d7c76
 					<span><a href="{{ route('person-profile',$person->id) }}" class="title">@if($person->firstname!='')
 								{{$person->firstname.' '.$person->lastname}}
 							@else
