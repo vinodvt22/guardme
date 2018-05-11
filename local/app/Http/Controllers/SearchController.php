@@ -48,7 +48,7 @@ function getpersonnelsearch()
 
 		    // todo: filter by category
             $search_category = trim($data['cat_val']);
-            if($search_category){
+            if($search_category && $search_category != 'all'){
                 $query = $query->whereHas('sec_work_category', function ($q) use ($search_category){
                     $q->where('name', $search_category);
                 });
@@ -56,7 +56,7 @@ function getpersonnelsearch()
 
             // todo: filter by gender
             $search_gender = trim($data['gender']);
-            if($search_gender){
+            if($search_gender && $search_gender != 'all'){
                 $query = $query->where('gender', $search_gender);
             }
 
