@@ -64,5 +64,6 @@ Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
 });
 
 // Guest routes for jobs
-
-Route::get('find-jobs','JobsController@findJobs')->name('api.find.jobs');
+Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
+    Route::get('find-jobs','JobsController@findJobs')->name('api.find.jobs');
+});
