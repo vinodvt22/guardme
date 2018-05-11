@@ -49,6 +49,7 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     Route::post('add-money','JobsController@addMoney')->name('api.add.money');
     // activate job, it will add 3 credit entries i) job fee ii) admin fee iii) vat fee
     Route::post('activate-job/{id}','JobsController@activateJob')->name('api.activate.job');
+    Route::get('/my/applications/{id}', 'JobsController@myJobApplications')->name('api.my.job.applications');
     Route::post('apply/{id}','JobsController@applyJob')->name('api.apply.job');
     Route::post('mark/hired/{id}','JobsController@markHired')->name('api.mark.hired');
     

@@ -171,7 +171,7 @@ class JobsController extends Controller
     public function myJobs() {
         $my_jobs = Job::getMyJobs();
         return response()
-            ->json($my_jobs);
+            ->json($my_jobs, 200);
     }
 
     /**
@@ -341,6 +341,17 @@ class JobsController extends Controller
         $jobs = Job::findJobs();
         return response()
             ->json($jobs, 200);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function myJobApplications($id) {
+        $jobApplications = new JobApplication();
+        $applications = $jobApplications->getJobApplications($id);
+        return response()
+            ->json($applications, 200);
     }
 
 }
