@@ -60,7 +60,8 @@
 							@endif
 						</span> <i class="fa fa-angle-down"></i></a>
 					<ul class="dropdown-menu category-change cat">
-						@foreach($cats as $cat)
+						<li><a href="#" onclick="set_cat(-1,'all')" >All Category</a></li>
+					@foreach($cats as $cat)
 							<li><a href="#" onclick="set_cat({{$cat->id}},'{{$cat->name}}')" >{{$cat->name}}</a></li>
 						@endforeach
 					</ul>
@@ -72,6 +73,7 @@
 					<a data-toggle="dropdown" href="#">
 						<span class="change-text" >Gender</span> <i class="fa fa-angle-down"></i></a>
 					<ul class="dropdown-menu category-change language-change loc">
+						<li><a href="#" onclick="set_loc('gender','all')">All Gender</a></li>
 						<li><a href="#" onclick="set_loc('gender','male')">Male</a></li>
 						<li><a href="#" onclick="set_loc('gender','female')">Female</a></li>
 					</ul>
