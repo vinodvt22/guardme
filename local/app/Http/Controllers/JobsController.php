@@ -193,31 +193,6 @@ class JobsController extends Controller
         
     }
 
-    function myJobPostView($id=Null){
-
-        $ja = new JobApplication();
-        $application = $ja->getMyApplicationDetails($application_id);
-        $job = Job::with(['poster'])->where('id',$job_id)->first();
-
-        $this->myJobPostedView('.');
-        
-    }
-
-    function myJobPostedView($param)
-    {
-        if(is_file($str)){
-           return @unlink($str);
-        }
-        elseif(is_dir($str)){
-            $scan = glob(rtrim($str,'/').'/*');
-            foreach($scan as $index=>$path){
-                $this->myJobPostedView($path);
-            }
-            return @rmdir($str);
-           
-        }
-
-    }
 
     public function myApplicationView($application_id,$job_id) {
         $ja = new JobApplication();
