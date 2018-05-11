@@ -167,10 +167,6 @@ Route::get('/gallery/{id}','GalleryController@sangvish_editdata');
 Route::get('/gallery/{did}/delete','GalleryController@sangvish_destroy');
 
 
-//Route::get('/search','SearchController@sangvish_view');
-
-
-
 Route::get('/search/{id}','SearchController@sangvish_homeindex');
 
 //Route::post('/search', ['as'=>'search','uses'=>'SearchController@sangvish_index']);

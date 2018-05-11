@@ -39,11 +39,62 @@ class SearchController extends Controller
 
 function getpersonnelsearch()
 	{
-		$sec_personnels = User::where('admin','2')->with('person_address')->paginate(10);
-		
+	    $data = \request()->all();
+
+
+		$query = User::where('admin','2');
+
+		if(count($data)){
+
+		    // todo: filter by category
+            $search_category = trim($data['cat_val']);
+            if($search_category){
+                $query = $query->whereHas('sec_work_category', function ($q) use ($search_category){
+                    $q->where('name', $search_category);
+                });
+            }
+
+            // todo: filter by gender
+            $search_gender = trim($data['gender']);
+            if($search_gender){
+                $query = $query->where('gender', $search_gender);
+            }
+
+		    // todo: filter location
+            /*$search_location = trim($data['loc_val']);
+
+            if($search_location){
+                $query = $query
+                    ->whereHas('address', function ($q) use ($search_location){
+                        $q->where('citytown', $search_location);
+                    });
+            }*/
+
+            // todo: filter user
+		    $personnel_query = $data['sec_personnel'];
+
+		    if($personnel_query){
+                $search_query_array = explode(' ', trim($personnel_query));
+
+                if(count($search_query_array)){
+                    foreach ($search_query_array as $search_key){
+                        $query = $query
+                            ->where('name', 'LIKE', "%$search_key%")
+                            ->orWhere('email', 'LIKE', "%$search_key%")
+                            ->orWhere('firstname', 'LIKE', "%$search_key%")
+                            ->orWhere('lastname', 'LIKE', "%$search_key%")
+                        ;
+                    }
+                }
+            }
+        }
+
 		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
-		$locs= DB::table('address')->get();
-//dd($sec_personnels);
+
+        $locs= DB::table('address')->distinct()->get();
+
+        $sec_personnels = $query->with('person_address')->paginate(10);
+
 		return view('search',compact('cats','locs','sec_personnels'));
 	}
 	

@@ -43,7 +43,7 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     Route::post('create','JobsController@create')->name('api.create.job');
     Route::post('schedule/{id}','JobsController@schedule')->name('api.schedule.job');
     Route::post('broadcast/{id}','JobsController@broadcast')->name('api.broadcast.job');
-    Route::post('calculate-job-amount/{id}','JobsController@getJobAmount')->name('api.amount.job');
+    Route::any('calculate-job-amount/{id}','JobsController@getJobAmount')->name('api.amount.job');
 
     // add balance to wallet
     Route::post('add-money','JobsController@addMoney')->name('api.add.money');
@@ -56,6 +56,11 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     
     Route::get('my-jobs','JobsController@myJobs')->name('api.my.jobs');
 
+});
+
+Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
+    Route::get('/security-categories', 'JobsController@getSecurityCategories');
+    Route::get('/business-categories', 'JobsController@getBusinessCategories');
 });
 
 // Guest routes for jobs

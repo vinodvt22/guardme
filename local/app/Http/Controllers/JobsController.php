@@ -14,25 +14,40 @@ class JobsController extends Controller
 {
     //
     public function create() {
+        if (!isEmployer()) {
+            return abort(404);
+        }
         $all_security_categories = SecurityCategory::get();
         $all_business_categories = Businesscategory::get();
 
         return view('jobs.create', compact('all_security_categories', 'all_business_categories'));
     }
     public function schedule($id) {
+        if (!isEmployer()) {
+            return abort(404);
+        }
         return view('jobs.schedule', compact('id'));
     }
     public function broadcast($id) {
+        if (!isEmployer()) {
+            return abort(404);
+        }
         $all_security_categories = SecurityCategory::get();
         return view('jobs.broadcast', compact('id', 'all_security_categories'));
     }
     public function paymentDetails($id) {
+        if (!isEmployer()) {
+            return abort(404);
+        }
         $trans = new Transaction();
         $available_balance = $trans->getWalletAvailableBalance();
         $jobDetails = Job::calculateJobAmount($id);
         return view('jobs.payment-details', compact('jobDetails', 'id', 'available_balance'));
     }
     public function confirmation() {
+        if (!isEmployer()) {
+            return abort(404);
+        }
         return view('jobs.confirm');
     }
 
