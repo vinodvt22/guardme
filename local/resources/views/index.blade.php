@@ -15,6 +15,33 @@ $setts = DB::table('settings')
 
     @include('style')
 
+    <style>
+.banner-job {
+
+    @if(!empty($setts[0]->site_banner))
+    background-image: url({{$url}}/local/images/settings/{{$setts[0]->site_banner}});
+    @else
+        background-image: url({{$url}}/img/banner.jpg);
+    @endif
+
+    
+}
+</style>
+
+<script >
+    
+    function set_loc(val)
+    {
+        //$('#loc_id').val(id);
+        $('#loc_val').val(val);
+    }
+    function set_cat(id,val)
+    {
+        $('#cat_id').val(id);
+        $('#cat_val').val(val);
+    }
+</script>
+
 </head>
 <body>
 
@@ -27,116 +54,39 @@ $setts = DB::table('settings')
 
 <!-- slider -->
 
-
-
-    <div id="banner" class="frontpage-blocks">
-        <div id="overlays"></div>
-        <?php if(!empty($setts[0]->site_banner)){?>
-        <img src="<?php echo $url;?>/local/images/settings/{{$setts[0]->site_banner}}" class="img-responsive banner-class backimg" id="b1">
-        <?php } else {?>
-        <img src="<?php echo $url;?>/img/banner.jpg" class="img-responsive bannerheight ">
-        <?php } ?>
-
-    <div class="clear-both"></div>
-        <script>
-            var slideIndex = 0;
-            //showSlides();
-
-            function showSlides() {
-                var i;
-                var slides = document.getElementsByClassName("backimg");
-
-                var dots = document.getElementsByClassName("dot");
-                for (i = 0; i < slides.length; i++) {
-                    slides[i].style.display = "none";
-                }
-                slideIndex++;
-                if (slideIndex > slides.length) {slideIndex = 1}
-                for (i = 0; i < dots.length; i++) {
-                    dots[i].className = dots[i].className.replace(" active", "");
-                }
-                slides[slideIndex-1].style.display = "block";
-                dots[slideIndex-1].className += " active";
-                setTimeout(showSlides, 2000); // Change image every 2 seconds
-            }
-        </script>
-
-    </div>
-<div class="clear-both"></div>
-
-
-<!-- 
-<div class="clearfix"></div> -->
-
-<div class="container1 top-mrgn-10 bottom-mrgn-10">
-    <div class="clearfix hidden-xs"></div>
-    <div class="headerbg">
-        <div class="col-md-12 home-font" align="left">
-            <h1 class="h-responsive"><strong>Manned Security Freelance Marketplace.
-                </strong></h1>
-
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <p class="after-heading" >Looking for security personnel in the UK?</p>
-                    </div>
-
-                    <div class="item">
-                        <p class="after-heading">Get access to thousands of vetted SIA security personnel.
-                        </p>
-                    </div>
-
-
-                </div>
-            </div>
-
-
-
-
-            <a href="#"
-               title="Start a project" type=""
-               class="btn btn-huge blue "
-               target="" data-reactid="337">
-                <span class="text" title="Start a project" data-reactid="338">Hire Security Personnel</span>
-            </a>
-        </div>
-
-
-
-        <div class="col-md-12" align="left">
-            <div class="col-md-7" style="padding-left: 0px">
-                <h4 class="h-responsive">Are you SIA licensed or looking for security personnel?</h4>
-            </div>
-            <div class="col-md-5">
-
-            </div>
-        </div>
-    </div>
-<div class="clear-both"></div>
-</div>
-<div class="clear-both"></div>
-
-
-
-
-
-
-
-<script>
-
-   /* $(document).ready(function(){
-        $(".dropdown").hover(
-            function() {
-                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true,true).slideDown("400");
-                $(this).toggleClass('open');
-            },
-            function() {
-                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true,true).slideUp("400");
-                $(this).toggleClass('open');
-            }
-        );
-    });*/
-</script>
+<div class="banner-job">
+        
+        <div class="container text-center color-grey">
+            <h1 class="title">Manned Security Freelance Marketplace.</h1>
+            <h3>Looking for security personnel in the UK?</h3>
+            <h4>Get access to thousands of vetted SIA security personnel.</h4>
+            <div class="banner-form">
+                <form method="POST" action="{{ route('post.find.jobs') }}" id="formID">
+                    {!! csrf_field() !!}
+                     <input type="text" class="form-control" placeholder="Type Keyword" name="keyword" value="">  
+                   <div class="dropdown category-dropdown language-dropdown">
+                        <a data-toggle="dropdown" href="#"><span class="change-text" >
+                        @if(old('loc_val')!=NULL)
+                                {{old('loc_val')}}
+                            @else
+                                {{'Location'}}
+                            @endif
+                        </span> <i class="fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu category-change language-change loc">
+                            @foreach($locs as $loc)
+                                <li><a href="#" onclick="set_loc('{{$loc->city_town}}')">{{$loc->city_town}}</a></li>
+                            @endforeach
+                        </ul>   
+                        
+                        <input type="hidden" name="loc_val" value="{{old('loc_val')}}" id="loc_val">                        
+                    </div><!-- category-change -->
+                    <button type="submit" class="btn btn-primary" value="Search">Search</button>
+                </form>
+            </div><!-- banner-form -->
+            
+           <!-- banner-socail -->
+        </div><!-- container -->
+    </div><!-- banner-section -->
 
 <script>
     $(document).ready(function() {

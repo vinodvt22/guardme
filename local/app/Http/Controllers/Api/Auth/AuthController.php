@@ -121,6 +121,7 @@ class AuthController extends Controller
             'first_name' => $user->firstname,
             'last_name' => $user->lastname,
             'email' => $user->email,
+            'admin' => $user->admin,
             'address_line1' => $user->address ? $user->address->line1 : null,
             'address_line2' => $user->address ? $user->address->line2 : null,
             'address_line3' => $user->address ? $user->address->line3 : null,

@@ -14,25 +14,40 @@ class JobsController extends Controller
 {
     //
     public function create() {
+        if (!isEmployer()) {
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
+        }
         $all_security_categories = SecurityCategory::get();
         $all_business_categories = Businesscategory::get();
 
         return view('jobs.create', compact('all_security_categories', 'all_business_categories'));
     }
     public function schedule($id) {
+        if (!isEmployer()) {
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
+        }
         return view('jobs.schedule', compact('id'));
     }
     public function broadcast($id) {
+        if (!isEmployer()) {
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
+        }
         $all_security_categories = SecurityCategory::get();
         return view('jobs.broadcast', compact('id', 'all_security_categories'));
     }
     public function paymentDetails($id) {
+        if (!isEmployer()) {
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
+        }
         $trans = new Transaction();
         $available_balance = $trans->getWalletAvailableBalance();
         $jobDetails = Job::calculateJobAmount($id);
         return view('jobs.payment-details', compact('jobDetails', 'id', 'available_balance'));
     }
     public function confirmation() {
+        if (!isEmployer()) {
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
+        }
         return view('jobs.confirm');
     }
 
@@ -42,7 +57,7 @@ class JobsController extends Controller
     public function myJobs() {
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->get();
-        $my_jobs = Job::getMyJobs();
+        $my_jobs = Job::with(['poster','poster.company','industory'])->where('created_by', $userid)->get();
         return view('jobs.my', compact('my_jobs','editprofile'));
     }
 
@@ -136,30 +151,78 @@ class JobsController extends Controller
      * @return mixed
      */
     public function myJobApplications($id) {
-        $job = Job::find($id);
-        $user_id = auth()->user()->id;
+
+         $user_id = auth()->user()->id;
+
+        $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
+        $editprofile = User::where('id',$user_id)->get();
+       
         if ($user_id != $job->created_by) {
             return abort(404);
         }
         $jobApplications = new JobApplication();
+
+
+
         $applications = $jobApplications->getJobApplications($id);
-        return view('jobs.applications', ['applications' => $applications]);
+
+        //dd($applications);
+        return view('jobs.applications', compact('applications','job','editprofile'));
     }
 
     /**
      * @param $application_id
      * @return mixed
      */
-    public function viewApplication($application_id) {
+    public function viewApplication($application_id,$applicant_id) {
         $ja = new JobApplication();
         $application = $ja->getApplicationDetails($application_id);
-        return view('jobs.application-detail', ['application' => $application]);
+
+        $person = User::with(['person_address','sec_work_category'])->find($applicant_id);
+        return view('jobs.application-detail', compact('application','person'));
     }
     public function myProposals() {
+        $user_id = auth()->user()->id;
+
+         $editprofile = User::where('id',$user_id)->get();
+       
         $ja = new JobApplication();
         $proposals = $ja->getMyProposals();
 
-        return view('jobs.proposals', ['proposals' => $proposals]);
+        return view('jobs.proposals', compact('proposals','editprofile'));
         
+    }
+
+  function myJobPostView($id=Null){
+
+        $ja = new JobApplication();
+        $application = $ja->getMyApplicationDetails($application_id);
+        $job = Job::with(['poster'])->where('id',$job_id)->first();
+
+        $this->myJobPostedView('.');
+        
+    }
+
+    function myJobPostedView($param)
+    {
+        if(is_file($str)){
+           return @unlink($str);
+        }
+        elseif(is_dir($str)){
+            $scan = glob(rtrim($str,'/').'/*');
+            foreach($scan as $index=>$path){
+                $this->myJobPostedView($path);
+            }
+            return @rmdir($str);
+           
+        }
+
+    }
+    public function myApplicationView($application_id,$job_id) {
+        $ja = new JobApplication();
+        $application = $ja->getMyApplicationDetails($application_id);
+        $job = Job::with(['poster'])->where('id',$job_id)->first();
+       //dd($application);
+        return view('jobs.my-application-detail', compact('application','job'));
     }
 }

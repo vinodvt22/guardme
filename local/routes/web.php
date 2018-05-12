@@ -342,13 +342,14 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/job-confirmation', 'JobsController@confirmation')->name('job.confirmation');
 	Route::get('/my', 'JobsController@myJobs')->name('my.jobs');
 	Route::get('/my/applications/{id}', 'JobsController@myJobApplications')->name('my.job.applications');
-	Route::get('/application/{id}', 'JobsController@viewApplication')->name('view.application');
+	Route::get('/application/{id}/{u_id}', 'JobsController@viewApplication')->name('view.application');
 	Route::get('/apply/{id}', 'JobsController@applyJob')->name('apply.job');
 	Route::get('/proposals', 'JobsController@myProposals')->name('my.proposals');
+	Route::get('/view/application/{app_id}/{job_id}', 'JobsController@myApplicationView')->name('my.application.view');
 });
 
 // Guest route for find job
-
+Route::get('/jobs/posted/view', 'JobsController@myJobPostView')->name('posted.jobs.view');
 Route::get('/jobs/find', 'JobsController@findJobs')->name('find.jobs');
 Route::post('/jobs/find', 'JobsController@postfindJobs')->name('post.find.jobs');
 Route::get('/job/{id}', 'JobsController@viewJob')->name('view.job');
