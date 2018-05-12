@@ -121,8 +121,8 @@
 						<!-- panel-group -->
 						<div class="panel-group" id="accordion">
 
-							<!-- panel -->
-							<div class="panel panel-default panel-faq">
+							<!-- gender panel -->
+							{{--<div class="panel panel-default panel-faq">
 								<!-- panel-heading -->
 								<div class="panel-heading">
 									<div  class="panel-title">
@@ -138,11 +138,36 @@
 
 									</div><!-- panel-body -->
 								</div>
+							</div>--}}
+
+							<!-- Location -->
+							<div class="panel panel-default panel-faq">
+								<!-- panel-heading -->
+								<div class="panel-heading">
+									<div  class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion" href="#accordion-three">
+											<h4>Location<span class="pull-right"><i class="fa fa-plus"></i></span></h4>
+										</a>
+									</div>
+								</div><!-- panel-heading -->
+
+								<div id="accordion-three" class="panel-collapse collapse">
+									<!-- panel-body -->
+									<div class="panel-body">
+										<form method="get" action="{{ route('post-personnel-search') }}">
+											<div class="form-group">
+												<input type="text" class="form-control " name="location_filter">
+												<button class="btn-sm btn btn-default" type="submit">filter</button>
+											</div>
+										</form>
+
+									</div><!-- panel-body -->
+								</div>
 							</div>
 						</div>
 
-						<!-- panel -->
-						<div class="panel panel-default panel-faq">
+						<!-- available panel -->
+						{{--<div class="panel panel-default panel-faq">
 							<!-- panel-heading -->
 							<div class="panel-heading">
 								<div  class="panel-title">
@@ -158,30 +183,11 @@
 
 								</div><!-- panel-body -->
 							</div>
-						</div>
+						</div>--}}
 
 						<!-- panel -->
-						<div class="panel panel-default panel-faq">
-							<!-- panel-heading -->
-							<div class="panel-heading">
-								<div class="panel-title">
-									<a data-toggle="collapse" data-parent="#accordion" href="#accordion-four">
-										<h4>Employment Type<span class="pull-right"><i class="fa fa-plus"></i></span></h4>
-									</a>
-								</div>
-							</div><!-- panel-heading -->
 
-							<div id="accordion-four" class="panel-collapse collapse">
-								<!-- panel-body -->
-								<div class="panel-body">
-									<label for="full-time"><input type="checkbox" name="full-time" id="full-time"> Full Time</label>
-									<label for="part-time"><input type="checkbox" name="part-time" id="part-time"> Part Time</label>
-									<label for="contractor"><input type="checkbox" name="contractor" id="contractor"> Contractor</label>
-									<label for="intern"><input type="checkbox" name="intern" id="intern"> Intern</label>
-									<label for="seasonal"><input type="checkbox" name="seasonal" id="seasonal"> Seasonal / Temp</label>
-								</div><!-- panel-body -->
-							</div>
-						</div>
+						
 						<!-- panel -->
 						<div class="panel panel-default panel-faq">
 							<!-- panel-heading -->
