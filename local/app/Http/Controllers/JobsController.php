@@ -15,7 +15,7 @@ class JobsController extends Controller
     //
     public function create() {
         if (!isEmployer()) {
-            return abort(404);
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
         }
         $all_security_categories = SecurityCategory::get();
         $all_business_categories = Businesscategory::get();
@@ -24,20 +24,20 @@ class JobsController extends Controller
     }
     public function schedule($id) {
         if (!isEmployer()) {
-            return abort(404);
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
         }
         return view('jobs.schedule', compact('id'));
     }
     public function broadcast($id) {
         if (!isEmployer()) {
-            return abort(404);
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
         }
         $all_security_categories = SecurityCategory::get();
         return view('jobs.broadcast', compact('id', 'all_security_categories'));
     }
     public function paymentDetails($id) {
         if (!isEmployer()) {
-            return abort(404);
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
         }
         $trans = new Transaction();
         $available_balance = $trans->getWalletAvailableBalance();
@@ -46,7 +46,7 @@ class JobsController extends Controller
     }
     public function confirmation() {
         if (!isEmployer()) {
-            return abort(404);
+            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
         }
         return view('jobs.confirm');
     }
