@@ -14,7 +14,7 @@ class JobsController extends Controller
     public function create(Request $request) {
         if (!isEmployer()) {
             $return = ['message' => "Only Employer is allowed to create jobs"];
-            $status_code = 200;
+            $status_code = 500;
         } else {
             $this->validate($request, [
                 'title' => 'required|max:255',
