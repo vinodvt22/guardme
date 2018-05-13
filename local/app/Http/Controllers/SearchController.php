@@ -37,7 +37,7 @@ class SearchController extends Controller
 		return view('search')->with($data);
 	}
 
-function getpersonnelsearch()
+    function getpersonnelsearch()
 	{
 	    $data = \request()->all();
 
@@ -111,7 +111,8 @@ function getpersonnelsearch()
 
         $sec_personnels = $query->with('person_address')->paginate(10);
 
-        if(\request()->wantsJson()) return response()->json($sec_personnels);
+        if(\request()->expectsJson())
+            return response()->json($sec_personnels);
 
 		return view('search',compact('cats','locs','sec_personnels'));
 	}
