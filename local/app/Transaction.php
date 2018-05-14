@@ -148,6 +148,7 @@ class Transaction extends Model
 
     public function getWalletEscrowBalance() {
         $user_id = auth()->user()->id;
+        $balance = '';
         if(!empty($user_id)) {
             // get sum of all active debits for user
             $debit = DB::table($this->table)
@@ -173,8 +174,29 @@ class Transaction extends Model
                 ->get()->first();
             $total_credit = !empty($credit->total) ? ($credit->total) : 0;
             $balance = $total_debit - $total_credit;
-            return $balance;
         }
+        return $balance;
     }
-    
+
+    /**
+     * @return array
+     */
+    public function getAllTransactionsAndEscrowBalance() {
+        $return_data = [
+            'escrow_balance' => '',
+            'all_transactions' => []
+        ];
+        $user_id = auth()->user()->id;
+        $escrow_balance = $this->getWalletEscrowBalance();
+        $all_transactions = Transaction::where('status', 1)
+            ->where('user_id', $user_id)
+            ->get();
+        if (!empty($all_transactions)) {
+            $return_data = [
+                'escrow_balance' => $escrow_balance,
+                'all_transactions' => $all_transactions
+            ];
+        }
+        return $return_data;
+    }
 }

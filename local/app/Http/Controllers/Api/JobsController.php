@@ -354,4 +354,14 @@ class JobsController extends Controller
             ->json($applications, 200);
     }
 
+    /**
+     * @return mixed
+     */
+    public function myProposals() {
+        $ja = new JobApplication();
+        $proposals = $ja->getMyProposals();
+        return response()
+            ->json($proposals, 200);
+
+    }
 }

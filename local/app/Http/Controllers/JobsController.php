@@ -57,7 +57,7 @@ class JobsController extends Controller
     public function myJobs() {
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->get();
-        $my_jobs = Job::with(['poster','poster.company','industory'])->where('created_by', $userid)->get();
+        $my_jobs = Job::getMyJobs();
         return view('jobs.my', compact('my_jobs','editprofile'));
     }
 
