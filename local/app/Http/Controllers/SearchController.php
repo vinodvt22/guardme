@@ -37,7 +37,7 @@ class SearchController extends Controller
 		return view('search')->with($data);
 	}
 
-function getpersonnelsearch()
+    function getpersonnelsearch()
 	{
 	    $data = \request()->all();
 
@@ -47,7 +47,7 @@ function getpersonnelsearch()
 		if(count($data)){
 
 		    // todo: filter by category
-            $search_category = trim($data['cat_val']);
+            $search_category = isset($data['cat_val']) ? trim($data['cat_val']) : null;
             if($search_category && $search_category != 'all'){
                 $query = $query->whereHas('sec_work_category', function ($q) use ($search_category){
                     $q->where('name', $search_category);
@@ -55,9 +55,25 @@ function getpersonnelsearch()
             }
 
             // todo: filter by gender
-            $search_gender = trim($data['gender']);
+            $search_gender = isset($data['gender']) ? trim($data['gender']) : null;
             if($search_gender && $search_gender != 'all'){
                 $query = $query->where('gender', $search_gender);
+            }
+
+            // todo: search filter, location
+            $location_search_filter = isset($data['location_filter']) ? trim($data['location_filter']) : null;
+
+            if($location_search_filter){
+                $location_search_query_array = explode(' ', trim($location_search_filter));
+
+                if(count($location_search_query_array)){
+                    foreach ($location_search_query_array as $search_location){
+                        $query = $query
+                            ->whereHas('address', function ($q) use ($search_location){
+                                $q->where('citytown', $search_location);
+                            });
+                    }
+                }
             }
 
 		    // todo: filter location
@@ -71,7 +87,7 @@ function getpersonnelsearch()
             }*/
 
             // todo: filter user
-		    $personnel_query = $data['sec_personnel'];
+		    $personnel_query = isset($data['sec_personnel']) ? $data['sec_personnel'] : null;
 
 		    if($personnel_query){
                 $search_query_array = explode(' ', trim($personnel_query));
@@ -94,6 +110,9 @@ function getpersonnelsearch()
         $locs= DB::table('address')->distinct()->get();
 
         $sec_personnels = $query->with('person_address')->paginate(10);
+
+        if(\request()->expectsJson())
+            return response()->json($sec_personnels);
 
 		return view('search',compact('cats','locs','sec_personnels'));
 	}

@@ -66,6 +66,10 @@ Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
     Route::get('/wallet-data', 'WalletController@getWalletData');
 });
 
+Route::get('find-jobs','JobsController@findJobs')->name('api.find.jobs');
+
+Route::get('/search','SearchController@getpersonnelsearch');
+
 // Guest routes for jobs
 Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
     Route::get('find-jobs','JobsController@findJobs')->name('api.find.jobs');
