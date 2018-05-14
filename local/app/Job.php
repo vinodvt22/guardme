@@ -63,4 +63,9 @@ class Job extends Model
     function poster(){
         return $this->belongsTo(User::class,'created_by');
     }
+
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class,'job_id');
+    }
 }
