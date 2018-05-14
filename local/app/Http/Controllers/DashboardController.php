@@ -134,8 +134,8 @@ public function sangvish_delaccount()
                 $locality = isset($data['locality'])?$data['locality']:'';
                 $citytown = isset($data['town'])?$data['town']:'';
                 $country = isset($data['country'])?$data['country']:'';
-                $latitude = isset($data['latitude'])?$data['latitude']:'';
-                $longitude = isset($data['longitude'])?$data['longitude']:'';
+                $latitude = isset($data['addresslat'])?$data['addresslat']:'';
+                $longitude = isset($data['addresslong'])?$data['addresslong']:'';
                 if(!isset($address)){
                     $address = new Address();
                     $address->user_id = $id;
@@ -161,7 +161,8 @@ public function sangvish_delaccount()
                 $user->admin = $admin;
                 $user->firstname = $firstname;
                 $user->lastname = $lastname;
-                $user->dob = $data['dob'];
+                if($data['dob'])
+                    $user->dob = $data['dob'];
                                                     
                 // don't save email directly if the user change their email
                 // we will save it to verify_users table with new_email column

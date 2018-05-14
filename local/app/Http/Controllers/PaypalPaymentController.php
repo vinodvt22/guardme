@@ -15,6 +15,9 @@ use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
 use Responsive\Transaction as WalletTransaction;
 use Responsive\Job;
+use Responsive\User;
+use Mail;
+
 class PaypalPaymentController extends Controller
 {
     //
@@ -156,6 +159,41 @@ class PaypalPaymentController extends Controller
             // add money
             $walletTransaction = new WalletTransaction();
             $walletTransaction->addMoney($add_money_params);
+            
+            /* Email to users for selected radius */
+            $job = Job::find($job_id);
+            if($job){
+                if( !empty($job->latitude) && !empty($job->longitude) && !empty($job->specific_area_min) && !empty($job->specific_area_max) ){
+                    $latitude = $job->latitude;
+                    $longitude = $job->longitude;
+                    $specific_area_min = $job->specific_area_min;
+                    $specific_area_max = $job->specific_area_max;
+                    $usersRes = User::getUsersNearByJob($latitude, $longitude, $specific_area_min, $specific_area_max, 'kilometers');
+                    if( count($usersRes) > 0 ){
+                        foreach($usersRes as $usersResVal){
+                            //mail
+                            $mailTo = $usersResVal->email;
+                            $mailFrom = "noreply@guardme.com";
+                            $mailFromName = "GuardME";
+                            $subject = "GuardMe: Job Posted";
+                            $attachment = "";
+                            $data = array('name' => $usersResVal->name, 'specific_area_min' => $specific_area_min, 'specific_area_max' => $specific_area_max);
+                            $mailsent = Mail::send('email.jobpost', array('data' => $data), function($message) use($mailTo, $mailFrom, $subject, $mailFromName, $attachment) {
+                                        if ($attachment != '') {
+                                            $file = $attachment;
+                                            $message->attach($file);
+                                        }
+                                        $message->to($mailTo);
+                                        $message->from($mailFrom, $mailFromName);                                        
+                                        $message->sender($mailFrom, $mailFromName);
+                                        //$message->replyTo($address, $name = null);
+                                        $message->subject($subject);
+                                    });
+                        }
+                    }
+                }
+            }
+            
             return redirect(route('job.payment.details', ['id' => $job_id]))
                 ->with('success', 'Congratulations, Money has been added to your wallet. Please confirm activiate your job now.');
         }

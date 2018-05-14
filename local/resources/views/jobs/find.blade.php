@@ -48,9 +48,10 @@
 
 
             <div class="banner-form banner-form-full job-list-form">
-                <form method="POST" action="{{ route('post.find.jobs') }}" id="formID">
+                <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
                     <!-- category-change -->
-                    <div class="dropdown category-dropdown">                    {!! csrf_field() !!}    
+                    <div class="dropdown category-dropdown">                    
+                        <!-- {!! csrf_field() !!}     -->
                         <a data-toggle="dropdown" href="#">
                         <span class="change-text">
                             @if(old('cat_val')!=NULL)
@@ -87,6 +88,8 @@
                     </div><!-- language-dropdown -->
                 
                     <input type="text" class="form-control" placeholder="Job search" name="keyword" value="{{old('keyword')}}">
+                    <input type="hidden" class="form-control" placeholder="" name="post_code" id="post_code" value="">
+                    <input type="hidden" class="form-control" placeholder="" name="distance" id="distance" value="">
                     <button type="submit" class="btn btn-primary" value="Search">Search</button>
                 </form>
             </div>
@@ -187,11 +190,17 @@
                                             </a>
                                         </div>
                                     </div><!-- panel-heading -->
-
-                                    <div id="accordion-six" class="panel-collapse collapse">
+                                    
+                                    <div id="accordion-six" class="panel-collapse distance-data collapse">
+                                        <ul class="radio"> 
+                                            <li><input type="radio" name="crust" value="1" title="0-10 KM" checked="" onClick="getDistanceLength(1);" />0-10 KM</li> 
+                                            <li><input type="radio" name="crust" value="2" title="11-20 KM" onClick="getDistanceLength(2);" />11-20 KM</li> 
+                                            <li><input type="radio" name="crust" value="3" title="21-50 KM" onClick="getDistanceLength(3);" />21-50 KM</li> 
+                                            <li><input type="radio" name="crust" value="4" title="50+ KM" onClick="getDistanceLength(4);" />50+ KM</li> 
+                                        </ul> 
                                         <!-- panel-body -->
                                         <div class="panel-body">
-                                            <input type="text" placeholder="Postcode" class="form-control">
+                                            <input type="text" name="hidden_post_code" id="hidden_post_code" onblur="" placeholder="Postcode" class="form-control">
                                         </div><!-- panel-body -->
                                     </div>
                                 </div> 
@@ -355,6 +364,21 @@
             </div>
         </div>
     </section>
+<script type="text/javascript">
+    $(document).ready(function ($) {
+        $('#hidden_post_code').on('blur', function() {
+            if ($(this).val()!=''){
+                $('#post_code').val($(this).val()); 
+            }
+        });
+    });
+    function getDistanceLength(distanceval){
+        $('#distance').val(distanceval); 
+    }
+                
+</script>
 @include('footer')
+
+
 </body>
 </html>

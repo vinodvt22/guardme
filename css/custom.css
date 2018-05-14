@@ -648,6 +648,26 @@ a.btn:hover {
 .bottom-50{
     margin-bottom: 50px;
 }
+.distance-data ul.radio { 
+  margin: 0; 
+  padding: 6px 0px 0px 15px; 
+  margin-left: 20px; 
+  list-style: none; 
+}
+.example-val-from, .example-val-to {
+    font: 400 12px Arial;
+    color: #888;
+    display: block;
+    margin: 15px 0;
+}
+.example-val-from:before {
+    content: "From: ";
+    font: 700 12px Arial;
+}
+.example-val-to:before {
+    content: "To: ";
+    font: 700 12px Arial;
+}
 /*************** ipad ************/
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
 .top-mrgn-10{
