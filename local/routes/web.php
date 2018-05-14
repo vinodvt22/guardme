@@ -20,7 +20,10 @@ use Responsive\Http\Repositories\UsersRepository;
 /*Route::get('/index', 'CommonController@home');
 Route::get('/', 'CommonController@home');*/
 
-
+/*Route::get('/temp', function(){
+    
+   echo bcrypt('temp123');
+}); */
 //social login
 Route::group(['prefix' => 'account', 'namespace' => 'Auth'], function(){
     Route::get('login/{provider}', 'SocialAuthController@socialLogin')
@@ -35,6 +38,10 @@ Route::group(['prefix' => 'account', 'namespace' => 'Auth'], function(){
 
 
 Route::get('/', 'IndexController@sangvish_index');
+
+//New Route To Display 
+Route::get('/blog', 'BlogController@BlogIndex');
+
 Route::get('/referral', 'ReferralController@index');
 Route::get('/redeem', 'ReferralController@redeem');
 Route::get('/redeem/{id}', 'ReferralController@checkout');

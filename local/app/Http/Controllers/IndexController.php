@@ -37,11 +37,6 @@ class IndexController extends Controller
 		$four = DB::table('services')->orderBy('name', 'asc')->limit(1)->offset(3)->get();
 		$fourth = DB::select('select * from subservices where service = ?',[$four[0]->id]);
 
-
-		
-		
-		
-		
 		$testimonials = DB::table('testimonials')->orderBy('id', 'desc')->get();
 
       
