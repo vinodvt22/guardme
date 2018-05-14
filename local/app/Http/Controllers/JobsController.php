@@ -1,0 +1,204 @@
+<?php
+namespace Responsive\Http\Controllers;
+use Illuminate\Http\Request;
+use Responsive\Businesscategory;
+use Responsive\JobApplication;
+use Responsive\SecurityCategory;
+use Responsive\Job;
+
+use Responsive\User;
+use Auth;
+use Responsive\Transaction;
+
+class JobsController extends Controller
+{
+    //
+    public function create() {
+        if (!isEmployer()) {
+            return abort(404);
+        }
+        $all_security_categories = SecurityCategory::get();
+        $all_business_categories = Businesscategory::get();
+
+        return view('jobs.create', compact('all_security_categories', 'all_business_categories'));
+    }
+    public function schedule($id) {
+        if (!isEmployer()) {
+            return abort(404);
+        }
+        return view('jobs.schedule', compact('id'));
+    }
+    public function broadcast($id) {
+        if (!isEmployer()) {
+            return abort(404);
+        }
+        $all_security_categories = SecurityCategory::get();
+        return view('jobs.broadcast', compact('id', 'all_security_categories'));
+    }
+    public function paymentDetails($id) {
+        if (!isEmployer()) {
+            return abort(404);
+        }
+        $trans = new Transaction();
+        $available_balance = $trans->getWalletAvailableBalance();
+        $jobDetails = Job::calculateJobAmount($id);
+        return view('jobs.payment-details', compact('jobDetails', 'id', 'available_balance'));
+    }
+    public function confirmation() {
+        if (!isEmployer()) {
+            return abort(404);
+        }
+        return view('jobs.confirm');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function myJobs() {
+        $userid = Auth::user()->id;
+        $editprofile = User::where('id',$userid)->get();
+        $my_jobs = Job::with(['poster','poster.company','industory'])->where('created_by', $userid)->get();
+        return view('jobs.my', compact('my_jobs','editprofile'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function findJobs() {
+
+        $b_cats = Businesscategory::all();
+        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
+        //dd($locs);
+        $joblist = Job::where('status','1')->paginate(10);
+        return view('jobs.find', compact('joblist','b_cats','locs'));
+    }
+
+    public function postfindJobs(Request $request) 
+    {
+        //dd($request->all());
+        $cat = $request->cat_id;
+        $loc = $request->loc_val;
+        $keyword = $request->keyword;
+
+        $b_cats = Businesscategory::all();
+        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get(); 
+
+        if($cat !='' || $loc !='' || $keyword !='')
+        {
+            $jobs = Job::where('status','1');
+            if($keyword !='')
+            {
+                $jobs->where('title', 'like', "$keyword%");
+                
+            }
+
+            if($cat !='')
+            {
+                $jobs->where('business_category_id', "$cat");
+                
+            }
+
+            if($loc !='')
+            {
+                $jobs->where('city_town', "$loc");
+
+                
+            }
+            $joblist = $jobs->paginate(10);
+        }
+        else{
+
+            $joblist = Job::where('status','1')->paginate(10);
+
+        }
+        //dd($joblist);
+        $request->flash();
+        return view('jobs.find',compact('joblist','b_cats','locs'));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function viewJob($id) {
+        if (!$id) {
+            return abort(404);
+        }
+         $b_cats = Businesscategory::all();
+        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
+        //$job = Job::find($id);
+
+        $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
+        //dd($job);
+
+        if (empty($job)) {
+            return abort(404);
+        }
+        return view('jobs.detail', compact('job','b_cats','locs'));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function applyJob($id) {
+        $job = Job::find($id);
+        return view('jobs.apply', ['job' => $job]);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function myJobApplications($id) {
+
+         $user_id = auth()->user()->id;
+
+        $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
+        $editprofile = User::where('id',$user_id)->get();
+       
+        if ($user_id != $job->created_by) {
+            return abort(404);
+        }
+        $jobApplications = new JobApplication();
+
+
+
+        $applications = $jobApplications->getJobApplications($id);
+
+        //dd($applications);
+        return view('jobs.applications', compact('applications','job','editprofile'));
+    }
+
+    /**
+     * @param $application_id
+     * @return mixed
+     */
+    public function viewApplication($application_id,$applicant_id) {
+        $ja = new JobApplication();
+        $application = $ja->getApplicationDetails($application_id);
+
+        $person = User::with(['person_address','sec_work_category'])->find($applicant_id);
+        return view('jobs.application-detail', compact('application','person'));
+    }
+    public function myProposals() {
+        $user_id = auth()->user()->id;
+
+         $editprofile = User::where('id',$user_id)->get();
+       
+        $ja = new JobApplication();
+        $proposals = $ja->getMyProposals();
+
+        return view('jobs.proposals', compact('proposals','editprofile'));
+        
+    }
+
+
+    public function myApplicationView($application_id,$job_id) {
+        $ja = new JobApplication();
+        $application = $ja->getMyApplicationDetails($application_id);
+        $job = Job::with(['poster'])->where('id',$job_id)->first();
+       //dd($application);
+        return view('jobs.my-application-detail', compact('application','job'));
+    }
+}
