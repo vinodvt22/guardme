@@ -45,8 +45,7 @@
     </style>
 
 </head>
-<body>
-
+<body> 
     <!-- fixed navigation bar -->
     @include('header')
 

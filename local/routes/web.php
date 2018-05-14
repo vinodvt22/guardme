@@ -39,7 +39,7 @@ Route::group(['prefix' => 'account', 'namespace' => 'Auth'], function(){
 
 Route::get('/', 'IndexController@sangvish_index');
 
-//New Route To Display Blog Posts
+//New Route To Display Blog Posts 
 Route::get('/blog', 'BlogController@BlogIndex');
 
 Route::get('/referral', 'ReferralController@index');

@@ -32,11 +32,10 @@ class BlogController extends Controller
           $url = 'http://blog.guarddme.com/wp-json/wp/v2/posts';
           $response =  $this->curl($url);
                
-            $posts = json_decode($response,true);
+          $posts = json_decode($response,true);
           
           
-        
-        
+  
           $new_posts = array();
           $count = 0;
           foreach($posts as $post)
