@@ -135,7 +135,7 @@ Route::post('/api/user/verified', 'Api\Auth\VerificationController@postVerified'
 Route::post('/api/user/unverified', 'Api\Auth\VerificationController@postUnverified')
 	 ->name('api.user.unverified');
 
-	Route::get('/about','PageController@sangvish_about');
+	Route::get('/about','PageController@sangvish_about');  
 
 	Route::get('/404','PageController@sangvish_404');
 

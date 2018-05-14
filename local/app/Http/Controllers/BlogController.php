@@ -33,12 +33,10 @@ class BlogController extends Controller
           $response =  $this->curl($url);
                
             $posts = json_decode($response,true);
-            count($posts);
+           // count($posts);
           
-         // echo "<pre>";
-         // print_r($posts);
-          
-          
+        
+        
           $new_posts = array();
           $count = 0;
           foreach($posts as $post)
