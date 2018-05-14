@@ -15,7 +15,8 @@ class Job extends Model
 
     public static function calculateJobAmount($id) {
         $job = Job::find($id);
-        $working_hours = $job->daily_working_hours;
+        $number_of_freelancers = $job->number_of_freelancers;
+        $working_hours = ($job->daily_working_hours) * $number_of_freelancers;
         $working_days = $job->monthly_working_days;
         $pay_per_hour = $job->per_hour_rate;
         $total_working_hours = $working_hours * $working_days;

@@ -166,6 +166,7 @@ $setid=1;
 	
 	
 	<script src="<?php echo $url;?>/js/jquery.multiselect.js"></script>
+	<script src="<?php echo $url;?>/js/date-time-picker.js"></script>
 <script>
 	class Errors{
 		constructor() {
@@ -255,6 +256,9 @@ $.ajaxSetup({
 	headers: {
 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	}
+});
+jQuery('.date-time-picker').datetimepicker({
+	timeFormat: "hh:mm"
 });
 </script>
 
