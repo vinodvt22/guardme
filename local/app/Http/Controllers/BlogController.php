@@ -33,7 +33,7 @@ class BlogController extends Controller
           $response =  $this->curl($url);
                
             $posts = json_decode($response,true);
-           // count($posts);
+          
           
         
         
