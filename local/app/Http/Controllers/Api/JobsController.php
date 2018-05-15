@@ -46,18 +46,13 @@ class JobsController extends Controller
             'working_hours' => 'required|integer',
             'working_days' => 'required|integer',
             'pay_per_hour' => 'required|integer',
-            'number_of_freelancers' => 'required|integer',
-            'start_date_time' => 'required',
-            'end_date_time' => 'required',
+            'wallet_debit_frequency' => 'required',
         ]);
         $posted_data = $request->all();
         $working_days = !empty($posted_data['working_days']) ? $posted_data['working_days'] : 0;
         $working_hours = !empty($posted_data['working_hours']) ? $posted_data['working_hours'] : 0;
         $pay_per_hour = !empty($posted_data['pay_per_hour']) ? $posted_data['pay_per_hour'] : 0;
-        $number_of_freelancers = !empty($posted_data['number_of_freelancers']) ? $posted_data['number_of_freelancers'] : 0;
-        $start_date_time = !empty($posted_data['start_date_time']) ? $posted_data['start_date_time'] : null;
-        $end_date_time = !empty($posted_data['end_date_time']) ? $posted_data['end_date_time'] : null;
-
+        $wallet_debit_frequency = !empty($posted_data['wallet_debit_frequency']) ? $posted_data['wallet_debit_frequency'] : null;
         $job = Job::find($id);
         $logged_in_id = !empty(auth()->user()->id) ? (auth()->user()->id) : 0;
         $return_data = ['Not allowed to perform this action'];
@@ -66,9 +61,7 @@ class JobsController extends Controller
             $job->daily_working_hours = $working_hours;
             $job->monthly_working_days = $working_days;
             $job->per_hour_rate = $pay_per_hour;
-            $job->number_of_freelancers = $number_of_freelancers;
-            $job->start_date_time = date('Y-m-d h:i', strtotime($start_date_time));
-            $job->end_date_time = date('Y-m-d h:i', strtotime($end_date_time));
+            $job->wallet_debit_frequency = $wallet_debit_frequency;
             if ($job->save()) {
                 $return_data = ['message' => 'Data saved successfully'];
                 $return_status = 200;
@@ -318,9 +311,9 @@ class JobsController extends Controller
         $user = auth()->user();
 
         // todo: get jobs awarded to user
-        $awarded_jobs_query = $user->jobs()->whereHas('applications', function ($query){
-            $query->where('is_hired', true);
-        });
+        $awarded_jobs_query = $user->applications()
+            ->where('is_hired', true)
+            ;
 
         return response()->json([
            'total_awarded_jobs' => $awarded_jobs_query->count(),
@@ -334,22 +327,11 @@ class JobsController extends Controller
         $user = auth()->user();
 
         // todo: get jobs applied by user
-        $applied_jobs = $user->jobs()->has('applications');
+        $applied_jobs = $user->applications();
 
         return response()->json([
             'total_awarded_jobs' => $applied_jobs->count(),
             'data' => $applied_jobs->get()
         ]);
-		
-	}
-    /**
-     * @return mixed
-     */
-    public function myProposals() {
-        $ja = new JobApplication();
-        $proposals = $ja->getMyProposals();
-        return response()
-            ->json($proposals, 200);
-
     }
 }

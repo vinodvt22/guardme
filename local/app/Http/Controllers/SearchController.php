@@ -37,7 +37,7 @@ class SearchController extends Controller
 		return view('search')->with($data);
 	}
 
-    function getpersonnelsearch()
+    function getpersonnelsearch($user_id = null)
 	{
 	    $data = \request()->all();
 
@@ -117,7 +117,7 @@ class SearchController extends Controller
 		return view('search',compact('cats','locs','sec_personnels'));
 	}
 	
-	function postpersonnelsearch(Request $request)
+	public function postpersonnelsearch(Request $request)
 	{
 		$cat = $request->cat_id;
 		$loc = $request->loc_id;
@@ -165,11 +165,14 @@ class SearchController extends Controller
 		return view('search',compact('sec_personnels','cats','locs'));
 	}
 
-	function personnelprofile($id)
+	public function personnelprofile($id)
 	{
 
 		$person = User::with(['person_address','sec_work_category'])->find($id);
 		//dd($person->work_category);
+
+        if(\request()->expectsJson())
+            return response()->json($person);
 
 		return view('profile',compact('person'));
 

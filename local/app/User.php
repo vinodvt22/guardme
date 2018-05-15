@@ -25,13 +25,6 @@ class User extends Authenticatable
     const WORK_CATEGORY_CLOSE_PROTECTION = 3;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
-    
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -234,7 +227,6 @@ class User extends Authenticatable
         return $this->hasMany(Job::class,'created_by');
     }
 
-
     public function company()
     {
         return $this->hasOne(Shop::class);
@@ -244,82 +236,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(SecurityCategory::class,'work_category');
     }
+
     public function nationality()
     {
         return $this->belongsTo(Country::class, 'nation_id');
     }
-    
-    /*
-     *  find the n closest locations
-     *  @param Model $query eloquent model
-     *  @param float $max_distance distance in miles or km
-     *  @param string $units miles or kilometers
-     *  @param Array $fiels to return
-     *  @return array
-     */
-    public static function getUsersNearByJob($latitude=0, $longitude=0, $min_distance = 60, $max_distance = 20, $units = 'kilometers')
-    {        
-        /*
-        *  Allow for changing of units of measurement
-        */
-        switch ( $units ) {
-            case 'miles':
-                //radius of the great circle in miles
-                $gr_circle_radius = 5;
-            break;
-            case 'kilometers':
-                //radius of the great circle in kilometers
-                $gr_circle_radius = 6371;
-            break;
-        }  
-        
-        /*
-        *  Generate the select field for disctance
-        */
-        $distance_select_sub = sprintf(
-                                   "           
-                                   ROUND(( %d * acos( cos( radians(%s) ) " .
-                                           " * cos( radians( UD.latitude ) ) " .
-                                           " * cos( radians( UD.longitude ) - radians(%s) ) " .
-                                           " + sin( radians(%s) ) * sin( radians( UD.latitude ) ) " .
-                                       " ) " . 
-                                   "), 2 ) " .  
-                                   "",
-                                   $gr_circle_radius,               
-                                   $latitude,
-                                   $longitude,
-                                   $latitude
-                                      );
-        
-        $distance_select = sprintf(
-                                   "           
-                                   ROUND(( %d * acos( cos( radians(%s) ) " .
-                                           " * cos( radians( UD.latitude ) ) " .
-                                           " * cos( radians( UD.longitude ) - radians(%s) ) " .
-                                           " + sin( radians(%s) ) * sin( radians( UD.latitude ) ) " .
-                                       " ) " . 
-                                   "), 2 ) " . 
-                                   "AS distance
-                                   ",
-                                   $gr_circle_radius,               
-                                   $latitude,
-                                   $longitude,
-                                   $latitude
-                                      );
-        
-        $users_result = DB::table((new User)->getTable().' as U')
-                     ->select('U.*', DB::raw( $distance_select ))
-                     ->leftJoin((new Address)->getTable().' as UD', 'U.id', '=', 'UD.user_id')
-                     ->where('U.verified', '=', 1) 
-                     ->where('U.admin', '=', 2) 
-                     ->whereRaw("$distance_select_sub >= $min_distance")
-                     ->whereRaw("$distance_select_sub <= $max_distance")
-                     ->get();
-        
-        $users_list = $users_result;
-        return $users_list;
-    }
-    
+
     public static function getWorkCategories() {
         return [
             User::WORK_CATEGORY_NONE => null,
@@ -327,5 +249,10 @@ class User extends Authenticatable
             User::WORK_CATEGORY_SECURITY_GUARD => 'Securoty Guard',
             User::WORK_CATEGORY_CLOSE_PROTECTION => 'Close Protection'
         ];
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class,'applied_by');
     }
 }
