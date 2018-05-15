@@ -8,7 +8,7 @@
             margin-right: 0px;
         }
     </style>
-   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyC3ajei74kywhUItHcNIaFlD5sGAQIJv4Y"></script>
+   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyC3ajei74kywhUItHcNIaFlD5sGAQIJv4Y"></script>
    <script type="text/javascript">
        <?php if( count($user_address) > 0 ) { ?>
         var markers = [
@@ -40,7 +40,7 @@
         var mapOptions = {
             center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
             zoom: 10,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
         };
         var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
         var infoWindow = new google.maps.InfoWindow();
@@ -53,7 +53,8 @@
             var marker = new google.maps.Marker({
                 position: myLatlng,
                 map: map,
-                title: data.title
+                title: data.title,
+                icon: "http://guarddme.com/images/map-icon.png",
             });
             latlngbounds.extend(marker.position);
             (function (marker, data) {
@@ -167,11 +168,15 @@
                                     <p>Reference: {{$job->id}}</p>
                                     <p>Bank or payment details should not be provided to any employer. GuardME is not responsible for any external transactions. All applications and payments should be made via our website.</p>
                                 </div>
-
-
-
-
                             </div>
+                            @if(Auth::check())
+                            <div class="section job-description">
+                                <div class="description-info">
+                                    <h1>Job Location</h1>
+                                    <div id="dvMap" style="width:700px; height: 350px;"></div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
 
                         <div class="col-sm-4">
@@ -184,10 +189,6 @@
                                     <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience: <a href="#">Entry level</a></li>
                                     
                                 </ul>
-                            </div>
-                            <div class="section company-info">
-                                <h1>Job Location</h1>
-                                <div id="dvMap" style="width:307px; height: 300px;"></div>                     
                             </div>
                             <div class="section company-info">
                                 <h1>Company Info</h1>

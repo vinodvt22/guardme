@@ -173,26 +173,9 @@ class PaypalPaymentController extends Controller
                     $usersRes = User::getUsersNearByJob($latitude, $longitude, $specific_area_min, $specific_area_max, 'kilometers');
                     if( count($usersRes) > 0 ){
                         foreach($usersRes as $usersResVal){
-                            //mail
-                            $mailTo = $usersResVal->email;
-                            $mailFrom = "noreply@guardme.com";
-                            $mailFromName = "GuardME";
-                            $subject = "GuardMe: Job Posted";
-                            $attachment = "";
                             $data = array('name' => $usersResVal->name, 'specific_area_min' => $specific_area_min, 'specific_area_max' => $specific_area_max);
-                            $this->jobStore($data, $usersResVal->id);
-                            /*
-                            $mailsent = Mail::send('mail.jobpost', array('data' => $data), function($message) use($mailTo, $mailFrom, $subject, $mailFromName, $attachment) {
-                                        if ($attachment != '') {
-                                            $file = $attachment;
-                                            $message->attach($file);
-                                        }
-                                        $message->to($mailTo);
-                                        $message->from($mailFrom, $mailFromName);                                        
-                                        $message->sender($mailFrom, $mailFromName);
-                                        //$message->replyTo($address, $name = null);
-                                        $message->subject($subject);
-                                    });*/
+                            // Send mail
+                            $this->jobStore($data, $usersResVal->id);                           
                         }
                     }
                 }
