@@ -7,6 +7,7 @@ use Responsive\SecurityCategory;
 use Responsive\Job;
 
 use Responsive\User;
+use Responsive\Address;
 use Auth;
 use Input;
 use Responsive\Transaction;
@@ -89,6 +90,32 @@ class JobsController extends Controller
                 }
                 $joblist = Job::getSearchedJobNearByPostCode($data, $latitude, $longitude, 20, 'kilometers', $page_id);
             } else {
+                if(Auth::check()){
+                    $userid = Auth::user();
+                    if( $userid->admin == 2 ){
+                        if($userid->person_address){
+                            $userAddressObj = $userid->person_address;
+                            if(!empty($userAddressObj->latitude))
+                                $latitude = $userAddressObj->latitude;
+                            if(!empty($userAddressObj->latitude))
+                                $longitude = $userAddressObj->longitude;
+
+                            if( $latitude > 0 && $latitude > 0 )
+                                $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
+                            else
+                                $joblist = Job::where('status','1')->paginate(10);
+                        } else {
+                            $joblist = Job::where('status','1')->paginate(10);
+                        }                
+                    } else {
+                        $joblist = Job::where('status','1')->paginate(10);
+                    }
+                } else {
+                    $joblist = Job::where('status','1')->paginate(10);
+                }
+            }
+        } else {
+            if(Auth::check()){
                 $userid = Auth::user();
                 if( $userid->admin == 2 ){
                     if($userid->person_address){
@@ -108,24 +135,6 @@ class JobsController extends Controller
                 } else {
                     $joblist = Job::where('status','1')->paginate(10);
                 }
-            }
-        } else {
-            $userid = Auth::user();
-            if( $userid->admin == 2 ){
-                if($userid->person_address){
-                    $userAddressObj = $userid->person_address;
-                    if(!empty($userAddressObj->latitude))
-                        $latitude = $userAddressObj->latitude;
-                    if(!empty($userAddressObj->latitude))
-                        $longitude = $userAddressObj->longitude;
-                    
-                    if( $latitude > 0 && $latitude > 0 )
-                        $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
-                    else
-                        $joblist = Job::where('status','1')->paginate(10);
-                } else {
-                    $joblist = Job::where('status','1')->paginate(10);
-                }                
             } else {
                 $joblist = Job::where('status','1')->paginate(10);
             }
@@ -184,7 +193,12 @@ class JobsController extends Controller
         if (!$id) {
             return abort(404);
         }
-         $b_cats = Businesscategory::all();
+        $user_address = [];
+        if(Auth::check()){
+            $user_id = auth()->user()->id;
+            $user_address = User::where('id', $user_id)->with('address')->first();
+        }
+        $b_cats = Businesscategory::all();
         $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
         //$job = Job::find($id);
 
@@ -194,7 +208,7 @@ class JobsController extends Controller
         if (empty($job)) {
             return abort(404);
         }
-        return view('jobs.detail', compact('job','b_cats','locs'));
+        return view('jobs.detail', compact('job','b_cats','locs','user_address'));
     }
 
     /**

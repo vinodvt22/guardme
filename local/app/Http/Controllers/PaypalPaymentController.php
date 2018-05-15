@@ -1,5 +1,6 @@
 <?php
 namespace Responsive\Http\Controllers;
+use Responsive\Http\Traits\JobsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use PayPal\Rest\ApiContext;
@@ -20,7 +21,8 @@ use Mail;
 
 class PaypalPaymentController extends Controller
 {
-    //
+    use JobsTrait;
+    
     private $_api_context;
     protected $currency = 'GBP';
     public function __construct()
@@ -178,7 +180,9 @@ class PaypalPaymentController extends Controller
                             $subject = "GuardMe: Job Posted";
                             $attachment = "";
                             $data = array('name' => $usersResVal->name, 'specific_area_min' => $specific_area_min, 'specific_area_max' => $specific_area_max);
-                            $mailsent = Mail::send('email.jobpost', array('data' => $data), function($message) use($mailTo, $mailFrom, $subject, $mailFromName, $attachment) {
+                            $this->jobStore($data, $usersResVal->id);
+                            /*
+                            $mailsent = Mail::send('mail.jobpost', array('data' => $data), function($message) use($mailTo, $mailFrom, $subject, $mailFromName, $attachment) {
                                         if ($attachment != '') {
                                             $file = $attachment;
                                             $message->attach($file);
@@ -188,7 +192,7 @@ class PaypalPaymentController extends Controller
                                         $message->sender($mailFrom, $mailFromName);
                                         //$message->replyTo($address, $name = null);
                                         $message->subject($subject);
-                                    });
+                                    });*/
                         }
                     }
                 }
