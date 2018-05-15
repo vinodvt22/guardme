@@ -46,8 +46,7 @@ class IndexController extends Controller
 		
 		
 		$testimonials = DB::table('testimonials')->orderBy('id', 'desc')->get();
-
-      
+    	
 		
 		$data = array('services' => $services, 'one' => $one, 'first'=>$first, 'two' => $two,'second' =>$second, 'three'=> $three,'third'=>$third, 'four' => $four, 
 		'fourth' => $fourth, 'testimonials' => $testimonials,'b_cats'=>$b_cats,'locs'=>$locs);
@@ -73,9 +72,6 @@ class IndexController extends Controller
         else
             return ['value'=>'No Result Found','id'=>''];
     }
-	
-	
-	
 	
 	
 	
