@@ -62,6 +62,10 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
 
 });
 
+
+Route::get('/search','SearchController@getpersonnelsearch');
+Route::get('/search/{id}','SearchController@personnelprofile');
+
 Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
     Route::get('/security-categories', 'JobsController@getSecurityCategories');
     Route::get('/business-categories', 'JobsController@getBusinessCategories');

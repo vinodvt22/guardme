@@ -39,53 +39,82 @@ class SearchController extends Controller
         
 	function getpersonnelsearch($user_id = null)
 	{
-	    $page_id = Input::get("page");
-            $data = \request()->all();
-            $units = 'kilometers';  
-            $latitude = 0;
-            $longitude = 0;
+	    $data = \request()->all();
 
-            $query = User::where('admin', '2');        
-            $cats = DB::table('security_categories')->orderBy('name', 'asc')->get();
-            $locs = DB::table('address')->distinct()->get();
 
-            if (count($data)) {
-                if( isset($data['post_code']) ){
-                    $post_code = trim($data['post_code']);
-                    if (!empty($post_code)) {
-                        $postcode_url = "https://api.getaddress.io/find/".$post_code."?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
-                        $postcode_url = str_replace(' ', '%20', $postcode_url);
-                        $ch = curl_init();
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-                        curl_setopt($ch, CURLOPT_HEADER, false);
-                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                        curl_setopt($ch, CURLOPT_URL, $postcode_url);
-                        curl_setopt($ch, CURLOPT_REFERER, $postcode_url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                        $getBas = curl_exec($ch);
-                        curl_close($ch);
-                        $post_code_array = json_decode($getBas, true);
-                       
-                        if(isset($post_code_array['Message']) || empty($post_code_array) ){
-                            return redirect()->to('/search')->with('flash_message', 'Post code not valid!');
-                        }
-                        $latitude = $post_code_array['latitude'];
-                        $longitude = $post_code_array['longitude'];
+		$query = User::where('admin','2');
+
+		if(count($data)){
+
+		    // todo: filter by category
+            $search_category = isset($data['cat_val']) ? trim($data['cat_val']) : null;
+            if($search_category && $search_category != 'all'){
+                $query = $query->whereHas('sec_work_category', function ($q) use ($search_category){
+                    $q->where('name', $search_category);
+                });
+            }
+
+            // todo: filter by gender
+            $search_gender = isset($data['gender']) ? trim($data['gender']) : null;
+            if($search_gender && $search_gender != 'all'){
+                $query = $query->where('gender', $search_gender);
+            }
+
+            // todo: search filter, location
+            $location_search_filter = isset($data['location_filter']) ? trim($data['location_filter']) : null;
+
+            if($location_search_filter){
+                $location_search_query_array = explode(' ', trim($location_search_filter));
+
+                if(count($location_search_query_array)){
+                    foreach ($location_search_query_array as $search_location){
+                        $query = $query
+                            ->whereHas('address', function ($q) use ($search_location){
+                                $q->where('citytown', $search_location);
+                            });
                     }
-                    $sec_personnels = User::getPersonnelSearchNearBy($data, $latitude, $longitude, 20, 'kilometers', $page_id);
-                } else {
-                    $sec_personnels = User::getPersonnelNearBy($data, $page_id);
-                }           
-            } else {
-                $sec_personnels = User::getPersonnelNearBy($data, $page_id);
-            }        
+                }
+            }
 
-            //$sec_personnels = $query->with('person_address')->paginate(10);
+		    // todo: filter location
+            /*$search_location = trim($data['loc_val']);
 
-            if (\request()->expectsJson())
-                return response()->json($sec_personnels);
+            if($search_location){
+                $query = $query
+                    ->whereHas('address', function ($q) use ($search_location){
+                        $q->where('citytown', $search_location);
+                    });
+            }*/
 
-            return view('search', compact('cats', 'locs', 'sec_personnels'));
+            // todo: filter user
+		    $personnel_query = isset($data['sec_personnel']) ? $data['sec_personnel'] : null;
+
+		    if($personnel_query){
+                $search_query_array = explode(' ', trim($personnel_query));
+
+                if(count($search_query_array)){
+                    foreach ($search_query_array as $search_key){
+                        $query = $query
+                            ->where('name', 'LIKE', "%$search_key%")
+                            ->orWhere('email', 'LIKE', "%$search_key%")
+                            ->orWhere('firstname', 'LIKE', "%$search_key%")
+                            ->orWhere('lastname', 'LIKE', "%$search_key%")
+                        ;
+                    }
+                }
+            }
+        }
+
+		$cats= DB::table('security_categories')->orderBy('name','asc')->get();
+
+        $locs= DB::table('address')->distinct()->get();
+
+        $sec_personnels = $query->with('person_address')->paginate(10);
+
+        if(\request()->expectsJson())
+            return response()->json($sec_personnels);
+
+		return view('search',compact('cats','locs','sec_personnels'));
 	}
 	
 	public function postpersonnelsearch(Request $request)
@@ -136,11 +165,14 @@ class SearchController extends Controller
 		return view('search',compact('sec_personnels','cats','locs'));
 	}
 
-	function personnelprofile($id)
+	public function personnelprofile($id)
 	{
 
 		$person = User::with(['person_address','sec_work_category'])->find($id);
 		//dd($person->work_category);
+
+        if(\request()->expectsJson())
+            return response()->json($person);
 
 		return view('profile',compact('person'));
 
