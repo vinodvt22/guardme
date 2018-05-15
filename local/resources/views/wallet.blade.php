@@ -54,7 +54,7 @@
 									</tr>
 								</thead> -->
 								<tbody>
-								@if($all_transactions->count() >0)
+								@if($wallet_data['all_transactions']->count() >0)
 									@foreach($all_transactions as $trans)
 										<tr>
 											<td>{{ $trans->title }}</td>
@@ -81,10 +81,10 @@
 						<ul>
 							<li>
 								<p class="font-35">£
-									@if($escrow_balance==0)
+									@if($wallet_data['escrow_balance']==0)
 										0.00
 									@else
-										{{ $escrow_balance }}
+										{{ $wallet_data['escrow_balance'] }}
 									@endif
 								</p>
 							</li>

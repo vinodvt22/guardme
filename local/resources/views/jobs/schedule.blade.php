@@ -26,7 +26,13 @@
     @include('shared.message')
 
     <form id="create_job_schedule" method="POST" action="{{ route('api.schedule.job', ['id' => $id]) }}">
-
+        <div class="form-group row">
+            <label class="col-sm-3" for="hours_per_day">Number of freelancers you need</label>
+            <div class="col-sm-9">
+                <input type="text" placeholder="Number of freelacers you want to hire for this job" class="number_of_freelancers form-control" name="number_of_freelancers">
+                <span class="text-danger error-span"></span>
+            </div>
+        </div>
         <div class="form-group row">
             <label class="col-sm-3" for="hours_per_day">Number of working hours</label>
             <div class="col-sm-9">
@@ -64,29 +70,6 @@
                 <span class="text-danger error-span"></span>
             </div>
         </div>
-        <div class="form-group row">
-
-            <label class="col-sm-3">Wallet Debit Frequency<span class="required">*</span></label>
-            <div class="col-sm-9 user-type">
-            
-            <!-- <div class="wallet_debit_frequency"> -->
-               
-                    <input type="radio" name="wallet_debit_frequency" value="hourly" id="pay_hour">
-                    <label for="pay_hour">
-                        
-                        Pay Hourly
-                    </label>
-                
-                    <input type="radio" name="wallet_debit_frequency" value="daily" id="pay_day">
-                    <label  for="pay_day">
-                        
-                        Pay Daily
-                    </label>
-                
-            <!-- </div> -->
-            <span class="text-danger error-span"></span>
-        </div>
-        </div>
         <label class="col-sm-3" for="">Details/Calculations</label>
         <div class="col-sm-9">
             <table class="table table-bordered">
@@ -109,6 +92,20 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3">Start date/time</label>
+            <div class="col-sm-9">
+                <input type="text" class="start_date_time date-time-picker form-control" name="start_date_time">
+                <span class="text-danger error-span"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3">End date/time</label>
+            <div class="col-sm-9">
+                <input type="text" class="end_date_time form-control date-time-picker" name="end_date_time">
+                <span class="text-danger error-span"></span>
+            </div>
         </div>
         <button type="submit" class="btn btn-primary pull-right">Next</button>
     </form>
@@ -133,11 +130,12 @@
                 
         // calculations
         $("select[name='pay_per_hour']").on("change", function(){
+            var numberOfFreelancers = $("input[name='number_of_freelancers']").val();
             var hoursPerDay = $("select[name='working_hours']").val();
             var workingDays = $("select[name='working_days']").val();
             var payPerHour = $(this).val();
             // make calculations
-            var totalWorkingHours = hoursPerDay * workingDays;
+            var totalWorkingHours = (hoursPerDay * workingDays) * numberOfFreelancers;
             var basicTotal = totalWorkingHours * payPerHour;
             var VATFee = (basicTotal * 20) / 100;
             var adminFee = (basicTotal * 14.99) / 100;

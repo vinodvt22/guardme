@@ -55,9 +55,11 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 		<link href="<?php echo $url;?>/css/jquery.multiselect.css" rel="stylesheet" type="text/css">
 		<link href="<?php echo $url;?>/css/lightbox.min.css" rel="stylesheet" type="text/css">
 		<link href="<?php echo $url;?>/css/jquery-ui.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo $url;?>/css/date-time-picker.css" rel="stylesheet" type="text/css">
 
 
 		<link href="<?php echo $url;?>/css/custom.css" rel="stylesheet" type="text/css">
+                <link href="<?php echo $url;?>/css/nouislider.css" rel="stylesheet" type="text/css">
 	<!--old required css -->
 	
 	<!-- font -->
@@ -72,6 +74,8 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
     <script src="<?php echo $url;?>/js/price-range.js"></script>   
     <script src="<?php echo $url;?>/js/main.js"></script>
 	<script src="<?php echo $url;?>/js/switcher.js"></script>
+        <!-- Create job lat-long range -->
+        <script src="<?php echo $url;?>/js/nouislider.js"></script>
 	
 	
 	
