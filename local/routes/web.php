@@ -35,13 +35,9 @@ Route::group(['prefix' => 'account', 'namespace' => 'Auth'], function(){
     Route::post('login/{provider}/callback', 'SocialAuthController@completeSocialAuth')
         ->where('provider', 'google|facebook');
 });
-
+ 
 
 Route::get('/', 'IndexController@sangvish_index');
-
-//New Route To Display Blog Posts 
-Route::get('/blog', 'BlogController@BlogIndex');
-
 Route::get('/referral', 'ReferralController@index');
 Route::get('/redeem', 'ReferralController@redeem');
 Route::get('/redeem/{id}', 'ReferralController@checkout');
