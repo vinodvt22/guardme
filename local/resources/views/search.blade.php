@@ -110,6 +110,8 @@
 				<!-- language-dropdown -->
 
 				<input type="text" class="form-control" placeholder="Security Personnel" name="sec_personnel" value="{{old('sec_personnel')}}">
+                                <input type="hidden" class="form-control post_code" placeholder="" name="post_code" id="" value="">
+                    <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="">
 				<button type="submit" class="btn btn-primary" value="Search">Search</button>
 			</form>
 		</div>
@@ -217,11 +219,29 @@
 								</div>
 							</div><!-- panel-heading -->
 
-							<div id="accordion-six" class="panel-collapse collapse">
-								<!-- panel-body -->
-								<div class="panel-body">
-									<input type="text" placeholder="Postcode" class="form-control">
-								</div><!-- panel-body -->
+							<div id="accordion-six" class="panel-collapse distance-data collapse">
+                                                            <form method="get" action="{{ route('post-personnel-search') }}" id="formID">
+                                                                <ul class="radio"> 
+                                                                    <li><input type="radio" name="crust" value="1" title="0-10 KM" checked="" onClick="getDistanceLength(1);" />0-10 KM</li> 
+                                                                    <li><input type="radio" name="crust" value="2" title="11-20 KM" onClick="getDistanceLength(2);" />11-20 KM</li> 
+                                                                    <li><input type="radio" name="crust" value="3" title="21-50 KM" onClick="getDistanceLength(3);" />21-50 KM</li> 
+                                                                    <li><input type="radio" name="crust" value="4" title="50+ KM" onClick="getDistanceLength(4);" />50+ KM</li> 
+                                                                </ul> 
+                                                                <!-- panel-body -->
+                                                                <div class="panel-body">
+                                                                    <input type="text" name="hidden_post_code" id="hidden_post_code" onblur="" placeholder="Postcode" class="form-control">
+                                                                </div><!-- panel-body -->
+                                                                <div class="panel-body">
+                                                                    <button class="btn-sm btn btn-default" type="submit">filter</button>
+                                                                </div>
+                                                                <input type="hidden" name="cat_id" value="" id="">           
+                                                                <input type="hidden" name="cat_val" value="" id="">  
+                                                                <input type="hidden" name="gender" value="" id="">  
+                                                                <input type="hidden" name="sec_personnel" value="" id="">  
+                                                                <input type="hidden" class="form-control post_code" placeholder="" name="post_code" id="" value="">
+                                                                <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="">
+
+                                                            </form>
 							</div>
 						</div>
 					</div>
@@ -361,7 +381,7 @@
 							@endif</a> </span>
 									<div class="ad-meta">
 										<ul>
-											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($person->person_address){{$person->person_address->citytown}} @endif </a></li>
+											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($person->citytown){{$person->citytown}} @endif </a></li>
 											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
                                                     <?php //echo $stime; ?> - <?php /*echo $etime; */?>
 												</a></li>
@@ -405,7 +425,19 @@
 
 	</div>
 </section>
-
+<script type="text/javascript">
+    $(document).ready(function ($) {
+        $('#hidden_post_code').on('blur', function() {
+            if ($(this).val()!=''){
+                $('.post_code').val($(this).val()); 
+            }
+        });
+    });
+    function getDistanceLength(distanceval){
+        $('.distance').val(distanceval); 
+    }
+                
+</script>
 
 @include('footer')
 </body>
