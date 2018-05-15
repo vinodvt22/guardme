@@ -111,7 +111,7 @@
 
 				<input type="text" class="form-control" placeholder="Security Personnel" name="sec_personnel" value="{{old('sec_personnel')}}">
                                 <input type="hidden" class="form-control post_code" placeholder="" name="post_code" id="" value="">
-                    <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="">
+                    <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="1">
 				<button type="submit" class="btn btn-primary" value="Search">Search</button>
 			</form>
 		</div>
@@ -239,7 +239,7 @@
                                                                 <input type="hidden" name="gender" value="" id="">  
                                                                 <input type="hidden" name="sec_personnel" value="" id="">  
                                                                 <input type="hidden" class="form-control post_code" placeholder="" name="post_code" id="" value="">
-                                                                <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="">
+                                                                <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="1">
 
                                                             </form>
 							</div>
@@ -350,7 +350,13 @@
 								</div><!-- category-change -->
 							</div>
 						</div><!-- featured-top -->
-
+                            @if(Session::has('flash_message'))
+                            <div class="messagebox">        
+                                <div class="errormsg">
+                                    {{ Session::get('flash_message') }}
+                                </div>        
+                            </div>
+                            @endif          
                         <?php if($sec_personnels->count()>0){?>
 
                         <?php foreach($sec_personnels as $person){ ?>

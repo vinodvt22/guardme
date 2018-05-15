@@ -45,8 +45,6 @@
                 </ol><!-- breadcrumb -->                        
                 <h2 class="title">Jobs</h2>
             </div>
-
-
             <div class="banner-form banner-form-full job-list-form">
                 <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
                     <!-- category-change -->
@@ -89,7 +87,7 @@
                 
                     <input type="text" class="form-control" placeholder="Job search" name="keyword" value="{{old('keyword')}}">
                     <input type="hidden" class="form-control post_code" placeholder="" name="post_code" id="" value="">
-                    <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="">
+                    <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="1">
                     <button type="submit" class="btn btn-primary" value="Search">Search</button>
                 </form>
             </div>
@@ -211,7 +209,7 @@
                                             <input type="hidden" name="loc_val" value="" id="">  
                                             <input type="hidden" name="keyword" value="" id="">  
                                             <input type="hidden" class="form-control post_code" placeholder="" name="post_code" id="" value="">
-                                            <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="">
+                                            <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="1">
                                             
                                         </form>
                                     </div>
@@ -220,11 +218,10 @@
                     </div>
                     <!-- recommended-ads -->
                     <div class="col-sm-8 col-md-7">  
-
+                        
                      <div class="section job-list-item skeleton">
 
-                        <div class="featured-top clearfix">
-                                
+                        <div class="featured-top clearfix">                                
                                 <div class="dropdown pull-right">
                                     <div class="dropdown category-dropdown">
                                         <h5>Sort by:</h5>                       
@@ -322,8 +319,13 @@
                             </div><!-- featured-top --> 
 
 
-    
-    
+    @if(Session::has('flash_message'))
+    <div class="messagebox">        
+        <div class="errormsg">
+            {{ Session::get('flash_message') }}
+        </div>        
+    </div>
+    @endif
     <?php if($joblist->count()>0){?>
     
             <?php foreach($joblist as $job){ ?>
