@@ -3,6 +3,11 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('style')
+    <style type="text/css">
+        .job-ad-item .btn.btn-primary{
+            margin-right: 0px;
+        }
+    </style>
    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyC3ajei74kywhUItHcNIaFlD5sGAQIJv4Y"></script>
    <script type="text/javascript">
        <?php if( count($user_address) > 0 ) { ?>
@@ -137,6 +142,7 @@
                     <div class="social-media">
                         <div class="button">
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
+                            <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>Save for Later</a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
                         <ul class="share-social">
@@ -158,6 +164,8 @@
                                 <div class="description-info">
                                     <h1>Description</h1>
                                     <p>{{$job->description}}</p>
+                                    <p>Reference: {{$job->id}}</p>
+                                    <p>Bank or payment details should not be provided to any employer. GuardME is not responsible for any external transactions. All applications and payments should be made via our website.</p>
                                 </div>
 
 

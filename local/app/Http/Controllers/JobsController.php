@@ -64,6 +64,13 @@ class JobsController extends Controller
         return view('jobs.my', compact('my_jobs','editprofile'));
     }
 
+    public function savedJobs() {
+        $userid = Auth::user()->id;
+        $editprofile = User::where('id',$userid)->get();
+        $my_jobs = Job::take(5)->get();
+        return view('jobs.saved', compact('my_jobs','editprofile'));
+    }
+
     /**
      * @return mixed
      */
@@ -298,5 +305,21 @@ class JobsController extends Controller
         $job = Job::with(['poster'])->where('id',$job_id)->first();
        //dd($application);
         return view('jobs.my-application-detail', compact('application','job'));
+    }
+
+    public function getFavouriteJobs($id){
+
+    }
+
+    public function postFavouriteJobs($id){
+
+    }
+
+    public function getJobs($id){
+
+    }
+
+    public function postJobs($id){
+
     }
 }

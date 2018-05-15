@@ -330,13 +330,13 @@
                 
         <div class="job-ad-item">
             <div class="item-info">
-                <div class="item-image-box">
+                <!-- <div class="item-image-box">
                     <div class="item-image">
                       
                         <a href="{{ route('view.job',$job->id) }}" ><img align="center" class="img-responsive" src="{{ URL::to("/")}}/images/img-placeholder.png" alt="{{$job->title}}"/></a>
                         
-                    </div><!-- item-image -->
-                </div>
+                    </div> 
+                </div> -->
                     
                 <div class="ad-info">
                     <span><a href="{{ route('view.job',$job->id) }}" class="title">{{$job->title}}</a> </span>
