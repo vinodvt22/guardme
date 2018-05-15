@@ -208,7 +208,7 @@ $setts = DB::table('settings')
             <h4>Thousands of professionals are growing their businesses.</h4>
            
         </div>
-        <div class="row">
+             <div class="row">
             <div class="col-md-12">
                 <div class="col-md-1"></div>
               <div class="col-md-10">
@@ -239,6 +239,11 @@ $setts = DB::table('settings')
                         </div>
                     </div>
               </div>
+                    
+
+                   
+            </div>
+        </div>
                     
 
                    

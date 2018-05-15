@@ -1,15 +1,20 @@
 <?php
 namespace Responsive\Http\Controllers\Api;
+use Responsive\Http\Traits\JobsTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
 use Responsive\JobApplication;
 use Responsive\Transaction;
 use Responsive\User;
+use Responsive\Businesscategory;
+use Responsive\SecurityCategory;
 
 class JobsController extends Controller
 {
-    //
+    use JobsTrait;
+    
     public function create(Request $request) {
         $this->validate($request, [
             'title' => 'required|max:255',
@@ -259,6 +264,26 @@ class JobsController extends Controller
             'paypal_payment_status' => $posted_data['paypal_payment_status'],
             'status' => $posted_data['status']
         ];
+        
+        /* Email to users for selected radius */
+        $job_id = $posted_data['job_id'];
+        $job = Job::find($job_id);
+        if($job){
+            if( !empty($job->latitude) && !empty($job->longitude) && !empty($job->specific_area_min) && !empty($job->specific_area_max) ){
+                $latitude = $job->latitude;
+                $longitude = $job->longitude;
+                $specific_area_min = $job->specific_area_min;
+                $specific_area_max = $job->specific_area_max;
+                $usersRes = User::getUsersNearByJob($latitude, $longitude, $specific_area_min, $specific_area_max, 'kilometers');
+                if( count($usersRes) > 0 ){
+                    foreach($usersRes as $usersResVal){
+                        $data = array('name' => $usersResVal->name, 'specific_area_min' => $specific_area_min, 'specific_area_max' => $specific_area_max);
+                        // Send mail
+                        $this->jobStore($data, $usersResVal->id);
+                    }
+                }
+            }
+        }
 
         // add money
         $walletTransaction = new Transaction();
@@ -334,4 +359,133 @@ class JobsController extends Controller
             'data' => $applied_jobs->get()
         ]);
     }
+    
+    /**
+     * Job details with routing line
+     * @param Request $request
+     * @return mixed
+     */
+    public function jobDetailsLocation(Request $request) {        
+        $this->validate($request, [
+            'job_id' => 'required',
+            'user_id' => 'required'
+        ]);
+        $posted_data = $request->all();
+
+        $user_address = User::where('id', $posted_data['user_id'])->with('address')->first();
+        $job_details = Job::with(['poster','poster.company','industory'])->where('id',$posted_data['job_id'])->first();
+        
+        return response()->json([
+            'user_address' => $user_address,
+            'job_details' => $job_details
+        ]);
+    }
+    
+    public function findJobs(Request $request)
+    {        
+        $this->validate($request, [
+            'page_id' => 'required'
+        ]);
+        
+        $joblist = [];
+        $posted_data = $request->all();        
+        $page_id = !empty($posted_data['page_id']) ? $posted_data['page_id'] : '';
+        $user_id = !empty($posted_data['user_id']) ? $posted_data['user_id'] : '';
+        $post_code = !empty($posted_data['post_code']) ? $posted_data['post_code'] : '';
+        $cat_id = !empty($posted_data['cat_id']) ? $posted_data['cat_id'] : '';
+        $loc_val = !empty($posted_data['loc_val']) ? $posted_data['loc_val'] : '';
+        $keyword = !empty($posted_data['keyword']) ? $posted_data['keyword'] : '';
+        $distance = !empty($posted_data['distance']) ? $posted_data['distance'] : '';
+        
+        if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
+            if( $post_code != '' ){
+                $post_code = trim($post_code);
+                if (!empty($post_code)) {
+                    $postcode_url = "https://api.getaddress.io/find/".$post_code."?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
+                    $postcode_url = str_replace(' ', '%20', $postcode_url);
+                    $json_data = file_get_contents($postcode_url);
+                    $post_code_array = json_decode($json_data, true);
+                    $latitude = $post_code_array['latitude'];
+                    $longitude = $post_code_array['longitude'];
+                }
+                $joblist = Job::getSearchedJobNearByPostCode($posted_data, $latitude, $longitude, 20, 'kilometers', $page_id);
+            } else {
+                if( $user_id != '' ){
+                    $userid = User::find($user_id);
+                    if( $userid->admin == 2 ){
+                        if($userid->person_address){
+                            $userAddressObj = $userid->person_address;
+                            if(!empty($userAddressObj->latitude))
+                                $latitude = $userAddressObj->latitude;
+                            if(!empty($userAddressObj->latitude))
+                                $longitude = $userAddressObj->longitude;
+
+                            if( $latitude > 0 && $latitude > 0 )
+                                $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
+                            else
+                                $joblist = Job::where('status','1')->paginate(10);
+                        } else {
+                            $joblist = Job::where('status','1')->paginate(10);
+                        }                
+                    } else {
+                        $joblist = Job::where('status','1')->paginate(10);
+                    }
+                } else {
+                    $joblist = Job::where('status','1')->paginate(10);
+                }
+            }
+        } else {
+            if( $user_id != '' ){
+                $userid = User::find($user_id);
+                if( $userid->admin == 2 ){
+                    if($userid->person_address){
+                        $userAddressObj = $userid->person_address;
+                        if(!empty($userAddressObj->latitude))
+                            $latitude = $userAddressObj->latitude;
+                        if(!empty($userAddressObj->latitude))
+                            $longitude = $userAddressObj->longitude;
+
+                        if( $latitude > 0 && $latitude > 0 )
+                            $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
+                        else
+                            $joblist = Job::where('status','1')->paginate(10);
+                    } else {
+                        $joblist = Job::where('status','1')->paginate(10);
+                    }                
+                } else {
+                    $joblist = Job::where('status','1')->paginate(10);
+                }
+            } else {
+                $joblist = Job::where('status','1')->paginate(10);
+            }
+        }
+        
+        return response()->json([
+            'job_list' => $joblist
+        ]);
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getSecurityCategories() {
+        $ja = new JobApplication();
+        $securityCategories = SecurityCategory::all();
+        return response()
+            ->json($securityCategories, 200);
+
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getBusinessCategories() {
+        $ja = new JobApplication();
+        $businessCategories = Businesscategory::all();
+        return response()
+            ->json($businessCategories, 200);
+
+    }
+    
+    
 }

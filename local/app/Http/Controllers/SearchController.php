@@ -37,7 +37,7 @@ class SearchController extends Controller
 		return view('search')->with($data);
 	}
 
-    function getpersonnelsearch($user_id = null)
+	function getpersonnelsearch($user_id = null)
 	{
 	    $data = \request()->all();
 

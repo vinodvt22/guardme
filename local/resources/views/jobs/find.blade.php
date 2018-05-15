@@ -204,7 +204,7 @@
                                                 <input type="text" name="hidden_post_code" id="hidden_post_code" onblur="" placeholder="Postcode" class="form-control">
                                             </div><!-- panel-body -->
                                             <div class="panel-body">
-                                                <button type="submit" class="btn btn-primary" value="Search">Search</button>
+                                                <button class="btn-sm btn btn-default" type="submit">filter</button>
                                             </div>
                                             <input type="hidden" name="cat_id" value="" id="">           
                                             <input type="hidden" name="cat_val" value="" id="">  
@@ -330,13 +330,13 @@
                 
         <div class="job-ad-item">
             <div class="item-info">
-                <div class="item-image-box">
+                <!-- <div class="item-image-box">
                     <div class="item-image">
                       
                         <a href="{{ route('view.job',$job->id) }}" ><img align="center" class="img-responsive" src="{{ URL::to("/")}}/images/img-placeholder.png" alt="{{$job->title}}"/></a>
                         
-                    </div><!-- item-image -->
-                </div>
+                    </div> 
+                </div> -->
                     
                 <div class="ad-info">
                     <span><a href="{{ route('view.job',$job->id) }}" class="title">{{$job->title}}</a> </span>

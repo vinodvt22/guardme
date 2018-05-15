@@ -56,13 +56,10 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     Route::post('apply/{id}','JobsController@applyJob')->name('api.apply.job');
     Route::post('mark/hired/{id}','JobsController@markHired')->name('api.mark.hired');
     
-  
     
     Route::get('my-jobs','JobsController@myJobs')->name('api.my.jobs');
 
 });
-
-// Route::get('find-jobs','JobsController@findJobs')->name('api.find.jobs');
 
 Route::get('/search','SearchController@getpersonnelsearch');
 Route::get('/search/{id}','SearchController@personnelprofile');
@@ -70,4 +67,10 @@ Route::get('/search/{id}','SearchController@personnelprofile');
 // Guest routes for jobs
 Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
     Route::get('find-jobs','JobsController@findJobs')->name('api.find.jobs');
+	Route::get('/security-categories', 'JobsController@getSecurityCategories');
+    Route::get('/business-categories', 'JobsController@getBusinessCategories');
+    Route::get('/wallet-data', 'WalletController@getWalletData');
+    Route::post('/find-jobs','JobsController@findJobs')->name('api.find.jobs');
+    Route::post('/job-details','JobsController@jobDetailsLocation')->name('api.job.details');
+    Route::post('/search','SearchController@getpersonnelsearch');
 });

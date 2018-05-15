@@ -97,7 +97,7 @@ if(isset(Auth::user()->verification)){
             	
             	<?php }else{?>
 			
-			<li><a  href="<?php echo $url;?>/#"><i class="fa fa-heart-o"></i></a></li>
+			<li><a href="{{url('jobs/saved')}}"><i class="fa fa-heart-o"></i></a></li>
 			<li><a href="<?php echo $url;?>/#"><i class="fa fa-envelope-o"></i></a></li>
 			<li><a href="<?php echo $url;?>/#"><i class="fa fa-bell-o"></i></a></li>
 			<li class="dropdown li-last">

@@ -341,6 +341,7 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 
 	Route::get('/job-confirmation', 'JobsController@confirmation')->name('job.confirmation');
 	Route::get('/my', 'JobsController@myJobs')->name('my.jobs');
+	Route::get('/saved', 'JobsController@savedJobs')->name('saved.jobs');
 	Route::get('/my/applications/{id}', 'JobsController@myJobApplications')->name('my.job.applications');
 	Route::get('/application/{id}/{u_id}', 'JobsController@viewApplication')->name('view.application');
 	Route::get('/apply/{id}', 'JobsController@applyJob')->name('apply.job');
@@ -355,5 +356,10 @@ Route::post('/jobs/find', 'JobsController@postfindJobs')->name('post.find.jobs')
 Route::get('/job/{id}', 'JobsController@viewJob')->name('view.job');
 
 Route::get('/phone', 'VerificationController@phone')->middleware('auth');
+
+Route::get('/jobs/favourites/{id}', 'JobsController@getFavouriteJobs')->name('favourites.jobs');
+Route::post('/jobs/favourites/{id}', 'JobsController@postFavouriteJobs')->name('post.favorites.jobs');
+Route::get('/jobs/{id}', 'JobsController@getJobs')->name('get.jobs');
+Route::post('/jobs/{id}', 'JobsController@postJobs')->name('post.jobs');
 
 

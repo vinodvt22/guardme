@@ -69,7 +69,6 @@ class Job extends Model
     public static function getSearchedJobNearByPostCode($data_arr, $latitude=0, $longitude=0, $max_distance = 600, $units = 'kilometers', $page=1)
     {        
         $numPerPage = 10;
-        $page = (Input::get('page')) ? 1 : 1;
         
         /*
         *  Allow for changing of units of measurement
@@ -202,7 +201,6 @@ class Job extends Model
     public static function getJobNearByUser($latitude=0, $longitude=0, $max_distance = 600, $units = 'kilometers', $page=1)
     {        
         $numPerPage = 10;
-        $page = (Input::get('page')) ? 1 : 1;
         
         /*
         *  Allow for changing of units of measurement
