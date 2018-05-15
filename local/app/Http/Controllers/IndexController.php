@@ -15,7 +15,7 @@ class IndexController extends Controller
      *
      * @return void
      */
-    
+     
 
     /**
      * Show the application dashboard.
@@ -69,7 +69,7 @@ class IndexController extends Controller
                       
                     
              $new_post[$count]['image'] = $image['guid']['rendered'];
-            $new_post[$count]['category'] = $category_data['name'];
+             $new_post[$count]['category'] = $category_data['name'];
                 $count++; 
            }
 

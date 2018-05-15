@@ -307,7 +307,7 @@ $setts = DB::table('settings')
                         </a>  
                    </div>
                 @endif
-                 
+                  
                     
                     
                     
