@@ -90,8 +90,22 @@ class JobsController extends Controller
                 if (!empty($post_code)) {
                     $postcode_url = "https://api.getaddress.io/find/".$post_code."?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
                     $postcode_url = str_replace(' ', '%20', $postcode_url);
-                    $json_data = file_get_contents($postcode_url);
-                    $post_code_array = json_decode($json_data, true);
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                    curl_setopt($ch, CURLOPT_HEADER, false);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                    curl_setopt($ch, CURLOPT_URL, $postcode_url);
+                    curl_setopt($ch, CURLOPT_REFERER, $postcode_url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                    $getBas = curl_exec($ch);
+                    curl_close($ch);
+                    $post_code_array = json_decode($getBas, true);
+                   
+                    if(isset($post_code_array['Message']) || empty($post_code_array)){
+                        return redirect()->to('/jobs/find')->with('flash_message', 'Post code not valid!');
+                    }
+                    
+                    //$post_code_array = json_decode($json_data, true);
                     $latitude = $post_code_array['latitude'];
                     $longitude = $post_code_array['longitude'];
                 }

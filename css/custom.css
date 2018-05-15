@@ -668,6 +668,49 @@ a.btn:hover {
     content: "To: ";
     font: 700 12px Arial;
 }
+/* MESSAGE CSS */
+.messagebox{
+	font: Arial, Helvetica, sans-serif;
+	text-align:center;
+	padding:0px 0px;
+	font-size:13px;
+        font-weight: 700;
+        display: inline-block;
+}
+.errormsg{
+	font: Arial, Helvetica, sans-serif;
+	color:#FF0000;
+	font-size:13px;
+}
+.errorbigmsg{
+	font: Arial, Helvetica, sans-serif;
+	color:#FF0000;
+	font-size:22px;
+}
+.errorcontent{
+	font: Arial, Helvetica, sans-serif;
+	color:#000000;
+	font-size:16px;
+}
+.successmsg{
+	font: Arial, Helvetica, sans-serif;
+	color:#339900;
+	font-size:13px;
+}
+.notfound{
+	color:#BE4A00;
+	font-size:12px;
+	font-weight:bold;
+	padding:10px 0px;
+}
+#massage-box{
+	padding:0px 0px;
+	color:#AE0000;
+	font-weight:bold;
+	font-size:12px;
+}
+/* END */
+
 /*************** ipad ************/
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
 .top-mrgn-10{
