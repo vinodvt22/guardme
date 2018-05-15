@@ -36,46 +36,59 @@ class SearchController extends Controller
 		$data = array('viewservices' => $viewservices,'shopview' => $shopview);
 		return view('search')->with($data);
 	}
-
-    function getpersonnelsearch() {
-        $page_id = Input::get("page");
-        $data = \request()->all();
-        $units = 'kilometers';  
-        $latitude = 0;
-        $longitude = 0;
         
-        $query = User::where('admin', '2');        
-        $cats = DB::table('security_categories')->orderBy('name', 'asc')->get();
-        $locs = DB::table('address')->distinct()->get();
+	function getpersonnelsearch($user_id = null)
+	{
+	    $page_id = Input::get("page");
+            $data = \request()->all();
+            $units = 'kilometers';  
+            $latitude = 0;
+            $longitude = 0;
 
-        if (count($data)) {
-            if( isset($data['post_code']) ){
-                $post_code = trim($data['post_code']);
-                if (!empty($post_code)) {
-                    $postcode_url = "https://api.getaddress.io/find/".$post_code."?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
-                    $postcode_url = str_replace(' ', '%20', $postcode_url);
-                    $json_data = file_get_contents($postcode_url);
-                    $post_code_array = json_decode($json_data, true);
-                    $latitude = $post_code_array['latitude'];
-                    $longitude = $post_code_array['longitude'];
-                }
-                $sec_personnels = User::getPersonnelSearchNearBy($data, $latitude, $longitude, 20, 'kilometers', $page_id);
+            $query = User::where('admin', '2');        
+            $cats = DB::table('security_categories')->orderBy('name', 'asc')->get();
+            $locs = DB::table('address')->distinct()->get();
+
+            if (count($data)) {
+                if( isset($data['post_code']) ){
+                    $post_code = trim($data['post_code']);
+                    if (!empty($post_code)) {
+                        $postcode_url = "https://api.getaddress.io/find/".$post_code."?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
+                        $postcode_url = str_replace(' ', '%20', $postcode_url);
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                        curl_setopt($ch, CURLOPT_HEADER, false);
+                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                        curl_setopt($ch, CURLOPT_URL, $postcode_url);
+                        curl_setopt($ch, CURLOPT_REFERER, $postcode_url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                        $getBas = curl_exec($ch);
+                        curl_close($ch);
+                        $post_code_array = json_decode($getBas, true);
+                       
+                        if(isset($post_code_array['Message']) || empty($post_code_array) ){
+                            return redirect()->to('/search')->with('flash_message', 'Post code not valid!');
+                        }
+                        $latitude = $post_code_array['latitude'];
+                        $longitude = $post_code_array['longitude'];
+                    }
+                    $sec_personnels = User::getPersonnelSearchNearBy($data, $latitude, $longitude, 20, 'kilometers', $page_id);
+                } else {
+                    $sec_personnels = User::getPersonnelNearBy($data, $page_id);
+                }           
             } else {
                 $sec_personnels = User::getPersonnelNearBy($data, $page_id);
-            }           
-        } else {
-            $sec_personnels = User::getPersonnelNearBy($data, $page_id);
-        }        
+            }        
 
-        //$sec_personnels = $query->with('person_address')->paginate(10);
+            //$sec_personnels = $query->with('person_address')->paginate(10);
 
-        if (\request()->expectsJson())
-            return response()->json($sec_personnels);
+            if (\request()->expectsJson())
+                return response()->json($sec_personnels);
 
-        return view('search', compact('cats', 'locs', 'sec_personnels'));
-    }
-
-    function postpersonnelsearch(Request $request)
+            return view('search', compact('cats', 'locs', 'sec_personnels'));
+	}
+	
+	public function postpersonnelsearch(Request $request)
 	{
 		$cat = $request->cat_id;
 		$loc = $request->loc_id;
