@@ -292,7 +292,7 @@ $setts = DB::table('settings')
                             </div>
                             
                         </div>
-                      </a>   
+                      </a>      
                 @endif   
                 
                 @if($k==2)

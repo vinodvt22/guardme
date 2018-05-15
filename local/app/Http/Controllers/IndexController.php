@@ -47,7 +47,7 @@ class IndexController extends Controller
                
           $posts = json_decode($response,true);
       
-  
+     
           $new_posts = array();
           $count = 0;
           foreach($posts as $post)
