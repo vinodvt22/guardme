@@ -28,13 +28,6 @@ class User extends Authenticatable
     const WORK_CATEGORY_CLOSE_PROTECTION = 3;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
-    
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -237,7 +230,6 @@ class User extends Authenticatable
         return $this->hasMany(Job::class,'created_by');
     }
 
-
     public function company()
     {
         return $this->hasOne(Shop::class);
@@ -247,6 +239,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(SecurityCategory::class,'work_category');
     }
+
     public function nationality()
     {
         return $this->belongsTo(Country::class, 'nation_id');
@@ -620,7 +613,7 @@ class User extends Authenticatable
        
         return $users_list;
     }
-    
+
     public static function getWorkCategories() {
         return [
             User::WORK_CATEGORY_NONE => null,
@@ -628,5 +621,10 @@ class User extends Authenticatable
             User::WORK_CATEGORY_SECURITY_GUARD => 'Securoty Guard',
             User::WORK_CATEGORY_CLOSE_PROTECTION => 'Close Protection'
         ];
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class,'applied_by');
     }
 }
