@@ -49,7 +49,7 @@ class IndexController extends Controller
       
         
           $new_posts = array();
-          $count = 0;
+          $count = 0; 
           foreach($posts as $post)
           {
             $new_post[$count]['title'] = $post['title']['rendered'];
