@@ -8,6 +8,7 @@ use Responsive\Job;
 
 use Responsive\User;
 use Auth;
+use Input;
 use Responsive\Transaction;
 
 class JobsController extends Controller
@@ -48,6 +49,7 @@ class JobsController extends Controller
         if (!isEmployer()) {
             return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
         }
+        
         return view('jobs.confirm');
     }
 
@@ -65,11 +67,69 @@ class JobsController extends Controller
      * @return mixed
      */
     public function findJobs() {
-
+        $page_id = Input::get("page");
+        $data = \request()->all();        
         $b_cats = Businesscategory::all();
         $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
+        $units = 'kilometers';  
+        $latitude = 0;
+        $longitude = 0;
+        
         //dd($locs);
-        $joblist = Job::where('status','1')->paginate(10);
+        if (count($data)) {
+            if( isset($data['post_code']) ){
+                $post_code = trim($data['post_code']);
+                if (!empty($post_code)) {
+                    $postcode_url = "https://api.getaddress.io/find/".$post_code."?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
+                    $postcode_url = str_replace(' ', '%20', $postcode_url);
+                    $json_data = file_get_contents($postcode_url);
+                    $post_code_array = json_decode($json_data, true);
+                    $latitude = $post_code_array['latitude'];
+                    $longitude = $post_code_array['longitude'];
+                }
+                $joblist = Job::getSearchedJobNearByPostCode($data, $latitude, $longitude, 20, 'kilometers', $page_id);
+            } else {
+                $userid = Auth::user();
+                if( $userid->admin == 2 ){
+                    if($userid->person_address){
+                        $userAddressObj = $userid->person_address;
+                        if(!empty($userAddressObj->latitude))
+                            $latitude = $userAddressObj->latitude;
+                        if(!empty($userAddressObj->latitude))
+                            $longitude = $userAddressObj->longitude;
+
+                        if( $latitude > 0 && $latitude > 0 )
+                            $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
+                        else
+                            $joblist = Job::where('status','1')->paginate(10);
+                    } else {
+                        $joblist = Job::where('status','1')->paginate(10);
+                    }                
+                } else {
+                    $joblist = Job::where('status','1')->paginate(10);
+                }
+            }
+        } else {
+            $userid = Auth::user();
+            if( $userid->admin == 2 ){
+                if($userid->person_address){
+                    $userAddressObj = $userid->person_address;
+                    if(!empty($userAddressObj->latitude))
+                        $latitude = $userAddressObj->latitude;
+                    if(!empty($userAddressObj->latitude))
+                        $longitude = $userAddressObj->longitude;
+                    
+                    if( $latitude > 0 && $latitude > 0 )
+                        $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
+                    else
+                        $joblist = Job::where('status','1')->paginate(10);
+                } else {
+                    $joblist = Job::where('status','1')->paginate(10);
+                }                
+            } else {
+                $joblist = Job::where('status','1')->paginate(10);
+            }
+        }
         return view('jobs.find', compact('joblist','b_cats','locs'));
     }
 
