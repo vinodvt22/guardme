@@ -55,7 +55,7 @@
 								</thead> -->
 								<tbody>
 								@if($wallet_data['all_transactions']->count() >0)
-									@foreach($all_transactions as $trans)
+									@foreach($wallet_data['all_transactions'] as $trans)
 										<tr>
 											<td>{{ $trans->title }}</td>
 											<td>{{ $trans->debit_credit_type }}</td>
