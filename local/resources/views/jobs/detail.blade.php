@@ -143,7 +143,7 @@
                     <div class="social-media">
                         <div class="button">
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
-                            <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>Save for Later</a>
+                            <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i><span id="save">Save For Later</span></a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
                         <ul class="share-social">
@@ -155,6 +155,10 @@
                             <li><a href="#"><i class="fa fa-pinterest-square" aria-hidden="true"></i></a></li>
                             <li><a href="#"><i class="fa fa-tumblr-square" aria-hidden="true"></i></a></li>
                         </ul>
+                        <div style="padding-left: 20px;">
+                            <p>Reference: {{$job->id}}</p>
+                            <p>Bank or payment details should not be provided to any employer. GuardME is not responsible for any external transactions. All applications and payments should be made via our website.</p>
+                        </div>
                     </div>                  
                 </div>
 
@@ -165,8 +169,6 @@
                                 <div class="description-info">
                                     <h1>Description</h1>
                                     <p>{{$job->description}}</p>
-                                    <p>Reference: {{$job->id}}</p>
-                                    <p>Bank or payment details should not be provided to any employer. GuardME is not responsible for any external transactions. All applications and payments should be made via our website.</p>
                                 </div>
                             </div>
                             @if(Auth::check())
@@ -216,5 +218,13 @@
     </section>
 
 @include('footer')
+<script type="text/javascript">
+    $('#save').click(function(e){
+        if($('#save').text() == "Saved")
+            $('#save').text("Save For Later");
+        else
+            $('#save').text("Saved");
+    });
+</script>
 </body>
 </html>

@@ -80,7 +80,7 @@
                     <li class="@if(Route::current()->getName()=='my.jobs') {{'active'}} @endif"><a href="{{URL::route('my.jobs')}}">My Jobs</a></li>
                     @endif
 
-                    <li><a href="{{URL::to('wallet')}}" >Wallet</a></li>
+                    <li class="@if(Route::current()->uri()=='wallet-dashboard') {{'active'}} @endif"><a href="{{URL::to('wallet-dashboard')}}" >Wallet</a></li>
                     <li class="@if(Route::current()->uri()=='referral' || Route::current()->uri()=='redeem') {{'active'}} @endif"><a href="{{URL::to('referral')}}">Loyalty</a></li>
                     <li><a href="{{URL::to('delete_account')}}" >Close account</a></li>
                 </ul>

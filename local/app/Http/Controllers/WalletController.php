@@ -9,6 +9,7 @@ use Mail;
 use Auth;
 use Crypt;
 use Responsive\Transaction;
+use Responsive\User;
 use URL;
 
 class WalletController extends Controller
@@ -23,5 +24,13 @@ class WalletController extends Controller
 		$wallet = new Transaction();
 		$wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
 		return view('wallet', compact('wallet_data'));
+	}
+
+	public function view() {
+		$wallet = new Transaction();
+		$wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
+		$userid = auth()->user()->id;
+		$editprofile = User::where('id',$userid)->get();
+		return view('wallet-dashboard', compact('wallet_data', 'editprofile'));
 	}
 }
