@@ -629,4 +629,9 @@ class User extends Authenticatable
             User::WORK_CATEGORY_CLOSE_PROTECTION => 'Close Protection'
         ];
     }
+
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class,'applied_by');
+    }
 }
