@@ -211,61 +211,33 @@ $setts = DB::table('settings')
              <div class="row">
             <div class="col-md-12">
                 <div class="col-md-1"></div>
-                
-                
               <div class="col-md-10">
-              
-              
-              @foreach($posts as $key=>$post)
-              
-                 @if($key==0)
-                  <a href="{{ $post['link'] }}" >
-                    <div class="col-md-8 paddingoff">
-                        <img src="{!! $post['image'] !!}" class="img-responsive big firstsize" alt="">
+                  <div class="col-md-8 paddingoff">
+                        <img src="img/v1.jpg" class="img-responsive big firstsize" alt="">
                         <div class="titlesection">
-                            <h3>{!! $post['title'] !!}</h3>
-                            <span>{!! $post['category'] !!}</span>
+                            <h3>Caitlin Sarah</h3>
+                            <span>Designer</span>
                         </div>
 
                     </div>
-                    </a>
-                      <div class="height10 visible-xs "></div>
-                    
-                @endif    
-                  
-                @if($key==1)
-                   <div class="col-md-4 paddingoff left10">
-                     <a href="{{ $post['link'] }}" >
-                        <div class="justmove col-md-12 paddingoff"><img src="{!! $post['image'] !!}" class="img-responsive" alt="">
+                    <div class="height10 visible-xs "></div>
+                     <div class="col-md-4 paddingoff left10">
+                        <div class="justmove col-md-12 paddingoff"><img src="img/v2.jpg" class="img-responsive" alt="">
                             <div class="titlesection">
-                                <h3>{!! $post['title'] !!}</h3>
-                                <span>{!! $post['category'] !!}</span>
+                                <h3>William Mark</h3>
+                                <span>Analyst</span>
                             </div>
                             
                         </div>
-                      </a>          
-                @endif   
-                
-                @if($key==2)
-                      <div class="height10 hidden-md"></div>
-                        <a href="{{ $post['link'] }}" >
-                            <div class="justmove col-md-12 paddingoff"><img src="{!! $post['image'] !!}" class="img-responsive" alt="">
-                                <div class="titlesection">
-                                    <h3>{!! $post['title'] !!}</h3>
-                                    <span>{!! $post['category'] !!}</span>
-                                </div>
+                        <div class="height10 hidden-md"></div>
+                        <div class="justmove col-md-12 paddingoff"><img src="img/v3.jpg" class="img-responsive" alt="">
+                            <div class="titlesection">
+                                <h3>Sophie Olivia</h3>
+                                <span>Developer</span>
                             </div>
-                        </a>  
-                   </div> 
-                @endif
-                  
-                    
-                    
-                    
-                    
-                    
-             @endforeach       
-                    
+                            
+                        </div>
+                    </div>
               </div>
                     
 
