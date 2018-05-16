@@ -155,10 +155,6 @@
                             <li><a href="#"><i class="fa fa-pinterest-square" aria-hidden="true"></i></a></li>
                             <li><a href="#"><i class="fa fa-tumblr-square" aria-hidden="true"></i></a></li>
                         </ul>
-                        <div style="padding-left: 20px;">
-                            <p>Reference: {{$job->id}}</p>
-                            <p>Bank or payment details should not be provided to any employer. GuardME is not responsible for any external transactions. All applications and payments should be made via our website.</p>
-                        </div>
                     </div>                  
                 </div>
 
@@ -176,6 +172,10 @@
                                 <div class="description-info">
                                     <h1>Job Location</h1>
                                     <div id="dvMap" style="width:700px; height: 350px;"></div>
+                                    <div style="padding-top: 20px;">
+                                        <p>Reference: {{$job->id}}</p>
+                                        <p>Bank or payment details should not be provided to any employer. GuardME is not responsible for any external transactions. All applications and payments should be made via our website.</p>
+                                    </div>
                                 </div>
                             </div>
                             @endif
@@ -219,11 +219,29 @@
 
 @include('footer')
 <script type="text/javascript">
+    var job = {!! json_encode($job) !!};
     $('#save').click(function(e){
-        if($('#save').text() == "Saved")
-            $('#save').text("Save For Later");
-        else
-            $('#save').text("Saved");
+        console.log(job.id);
+        if($('#save').text() == "Saved"){
+            $.ajax({
+                url: "{{url('/jobs/remove/')}}/" + job.id,
+                type: "GET",
+                success: function(data){
+                    console.log("removed");
+                    $('#save').text("Save For Later");
+                }
+            });
+        }
+        else{
+            $.ajax({
+                url: "{{url('/jobs/save/')}}/"+ job.id,
+                type: "GET",
+                success: function(data){
+                    console.log("saved");
+                    $('#save').text("Saved");
+                }
+            });
+        }
     });
 </script>
 </body>

@@ -5,12 +5,13 @@ use Responsive\Businesscategory;
 use Responsive\JobApplication;
 use Responsive\SecurityCategory;
 use Responsive\Job;
-
+use Responsive\SavedJob;
 use Responsive\User;
 use Responsive\Address;
 use Auth;
 use Input;
 use Responsive\Transaction;
+use DB;
 
 class JobsController extends Controller
 {
@@ -67,7 +68,7 @@ class JobsController extends Controller
     public function savedJobs() {
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->get();
-        $my_jobs = Job::take(5)->get();
+        $my_jobs =  DB::select('select security_jobs.* from security_jobs, saved_jobs where saved_jobs.job_id = security_jobs.id and saved_jobs.user_id = '.$userid);
         return view('jobs.saved', compact('my_jobs','editprofile'));
     }
 
@@ -319,6 +320,19 @@ class JobsController extends Controller
         $job = Job::with(['poster'])->where('id',$job_id)->first();
        //dd($application);
         return view('jobs.my-application-detail', compact('application','job'));
+    }
+
+    public function saveJobsToProfile($id){
+        $user_id = Auth::user()->id;
+        $savedJob = new SavedJob();
+        $savedJob->user_id = $user_id;
+        $savedJob->job_id = $id;
+        $savedJob->save();
+    }
+
+    public function removeJobsFromProfile($id){
+        $savedJob = SavedJob::where('job_id',$id)->first();
+        $savedJob->delete();
     }
 
     public function getFavouriteJobs($id){
