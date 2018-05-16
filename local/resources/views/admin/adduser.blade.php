@@ -164,6 +164,7 @@
 						<option value=""></option>
 							   <option value="0">Customer</option>
 							   <option value="2">Seller</option>
+                 <option value="3">Licensed Partner</option>
 						</select>
 
 

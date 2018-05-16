@@ -86,8 +86,7 @@
                         <tr>
                           <th>Sno</th>
 						  <th>Shop Name</th>
-                          <th>Address</th>
-                          <th>Shop Phone No</th>
+
 						  <th>Featured</th>
 						  <th>Status</th>
 						  <th>Total Balance</th>
@@ -106,9 +105,7 @@
 
                           <td><?php echo $viewshop->shop_name;?></td>
 
-						  <td><?php echo substr($viewshop->address,0,150).'...';?></td>
-
-						   <td><?php echo $viewshop->shop_phone_no;?></td>
+						 
 
 						   <td><?php echo $viewshop->featured;?></td>
 
