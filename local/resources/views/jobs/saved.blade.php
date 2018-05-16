@@ -79,9 +79,9 @@
                             </ul>
                         </div><!-- ad-meta -->                                  
                     </div><!-- ad-info -->
-                    <div class="close-icon">
+                    <!-- <div class="close-icon">
                         <i class="fa fa-window-close" aria-hidden="true"></i>
-                    </div>
+                    </div> -->
                 </div><!-- item-info -->
             </div>
             @endforeach

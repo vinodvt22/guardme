@@ -143,13 +143,13 @@
                     <div class="social-media">
                         <div class="button">
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
-                            <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i><span id="save">
+                            <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>
                                 @if($saved_job != null && $saved_job->job_id == $job->id)
-                                Saved
+                                <span id="saved">Saved</span>
                                 @else
-                                Save For Later
+                                <span id="saved">Save For Later</span>
                                 @endif
-                            </span></a>
+                            </a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
                         <ul class="share-social">
@@ -224,15 +224,15 @@
 @include('footer')
 <script type="text/javascript">
     var job = {!! json_encode($job) !!};
-    $('#save').click(function(e){
+    $('#saved').click(function(e){
         console.log(job.id);
-        if($('#save').text() == "Saved"){
+        if($('#saved').text() == "Saved"){
             $.ajax({
                 url: "{{url('/jobs/remove/')}}/" + job.id,
                 type: "GET",
                 success: function(data){
                     console.log("removed");
-                    $('#save').text("Save For Later");
+                    $('#saved').text("Save For Later".trim());
                 }
             });
         }
@@ -242,7 +242,7 @@
                 type: "GET",
                 success: function(data){
                     console.log("saved");
-                    $('#save').text("Saved");
+                    $('#saved').text("Saved".trim());
                 }
             });
         }
