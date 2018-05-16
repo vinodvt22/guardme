@@ -271,7 +271,7 @@ $setts = DB::table('settings')
                   <a href="{{ $post['link'] }}" >
                     <div class="col-md-8 paddingoff">
                         <img src="{!! $post['image'] !!}" class="img-responsive big firstsize" alt="">
-                        <div class="titlesection">
+                        <div style="background: #00a651 !important;" class="titlesection">
                             <h3>{!! $post['title'] !!}</h3>
                             <span>{!! $post['category'] !!}</span>
                         </div>
@@ -286,7 +286,7 @@ $setts = DB::table('settings')
                    <div class="col-md-4 paddingoff left10">
                      <a href="{{ $post['link'] }}" >
                         <div class="justmove col-md-12 paddingoff"><img src="{!! $post['image'] !!}" class="img-responsive" alt="">
-                            <div class="titlesection">
+                            <div style="background: #00a651 !important;" class="titlesection">
                                 <h3>{!! $post['title'] !!}</h3>
                                 <span>{!! $post['category'] !!}</span>
                             </div>
@@ -299,7 +299,7 @@ $setts = DB::table('settings')
                       <div class="height10 hidden-md"></div>
                         <a href="{{ $post['link'] }}" >
                             <div class="justmove col-md-12 paddingoff"><img src="{!! $post['image'] !!}" class="img-responsive" alt="">
-                                <div class="titlesection">
+                                <div style="background: #00a651 !important;" class="titlesection">
                                     <h3>{!! $post['title'] !!}</h3>
                                     <span>{!! $post['category'] !!}</span>
                                 </div>
