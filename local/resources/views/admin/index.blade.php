@@ -137,7 +137,7 @@
             </div>
 
             </div>
-    
+
           </div>
           <!-- /top tiles -->
 
@@ -355,7 +355,7 @@ chart.render();
                     </tr>
 
 					<?php foreach($users as $user){
-						$sta=$user->admin; if($sta==1){ $viewst="Admin"; } else if($sta==2) { $viewst="Seller"; } else if($sta==0) { $viewst="Customer"; }
+						$sta=$user->admin; if($sta==1){ $viewst="Admin"; } else if($sta==2) { $viewst="Seller"; } else if($sta==3) { $viewst="Licensed Partner"; } else if($sta==0) { $viewst="Customer"; }
 						?>
 					<tr height="10"></tr>
                     <tr>
