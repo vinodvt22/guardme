@@ -101,7 +101,7 @@ div.dataTables_wrapper div.dataTables_filter input{
                       <tbody>
 					  <?php
 					  $i=1;
-					  foreach ($users as $user) { $sta=$user->admin; if($sta==1){ $viewst="Admin"; } else if($sta==2) { $viewst="Seller"; } else if($sta==0) { $viewst="Customer"; }?>
+					  foreach ($users as $user) { $sta=$user->admin; if($sta==1){ $viewst="Admin"; } else if($sta==2) { $viewst="Seller"; } else if($sta==3) { $viewst="Licensed Partner"; } else if($sta==0) { $viewst="Customer"; }?>
 
 
                         <tr>

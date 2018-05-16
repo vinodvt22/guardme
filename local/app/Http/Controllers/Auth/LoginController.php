@@ -28,7 +28,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if(auth()->check() && auth()->user()->id == 1){
+        if(auth()->check() && auth()->user()->id == 1 || auth()->check() && auth()->user()->admin == 3){
 
             return redirect('/admin');
         }
@@ -98,5 +98,3 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
     }
 }
-
-
