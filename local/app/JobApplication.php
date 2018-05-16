@@ -13,6 +13,11 @@ class JobApplication extends Model
      * @var string
      */
     protected $table = 'job_applications';
+	
+	public function job()
+    {
+        return $this->belongsTo(Job::class,'job_id');
+    }
 
     /**
      * @param $job_id
