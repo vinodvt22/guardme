@@ -43,6 +43,8 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
 
     Route::get('awarded','JobsController@totalUserAwardedJobs');
     Route::get('applied','JobsController@totalAppliedJobsForUser');
+	    Route::get('published','JobsController@totalCreatedJobsForEmployer');
+
 
     Route::post('create','JobsController@create')->name('api.create.job');
     Route::post('schedule/{id}','JobsController@schedule')->name('api.schedule.job');

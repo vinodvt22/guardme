@@ -336,9 +336,6 @@ class JobsController extends Controller
             ->json($return_data, $return_status);
     }
 
-
-    
-
     public function totalUserAwardedJobs()
     {
         /** @var User $user */
@@ -347,6 +344,7 @@ class JobsController extends Controller
         // todo: get jobs awarded to user
         $awarded_jobs_query = $user->applications()
             ->where('is_hired', true)
+            ->whereDate('end_date_time','>=',date('Y-m-d'))
             ;
 
         return response()->json([
@@ -366,6 +364,20 @@ class JobsController extends Controller
         return response()->json([
             'total_awarded_jobs' => $applied_jobs->count(),
             'data' => $applied_jobs->get()
+        ]);
+    }
+
+    public function totalCreatedJobsForEmployer()
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        // todo: get jobs applied by user
+        $created_jobs = $user->jobs();
+
+        return response()->json([
+            'total_created_jobs' => $created_jobs->count(),
+            'data' => $created_jobs->get()
         ]);
     }
     /**
