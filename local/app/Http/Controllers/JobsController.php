@@ -216,21 +216,23 @@ class JobsController extends Controller
             return abort(404);
         }
         $user_address = [];
+        $saved_job = '';
         if(Auth::check()){
             $user_id = auth()->user()->id;
             $user_address = User::where('id', $user_id)->with('address')->first();
+            $saved_job = SavedJob::where('job_id',$id)->where('user_id', $user_id)->first();
         }
         $b_cats = Businesscategory::all();
         $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
         //$job = Job::find($id);
 
         $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
-        //dd($job);
+        // dd($saved_job);
 
         if (empty($job)) {
             return abort(404);
         }
-        return view('jobs.detail', compact('job','b_cats','locs','user_address'));
+        return view('jobs.detail', compact('job','b_cats','locs','user_address', 'saved_job'));
     }
 
     /**

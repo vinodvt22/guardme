@@ -143,7 +143,13 @@
                     <div class="social-media">
                         <div class="button">
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
-                            <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i><span id="save">Save For Later</span></a>
+                            <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i><span id="save">
+                                @if($saved_job != null && $saved_job->job_id == $job->id)
+                                Saved
+                                @else
+                                Save For Later
+                                @endif
+                            </span></a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
                         <ul class="share-social">
@@ -211,8 +217,6 @@
                     </div>
                 </div>
             </div>
-
-
 
         </div>
     </section>
