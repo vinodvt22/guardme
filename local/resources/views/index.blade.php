@@ -205,7 +205,7 @@ $setts = DB::table('settings')
     <div class="section video workshop-traning">
          
          <div class="section-title">
-            <h4>Thousands of professionals are growing their businesses.</h4>
+            <h4>Check out these recent posts from our blog...</h4>
            
         </div>
              <div class="row">
