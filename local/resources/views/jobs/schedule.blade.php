@@ -93,30 +93,50 @@
                 </tbody>
             </table>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-3">Start date/time</label>
-            <div class="col-sm-9">
-                <input type="text" class="start_date_time date-time-picker form-control" name="start_date_time">
-                <span class="text-danger error-span"></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3">End date/time</label>
-            <div class="col-sm-9">
-                <input type="text" class="end_date_time form-control date-time-picker" name="end_date_time">
-                <span class="text-danger error-span"></span>
-            </div>
+        <label for="">Select Schedule</label>
+        <div class="schedule_items">
+
         </div>
         <button type="submit" class="btn btn-primary pull-right">Next</button>
     </form>
- 
- @endsection
 
+ @endsection
+<div class="schedule_items_clone_code hide">
+    <div class="form-group row">
+        <label class="col-sm-3">Start/End</label>
+        <div class="col-sm-9">
+            <div class="col-sm-6">
+                <input type="text" class="start_date_time date-time-picker form-control" name="start_date_time[]">
+                <span class="text-danger error-span"></span>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" readonly="readonly" class="end_date_time form-control" name="end_date_time[]">
+                <span class="text-danger error-span"></span>
+            </div>
+
+        </div>
+    </div>
+</div>
 @section('script')
 <script>
     $(document).ready(function(){
+                $("body").on("change", ".start_date_time",function(){
+                    var itemIndex = $(".start_date_time").index(this);
+                    var number_of_days = $("select[name='working_days']").val();
+                    var working_hours = $("select[name='working_hours']").val();
+                    var end_time = moment($(this).val(), 'YYYY-MM-DD HH:mm').add(working_hours, 'h').format('YYYY-MM-DD HH:mm');
+                    $(this).parent().siblings().find('.end_date_time').val(end_time);
+                    if (itemIndex == 1) {
+                        var st_date = $(this).val();
+                        for(i = 2; i < $('.start_date_time').length; i++) {
+                            var current_st_date = moment(st_date, 'YYYY-MM-DD HH:mm').add(1, 'd').format('YYYY-MM-DD HH:mm');
+                            $(".start_date_time").eq(i).val(current_st_date);
+                            $(".start_date_time").eq(i).trigger("change");
+                            st_date = current_st_date;
+                        }
+                    }
+                });
 
-        
                // var lockr_nxturl = Lockr.get('nxturl');
                 if(gm_nxturl != null && gm_nxturl!='{{URL::current()}}')
                 {
@@ -144,6 +164,25 @@
             $(".vat-fee").text(VATFee);
             $(".admin-fee").text(adminFee);
             $(".grand-total-for-job").text(grandTotal);
+
+            // add schedule items
+            var item_htm = $(".schedule_items_clone_code").html();
+            var all_schedule_items_html = '';
+            for(i = 0; i < workingDays; i++) {
+                all_schedule_items_html += item_htm;
+            }
+            $(".schedule_items").html(all_schedule_items_html);
+            jQuery('.date-time-picker').datetimepicker({
+                //language:  'uk',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                minuteStep: 5
+            });
         });
         $("form#create_job_schedule").on("submit", function(e){
             formErrors = new Errors();

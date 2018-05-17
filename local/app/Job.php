@@ -6,6 +6,7 @@ use DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Responsive\SecurityJobsSchedule;
 
 class Job extends Model
 {
@@ -15,7 +16,9 @@ class Job extends Model
      * @var string
      */
     protected $table = 'security_jobs';
-
+    public function schedules() {
+        return $this->hasMany(SecurityJobsSchedule::class);
+    }
     public static function calculateJobAmount($id) {
         $job = Job::find($id);
         $number_of_freelancers = $job->number_of_freelancers;

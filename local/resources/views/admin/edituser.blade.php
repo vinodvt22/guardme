@@ -10,6 +10,7 @@
   </head>
 
   <body>
+    <?php $url = URL::to("/"); ?>
     <div class="wrapper">
       <!-- <div class="main_container"> -->
       <div class="sidebar" data-background-color="white" data-active-color="danger">
@@ -57,7 +58,7 @@
 
 
           <div class="container-fluid">
-            <div class="card" style="padding:15px;">
+
                      <div class="row">
 
  	@if(Session::has('success'))
@@ -83,16 +84,71 @@
 
 	@endif
 
-  <div class="header">
-      <h4 class="title">Edit User</h4>
-      <!-- <p class="category">Here is a subtitle for this table</p> -->
+  <?php
+  use Responsive\User;$luser = User::where('id', $users[0]->id)->first();
+  ?>
+
+  <div class="col-lg-4 col-md-5">
+      <div class="card card-user">
+          <div class="image">
+              <img src="<?php echo $url . "/local/resources/assets/admin/assets/img/background.jpg" ?>" alt="..."/>
+          </div>
+          <div class="content">
+              <div class="author">
+                <?php
+                 $userphoto="/userphoto/";
+                $path ='/local/images'.$userphoto.$users[0]->photo;
+                if($users[0]->photo!=""){
+                 $avtar_path = $url.$path;
+
+
+                 } else {
+
+
+                $avtar_path = $url.'/local/images/nophoto.jpg';
+
+
+                 } ?>
+                <img class="avatar border-white" src="<?php echo $avtar_path?>" alt="..."/>
+                <h4 class="title"><?php echo $users[0]->name; ?><br />
+                   <a href="#"><small><?php echo $users[0]->email; ?></small></a>
+                </h4>
+              </div>
+              <p class="description text-center">
+                  
+              </p>
+          </div>
+          <hr>
+          <div class="text-center">
+              <div class="row">
+                  <div class="col-md-1 col-md-offset-1">
+
+                  </div>
+                  <div class="col-md-8">
+                      <h5>{{ $luser->getBalance() }}<br /><small>Current balance</small></h5>
+                  </div>
+                  <div class="col-md-1">
+
+                  </div>
+              </div>
+          </div>
+      </div>
+
   </div>
+
+
+  <div class="col-lg-8 col-md-7">
+
+    <div class="card">
+      <div class="row">
+        <div class="header">
+            <h4 class="title">Edit Profile</h4>
+        </div>
+        <div class="content">
 
         <form class="form-horizontal form-label-left" role="form" method="POST" action="{{ route('admin.addbalance') }}"novalidate>
           <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-1">
-            <?php
-            use Responsive\User;$luser = User::where('id', $users[0]->id)->first();
-            ?>
+
             <span class="section">Current balance: {{ $luser->getBalance() }}</span>
             <div class="form-group">
                 <label for="balance">Add points to balance
@@ -183,24 +239,8 @@
                                 @endif
 
                       </div>
-					   <?php $url = URL::to("/"); ?>
-					  <?php
-					   $userphoto="/userphoto/";
-						$path ='/local/images'.$userphoto.$users[0]->photo;
-						if($users[0]->photo!=""){
-						?>
-					  <div class=" form-group" align="center">
 
-					  <img src="<?php echo $url.$path;?>" class="thumb" width="100">
 
-					  </div>
-						<?php } else { ?>
-					  <div class="form-group" align="center">
-
-					  <img src="<?php echo $url.'/local/images/nophoto.jpg';?>" class="thumb" width="100">
-
-					  </div>
-						<?php } ?>
 
 					  <input type="hidden" name="currentphoto" value="<?php echo $users[0]->photo;?>">
 
@@ -217,6 +257,7 @@
 						<option value=""></option>
 							   <option value="0" <?php if($users[0]->admin==0){?> selected="selected" <?php } ?>>Customer</option>
 							   <option value="2" <?php if($users[0]->admin==2){?> selected="selected" <?php } ?>>Seller</option>
+                 <option value="3" <?php if($users[0]->admin==3){?> selected="selected" <?php } ?>>Licensed Partner</option>
 						</select>
 
 
@@ -233,7 +274,7 @@
 
                       <div class="ln_solid"></div>
                       <div class="form-group">
-                        <div class="col-md-6 col-md-offset-3">
+                        <div class="col-md-12 col-md-offset-3">
                           <a href="<?php echo $url;?>/admin/users" class="btn btn-primary btn-fill">Cancel</a>
 
 
@@ -248,7 +289,10 @@
                   </div>
                 </div>
               </div>
+              </div>
             </div>
+
+        </div>
 
 
 

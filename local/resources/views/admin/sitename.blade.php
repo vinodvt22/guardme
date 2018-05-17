@@ -7,7 +7,8 @@ $setid=1;
 
 <div class="logo">
     <a href="<?php echo $url;?>" class="simple-text" target="_blank">
-      <i class="fa fa-globe"></i> <?php echo $setts[0]->site_name;?>
+			<img src="<?php echo $url.'/local/images/new_logo.png';?>" alt="logo">
+      <!-- <i class="fa fa-globe"></i> <?php //echo $setts[0]->site_name;?> -->
     </a>
 </div>
 <!-- <div class="navbar nav_title" style="border: 0;">

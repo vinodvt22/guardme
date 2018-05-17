@@ -94,7 +94,7 @@
                     </div>
                     <div class="col-xs-7">
                       <div class="numbers">
-                        <p>Total Sellers</p>
+                        <p>Freelancers</p>
                           <?php echo $total_seller;?>
                       </div>
                     </div>
@@ -122,7 +122,7 @@
                     </div>
                     <div class="col-xs-7">
                       <div class="numbers">
-                        <p>Total Customers</p>
+                        <p>Employers</p>
                           <?php echo $total_customer;?>
                       </div>
                     </div>
@@ -137,90 +137,7 @@
             </div>
 
             </div>
-            <div class="col-lg-3 col-sm-6">
-              <!-- <span class="count_top"><i class="ti-book"></i> Total Booking</span>
-              <div class="count"><?php //echo $total_booking;?></div> -->
-              <div class="card">
-                <div class="content">
-                  <div class="row">
-                    <div class="col-xs-5">
-                      <div class="icon-big icon-warning text-center">
-                        <i class="ti-book"></i>
-                      </div>
-                    </div>
-                    <div class="col-xs-7">
-                      <div class="numbers">
-                        <p>Total Booking</p>
-                          <?php echo $total_booking;?>
-                      </div>
-                    </div>
-                </div>
-                                <!-- <div class="footer">
-                                    <hr />
-                                    <div class="stats">
-                                        <i class="ti-reload"></i> Updated now
-                                    </div>
-                                </div> -->
-              </div>
-            </div>
 
-            </div>
-            <div class="col-lg-3 col-sm-6">
-              <!-- <span class="count_top"><i class="fa fa-book"></i> Today Booking</span>
-              <div class="count"><?php //echo $today_booking;?></div> -->
-              <div class="card">
-                <div class="content">
-                  <div class="row">
-                    <div class="col-xs-5">
-                      <div class="icon-big icon-warning text-center">
-                        <i class="ti-book"></i>
-                      </div>
-                    </div>
-                    <div class="col-xs-7">
-                      <div class="numbers">
-                        <p>Today Booking</p>
-                          <?php echo $today_booking;?>
-                      </div>
-                    </div>
-                </div>
-                                <!-- <div class="footer">
-                                    <hr />
-                                    <div class="stats">
-                                        <i class="ti-reload"></i> Updated now
-                                    </div>
-                                </div> -->
-              </div>
-            </div>
-
-            </div>
-            <div class="col-lg-3 col-sm-6">
-              <!-- <span class="count_top"><i class="fa fa-shopping-cart"></i> Total Shop</span>
-              <div class="count"><?php //echo $total_shop;?></div> -->
-              <div class="card">
-                <div class="content">
-                  <div class="row">
-                    <div class="col-xs-5">
-                      <div class="icon-big icon-warning text-center">
-                        <i class="ti-shopping-cart"></i>
-                      </div>
-                    </div>
-                    <div class="col-xs-7">
-                      <div class="numbers">
-                        <p>Total Shop</p>
-                          <?php echo $total_shop;?>
-                      </div>
-                    </div>
-                </div>
-                                <!-- <div class="footer">
-                                    <hr />
-                                    <div class="stats">
-                                        <i class="ti-reload"></i> Updated now
-                                    </div>
-                                </div> -->
-              </div>
-            </div>
-
-            </div>
           </div>
           <!-- /top tiles -->
 
@@ -438,7 +355,7 @@ chart.render();
                     </tr>
 
 					<?php foreach($users as $user){
-						$sta=$user->admin; if($sta==1){ $viewst="Admin"; } else if($sta==2) { $viewst="Seller"; } else if($sta==0) { $viewst="Customer"; }
+						$sta=$user->admin; if($sta==1){ $viewst="Admin"; } else if($sta==2) { $viewst="Seller"; } else if($sta==3) { $viewst="Licensed Partner"; } else if($sta==0) { $viewst="Customer"; }
 						?>
 					<tr height="10"></tr>
                     <tr>
