@@ -55,7 +55,7 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 		<link href="<?php echo $url;?>/css/jquery.multiselect.css" rel="stylesheet" type="text/css">
 		<link href="<?php echo $url;?>/css/lightbox.min.css" rel="stylesheet" type="text/css">
 		<link href="<?php echo $url;?>/css/jquery-ui.css" rel="stylesheet" type="text/css">
-		<link href="<?php echo $url;?>/css/date-time-picker.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo $url;?>/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 
 
 		<link href="<?php echo $url;?>/css/custom.css" rel="stylesheet" type="text/css">

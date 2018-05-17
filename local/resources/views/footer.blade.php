@@ -166,7 +166,9 @@ $setid=1;
 	
 	
 	<script src="<?php echo $url;?>/js/jquery.multiselect.js"></script>
-	<script src="<?php echo $url;?>/js/date-time-picker.js"></script>
+	<script src="<?php echo $url;?>/js/date-time-picker/bootstrap-datetimepicker.min.js"></script>
+	<script src="<?php echo $url;?>/js/date-time-picker/bootstrap-datetimepicker.uk.js"></script>
+	<script src="<?php echo $url;?>/js/moment.js"></script>
 <script>
 	class Errors{
 		constructor() {
@@ -258,7 +260,15 @@ $.ajaxSetup({
 	}
 });
 jQuery('.date-time-picker').datetimepicker({
-	timeFormat: "hh:mm"
+	//language:  'uk',
+	weekStart: 1,
+	todayBtn:  1,
+	autoclose: 1,
+	todayHighlight: 1,
+	startView: 2,
+	forceParse: 0,
+	showMeridian: 1,
+	minuteStep: 5
 });
 </script>
 

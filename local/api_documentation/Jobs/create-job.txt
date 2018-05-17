@@ -47,9 +47,21 @@ api/jobs/create/{job-id}
 Type : post
 Request Sample:
 
-working_hours: 1 [passible values are from 1 to 8]
-working_days: 17 [possible values are from 1 to 30]
-pay_per_hour: 18 [possible values are from 8 to 20]
+
+
+number_of_freelancers: 2
+working_hours: 2 [passible values are from 1 to 8]
+working_days: 3 [possible values are from 1 to 30]
+pay_per_hour: 8 [possible values are from 8 to 20]
+
+##### start and end date time are in form of indexed array
+
+start_date_time[]: 2018-05-17 07:45
+end_date_time[]: 2018-05-17 09:45
+start_date_time[]: 2018-05-18 07:45
+end_date_time[]: 2018-05-18 09:45
+start_date_time[]: 2018-05-19 07:45
+end_date_time[]: 2018-05-19 09:45
 
 wallet_debit_frequency: daily  [possible values are daily, hourly]
 
