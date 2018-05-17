@@ -8,7 +8,7 @@
             margin-right: 0px;
         }
     </style>
-   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyC3ajei74kywhUItHcNIaFlD5sGAQIJv4Y"></script>
+   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyC2C2Tp8wIjckpXAeweMhL7nOGes0Dpv2w"></script>
    <script type="text/javascript">
        <?php if( count($user_address) > 0 ) { ?>
         var markers = [
