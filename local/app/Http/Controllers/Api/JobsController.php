@@ -18,7 +18,7 @@ class JobsController extends Controller
     public function create(Request $request) {
         $this->validate($request, [
             'title' => 'required|max:255',
-            'description' => 'required|max:255',
+            'description' => 'required',
         ]);
         $job = new Job();
         $postedData = $request->all();
@@ -60,20 +60,27 @@ class JobsController extends Controller
         $working_hours = !empty($posted_data['working_hours']) ? $posted_data['working_hours'] : 0;
         $pay_per_hour = !empty($posted_data['pay_per_hour']) ? $posted_data['pay_per_hour'] : 0;
         $number_of_freelancers = !empty($posted_data['number_of_freelancers']) ? $posted_data['number_of_freelancers'] : 0;
-        $start_date_time = !empty($posted_data['start_date_time']) ? $posted_data['start_date_time'] : null;
-        $end_date_time = !empty($posted_data['end_date_time']) ? $posted_data['end_date_time'] : null;
-
+        $start_date_time = !empty($posted_data['start_date_time']) ? $posted_data['start_date_time'] : [];
+        $end_date_time = !empty($posted_data['end_date_time']) ? $posted_data['end_date_time'] : [];
+        $schedules = [];
+        foreach($start_date_time as $k => $sch) {
+            $schedule_item['start'] = date('Y-m-d h:i', strtotime($sch));
+            $schedule_item['end'] = date('Y-m-d h:i', strtotime($end_date_time[$k]));
+            $schedules[] = $schedule_item;
+        }
         $job = Job::find($id);
         $logged_in_id = !empty(auth()->user()->id) ? (auth()->user()->id) : 0;
         $return_data = ['Not allowed to perform this action'];
         $return_status = 500;
         if (!empty($job) && !empty($job->created_by) && $job->created_by == $logged_in_id) {
+            // save job schedules
+
+            $job->schedules()->createMany($schedules);
+
             $job->daily_working_hours = $working_hours;
             $job->monthly_working_days = $working_days;
             $job->per_hour_rate = $pay_per_hour;
             $job->number_of_freelancers = $number_of_freelancers;
-            $job->start_date_time = date('Y-m-d h:i', strtotime($start_date_time));
-            $job->end_date_time = date('Y-m-d h:i', strtotime($end_date_time));
             if ($job->save()) {
                 $return_data = ['message' => 'Data saved successfully'];
                 $return_status = 200;
