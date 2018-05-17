@@ -282,4 +282,9 @@ class Job extends Model
     {
         return $this->hasMany(JobApplication::class,'job_id');
     }
+	
+	public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'job_id');
+    }
 }
