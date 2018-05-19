@@ -24,12 +24,38 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')
-		         ->orderBy('id','desc')
-				 ->get();
+        $data = \request()->all();
+
+        $query = DB::table('users');
+
+        // todo: filter by location
+        $location_search_filter = isset($data['location']) ? trim($data['location']) : null;
+        if($location_search_filter){
+            $location_search_query_array = explode(' ', trim($location_search_filter));
+
+            if(count($location_search_query_array)){
+                foreach ($location_search_query_array as $search_location){
+                    $query = $query
+                        ->whereHas('address', function ($q) use ($search_location){
+                            $q->where('citytown', $search_location);
+                        });
+                }
+            }
+        }
+
+        // todo: filter by gender
+        $search_gender = isset($data['gender']) ? trim($data['gender']) : null;
+        if($search_gender && $search_gender != 'all'){
+            $query = $query->where('gender', $search_gender);
+        }
+
+        $users = $query
+            ->orderBy('id','desc')
+            ->get();
 
         return view('admin.users', ['users' => $users]);
     }
+	
 	
 	
 	public function destroy($id) {
