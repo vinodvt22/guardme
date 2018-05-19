@@ -352,4 +352,8 @@ class JobsController extends Controller
     public function postJobs($id){
 
     }
+
+    public function leaveFeedback($application_id) {
+        return view('jobs.feedback', ['application_id' => $application_id]);
+    }
 }
