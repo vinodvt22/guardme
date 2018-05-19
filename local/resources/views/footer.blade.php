@@ -30,6 +30,8 @@ $setid=1;
 </div>
 @endif
  
+ 
+ 
 		</div>
 			<div class="row">
 				<!-- footer-widget -->
