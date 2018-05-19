@@ -747,11 +747,13 @@ CREATE TABLE `news_letters` (
 -- Dumping data for table `news_letters`
 --
 
+
 INSERT INTO `news_letters` (`id`, `user_id`, `email`, `created_at`, `updated_at`) VALUES
 (3, '', 'djhf@jhj.dfdf', '2018-05-19 15:19:43', '2018-05-19 15:19:43'),
 (4, '22', 'indah@gmail.com', '2018-05-19 15:19:58', '2018-05-19 15:19:58'),
 (5, '', 'jas@j.fd', '2018-05-19 17:12:16', '2018-05-19 17:12:16'),
 (6, '', 'h@h.com', '2018-05-19 17:12:37', '2018-05-19 17:12:37');
+
 
 --
 -- Indexes for dumped tables
