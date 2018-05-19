@@ -10,9 +10,7 @@ use Auth;
 use Crypt;
 use Responsive\Transaction;
 use Responsive\User;
-use Responsive\Job;
 use URL;
-use Carbon\Carbon;
 
 class WalletController extends Controller
 {
@@ -25,6 +23,8 @@ class WalletController extends Controller
 	public function show() {
 		$wallet = new Transaction();
 		$wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
+    
+		return view('wallet', compact('wallet_data'));
 		// return view('wallet', compact('wallet_data'));
 		$user = auth()->user();
 		if($user->admin == 0){

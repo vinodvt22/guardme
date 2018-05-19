@@ -76,3 +76,11 @@ Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
     Route::post('/job-details','JobsController@jobDetailsLocation')->name('api.job.details');
     Route::post('/search','SearchController@getpersonnelsearch');
 });
+
+
+Route::group(['prefix' => 'wallet','namespace' => 'Api'], function(){
+
+    Route::get('/jobTrans', 'WalletController@getTransactionsOfJobs')->middleware('auth:api');;
+    Route::get('/details/{id}', 'WalletController@getJobTransactionDetails')->middleware('auth:api');;
+
+});
