@@ -217,10 +217,12 @@
         });
         $(".mark-as-complete").on("click", function() {
            $.ajax({
-               url: "{{ route('api.mark.application.complete', ['application-id' => $application->id]) }}",
+               url: "{{ route('api.mark.application.complete', ['application_id' => $application->id]) }}",
                type: "POST",
                success: function (data) {
-                   console.log(data);
+                   var nextUrl = "{{ route('leave.feedback', ['application_id' => $application->id]) }}";
+                   window.location.href = nextUrl;
+
                }
            })
         });
