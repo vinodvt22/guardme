@@ -4,6 +4,19 @@
    @include('style')
 	<style src="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"></style>
 	<style src="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css"></style>
+	<style type="text/css">
+		button {
+			background: #00a651;
+			color: white;
+			padding-top: 10px;
+			margin: 0;
+			border: none;
+			border-radius: 5px;
+			padding-left: 20px;
+			padding-right: 20px;
+			height: 40px;
+		}
+	</style>
 </head>
 <body>
 
@@ -25,7 +38,13 @@
 			</ol>						
 			<h2 class="title">Wallet</h2>
 		</div>
-	
+		    <div class="banner-form banner-form-full job-list-form">
+                <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
+                    <input type="text" class="form-control" placeholder="Job search" name="keyword" value="{{old('keyword')}}">
+
+                    <button type="submit" class="btn btn-primary" value="Search">Search</button>
+                </form>
+            </div>
 	
 
 
@@ -40,33 +59,19 @@
 							
 							<div class="row">
 								<form id="filters">
-									<select name="type" class="col-sm-3">
-										<option value="">Transaction Type</option>
-										<option value="admin_fee">Admin Fee</option>
-										<option value="vat_fee">VAT Fee</option>
-										<option value="job_fee">Job Fee</option>
-										<option value="add_money">Add Money</option>
-									</select>
-									<select name="type" class="col-sm-3 col-sm-offset-1">
-										<option value="">Credit Payment</option>
-										<option value="funded">Funded</option>
-										<option value="paid">Paid</option>
-									</select>
-									
-									<label class="col-sm-2">Job Rate:</label>
-									<input type="text" class="col-sm-2" name="per_hour_rate">
-									
-									<label class="col-sm-3">Transaction Date:</label>
-							        <div class="col-sm-9">
-							            <div class="col-sm-4">
+							        <div class="col-sm-12">
+							        	<label class="col-sm-2">Transaction Date:</label>
+							            <div class="col-sm-3">
 							                <input type="text" class="start_date date-picker form-control" name="start_date" placeholder="Start Date">
 							                <span class="text-danger error-span"></span>
 							            </div>
-							            <div class="col-sm-4 col-sm-offset-1">
+							            <div class="col-sm-3">
 							                <input type="text" class="end_date date-picker form-control" name="end_date" placeholder="End Date" data-date-end-date="0d">
 							                <span class="text-danger error-span"></span>
 							            </div>
-
+							            <div class="col-sm-1">
+							            	<a href="" class="btn btn-default">GO</a>
+							            </div>
 							        </div>
 								</form>
 							</div>
@@ -82,9 +87,9 @@
 							    <tbody>
 							    	@foreach($jobs as $job)
 							        <tr>
-							            <td><a href="{{url('wallet/invoice/'.$job->id)}}">{{$job->id}}</a></td>
-							            <td>{{$job->title}}</td>
-							            <td>{{$job->per_hour_rate}}</td>
+							            <td>{{$job->id}}</td>
+							            <td><a href="{{url('wallet/invoice/'.$job->id)}}">{{$job->title}}</a></td>
+							            <td>{{$job->amount}}</td>
 							            <td>{{date('d/m/Y',strtotime($job->created_at))}}</td>
 							        </tr>
 							        @endforeach
@@ -173,13 +178,24 @@
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-    $('#table').DataTable( {
+
+$(document).ready(function() {
+    var table = $('#table').DataTable( {
         dom: 'Bfrtip',
         searching: false,
+        sorting: true,
         buttons: [
             'csv', 'excel', 'pdf',
-        ]
+        ],
+        page_length: 50,
+    } );
+
+    $('#table_paginate').css('display', 'none');
+
+    $('#table tbody').on( 'click', 'tr', function () {
+    	var data = table.row(this).data();
+    	window.location = "{{url('/wallet/invoice/')}}"+'/'+data[0];
+        
     } );
 
     $('.date-picker').datepicker({
@@ -199,7 +215,7 @@
 	    // set the "toDate" start to not be later than "fromDate" ends:
 	    // $('.end_date').datepicker('setStartDate', new Date($(this).val()));
 	    var startDate = new Date(selected.date.valueOf());
-    $('.end_date').datepicker('setStartDate', startDate);
+    	$('.end_date').datepicker('setStartDate', startDate);
 
 	}); 
 
