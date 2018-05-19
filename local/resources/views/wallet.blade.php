@@ -39,7 +39,7 @@
 			<h2 class="title">Wallet</h2>
 		</div>
 		    <div class="banner-form banner-form-full job-list-form">
-                <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
+                <form method="get" action="{{ url('/wallet/jobs/find') }}" id="formID">
                     <input type="text" class="form-control" placeholder="Job search" name="keyword" value="{{old('keyword')}}">
 
                     <button type="submit" class="btn btn-primary" value="Search">Search</button>
