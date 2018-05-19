@@ -352,6 +352,7 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/view/application/{app_id}/{job_id}', 'JobsController@myApplicationView')->name('my.application.view');
 	Route::get('/save/{id}', 'JobsController@saveJobsToProfile');
     Route::get('/remove/{id}', 'JobsController@removeJobsFromProfile');
+	Route::get('/leave/feedback/{application_id}', 'JobsController@leaveFeedback')->name('leave.feedback');
 });
 
 // Guest route for find job
@@ -366,5 +367,9 @@ Route::get('/jobs/favourites/{id}', 'JobsController@getFavouriteJobs')->name('fa
 Route::post('/jobs/favourites/{id}', 'JobsController@postFavouriteJobs')->name('post.favorites.jobs');
 Route::get('/jobs/{id}', 'JobsController@getJobs')->name('get.jobs');
 Route::post('/jobs/{id}', 'JobsController@postJobs')->name('post.jobs');
+
+
+Route::get('/test', 'test@getTransactionsOfJobs');
+Route::get('/test2/{id}', 'test@getJobTransactionDetails');
 
 
