@@ -187,7 +187,9 @@ div.dataTables_wrapper div.dataTables_filter input{
 
 	<script>
 		$(function () {
-			$('#date_filter').datetimepicker();
+			$('#date_filter').datetimepicker({
+				format: 'YYYY-MM-DD'
+			});
 		})
 	</script>
   </body>
