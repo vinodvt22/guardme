@@ -43,7 +43,8 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
     <link rel="stylesheet" href="<?php echo $url;?>/css/bootstrap.min.css" >
     <link rel="stylesheet" href="<?php echo $url;?>/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?php echo $url;?>/css/icofont.css"> 
-    <link rel="stylesheet" href="<?php echo $url;?>/css/slidr.css">     
+    <link rel="stylesheet" href="<?php echo $url;?>/css/slidr.css">
+	<link href="<?php echo $url;?>/css/star-rating.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="<?php echo $url;?>/css/main.css">  
 	<link id="preset" rel="stylesheet" href="<?php echo $url;?>/css/presets/preset1.css">	
     <link rel="stylesheet" href="<?php echo $url;?>/css/responsive.css">

@@ -77,7 +77,8 @@
                                         @if (!$application->is_hired)
                                         <button class="btn btn-info pull-right mark-as-hired">Award Job</button>
                                             <button class="btn del pull-right right-10">Decline</button>
-
+                                        @else
+                                            <button class="mark-as-complete btn pull-right right-10">Mark as complete</button>
                                             
                                         @endif
 
@@ -213,6 +214,15 @@
                     $('.alert-danger').removeClass('hide');
                 }
             })
+        });
+        $(".mark-as-complete").on("click", function() {
+           $.ajax({
+               url: "{{ route('api.mark.application.complete', ['application-id' => $application->id]) }}",
+               type: "POST",
+               success: function (data) {
+                   console.log(data);
+               }
+           })
         });
     });
 </script>
