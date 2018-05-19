@@ -98,6 +98,9 @@ div.dataTables_wrapper div.dataTables_filter input{
 									  </select>
 								  </div>
 								  <div class="form-group">
+									  <input type="text" class="form-control" id="date_filter" name="reg_date">
+								  </div>
+								  <div class="form-group">
 									  <button class="btn btn-sm btn-primary" type="submit">Filter</button>
 								  </div>
 							  </form>
@@ -178,5 +181,14 @@ div.dataTables_wrapper div.dataTables_filter input{
       @include('admin.footer')
       </div>
     </div>
+	<script src="/js/date-time-picker/bootstrap-datetimepicker.min.js"></script>
+	<script src="/js/date-time-picker/bootstrap-datetimepicker.uk.js"></script>
+	<script src="/js/moment.js"></script>
+
+	<script>
+		$(function () {
+			$('#date_filter').datetimepicker();
+		})
+	</script>
   </body>
 </html>

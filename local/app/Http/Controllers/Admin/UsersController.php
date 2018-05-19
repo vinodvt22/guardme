@@ -49,6 +49,14 @@ class UsersController extends Controller
             $query = $query->where('gender', $search_gender);
         }
 
+		// todo: filter by reg date
+        $search_reg_date = isset($data['reg_date']) ? trim($data['reg_date']) : null;
+
+        if($search_reg_date){
+            $query = $query
+                ->whereDate('created_at', $search_reg_date);
+        }
+		
         $users = $query
             ->orderBy('id','desc')
             ->get();
