@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    
-
    @include('style')
-	
-
-
-
-
+	<style src="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"></style>
+	<style src="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css"></style>
 </head>
 <body>
 
@@ -44,32 +38,57 @@
 						<div class="description-info">
 							<h2>Wallet</h2>
 							
-							
-							<table class="table table-striped">
-								<!-- <thead>
-									<tr>
-										<th>Title</th>
-										<th>Debit/Credit</th>
-										<th>Amount</th>
-									</tr>
-								</thead> -->
-								<tbody>
-								@if($wallet_data['all_transactions']->count() >0)
-									@foreach($wallet_data['all_transactions'] as $trans)
-										<tr>
-											<td>{{ $trans->title }}</td>
-											<td>{{ $trans->debit_credit_type }}</td>
-											<td>£ {{ $trans->amount }}</td>
-										</tr>
-									@endforeach
-								
-									<!-- <tr >
-										<td>title</td>
-										<td>credit/debit</td>
-										<td>amount</td>
-									</tr> -->
-								@endif
-								</tbody>
+							<div class="row">
+								<form id="filters">
+									<select name="type" class="col-sm-3">
+										<option value="">Transaction Type</option>
+										<option value="admin_fee">Admin Fee</option>
+										<option value="vat_fee">VAT Fee</option>
+										<option value="job_fee">Job Fee</option>
+										<option value="add_money">Add Money</option>
+									</select>
+									<select name="type" class="col-sm-3 col-sm-offset-1">
+										<option value="">Credit Payment</option>
+										<option value="funded">Funded</option>
+										<option value="paid">Paid</option>
+									</select>
+									
+									<label class="col-sm-2">Job Rate:</label>
+									<input type="text" class="col-sm-2" name="per_hour_rate">
+									
+									<label class="col-sm-3">Transaction Date:</label>
+							        <div class="col-sm-9">
+							            <div class="col-sm-4">
+							                <input type="text" class="start_date date-picker form-control" name="start_date" placeholder="Start Date">
+							                <span class="text-danger error-span"></span>
+							            </div>
+							            <div class="col-sm-4 col-sm-offset-1">
+							                <input type="text" class="end_date date-picker form-control" name="end_date" placeholder="End Date" data-date-end-date="0d">
+							                <span class="text-danger error-span"></span>
+							            </div>
+
+							        </div>
+								</form>
+							</div>
+							<table class="display nowrap table" id="table">
+							    <thead>
+							        <tr>
+							            <th>Reference Number</th>
+							            <th>Job Title</th>
+							            <th>Amount</th>
+							            <th>Posted Date</th>
+							        </tr>
+							    </thead>
+							    <tbody>
+							    	@foreach($jobs as $job)
+							        <tr>
+							            <td><a href="{{url('wallet/invoice/'.$job->id)}}">{{$job->id}}</a></td>
+							            <td>{{$job->title}}</td>
+							            <td>{{$job->per_hour_rate}}</td>
+							            <td>{{date('d/m/Y',strtotime($job->created_at))}}</td>
+							        </tr>
+							        @endforeach
+							    </tbody>
 							</table>
 						</div>
 					</div>
@@ -88,8 +107,6 @@
 									@endif
 								</p>
 							</li>
-							
-							
 						</ul>
 					</div>
 
@@ -145,5 +162,53 @@
 
 
       @include('footer')
+
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+    $('#table').DataTable( {
+        dom: 'Bfrtip',
+        searching: false,
+        buttons: [
+            'csv', 'excel', 'pdf',
+        ]
+    } );
+
+    $('.date-picker').datepicker({
+        //language:  'uk',
+        format: 'DD/MM/YYYY'
+    });
+
+	var start = new Date();
+	// set end date to max one year period:
+	var end = new Date(new Date().setYear(start.getFullYear()+1));
+
+    $('.start_date').datepicker({
+    	startDate : start,
+    	endDate   : end
+	// update "toDate" defaults whenever "fromDate" changes
+	}).on('changeDate', function(){
+	    // set the "toDate" start to not be later than "fromDate" ends:
+	    // $('.end_date').datepicker('setStartDate', new Date($(this).val()));
+	    var startDate = new Date(selected.date.valueOf());
+    $('.end_date').datepicker('setStartDate', startDate);
+
+	}); 
+
+	$('.end_date').datepicker({
+	    startDate : start,
+	    endDate   : end
+	// update "fromDate" defaults whenever "toDate" changes
+	});
+} );
+</script>
 </body>
 </html>
