@@ -52,8 +52,12 @@ class JobsController extends Controller
             'working_days' => 'required|integer',
             'pay_per_hour' => 'required|integer',
             'number_of_freelancers' => 'required|integer',
-            'start_date_time' => 'required',
-            'end_date_time' => 'required',
+            'start_date_time.*' => 'required',
+            'end_date_time.*' => 'required',
+        ],
+        [
+            'end_date_time.*.required' => 'Start date/time field is required',
+            'start_date_time.*.required'  => 'End date/time field is required',
         ]);
         $posted_data = $request->all();
         $working_days = !empty($posted_data['working_days']) ? $posted_data['working_days'] : 0;
