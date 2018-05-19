@@ -50,13 +50,29 @@ class WalletController extends Controller
     	$wallet = new Transaction();
 		$wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
     	$keyword = $request->keyword;
+    	$start_date = $request->start_date;
+    	$end_date = $request->end_date;
+    	$user = auth()->user();
+
     	if($keyword != ''){
-    		$user = auth()->user();
 			if($user->admin == 0){
-				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, security_jobs.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by job_id');
+				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by job_id');
 			}else if($user->admin == 2){
-				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, security_jobs.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by security_jobs.id');
+				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by security_jobs.id');
 			}
+    	}
+    	else if($start_date != null && $end_date != null && $start_date < $end_date){
+    		$format = "y_m_d";
+			$date1  = date("Y-m-d", strtotime($start_date));
+			$date2  = date("Y-m-d", strtotime($end_date));
+			// dd($date1." ".$date2);
+    		if($user->admin == 0){
+				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' and (transactions.created_at between "'.$date1.'" and "'.$date2.'" ) group by security_jobs.id');
+			}else if($user->admin == 2){
+				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and (transactions.created_at between "'.$date1.'" and "'.$date2.'" ) group by security_jobs.id');
+			}
+    	}else{
+    		$jobs = array();
     	}
     	return view('wallet', compact('jobs', 'wallet_data'));
     }
