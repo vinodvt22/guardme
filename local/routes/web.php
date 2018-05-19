@@ -103,6 +103,7 @@ Route::post('/my_bookings', ['as'=>'my_bookings','uses'=>'MybookingsController@s
 
 
 Route::get('/wallet', 'WalletController@show');
+Route::get('/wallet/invoice/{id}', 'WalletController@invoice');
 Route::get('/wallet-dashboard', 'WalletController@view');
 
 Route::post('/wallet', ['as'=>'wallet','uses'=>'WalletController@sangvish_savedata']);
