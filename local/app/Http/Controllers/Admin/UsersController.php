@@ -26,7 +26,7 @@ class UsersController extends Controller
     {
         $data = \request()->all();
 
-        $query = DB::table('users');
+        $query = User::orderBy('id','desc');
 
         // todo: filter by location
         $location_search_filter = isset($data['location']) ? trim($data['location']) : null;
