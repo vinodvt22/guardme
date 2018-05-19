@@ -748,6 +748,7 @@ CREATE TABLE `news_letters` (
 --
 
 
+
 INSERT INTO `news_letters` (`id`, `user_id`, `email`, `created_at`, `updated_at`) VALUES
 (3, '', 'djhf@jhj.dfdf', '2018-05-19 15:19:43', '2018-05-19 15:19:43'),
 (4, '22', 'indah@gmail.com', '2018-05-19 15:19:58', '2018-05-19 15:19:58'),

@@ -117,6 +117,7 @@ div.dataTables_wrapper div.dataTables_filter input{
 								  <th>User Type</th>
 								  </th>NewsLetters Subscribed ?</th>
 								  <th>Action</th>
+								  
 
 							  </tr>
 							  </thead>
