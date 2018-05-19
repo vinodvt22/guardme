@@ -4,6 +4,10 @@ namespace Responsive;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+
+use Responsive\Job ;
+
+
 class Transaction extends Model
 {
     //
@@ -199,4 +203,11 @@ class Transaction extends Model
         }
         return $return_data;
     }
+
+
+
+    public function getTransactionJob(){
+        return $this->belongsTo( Job::class , 'job_id' , 'id' );
+    }
+
 }

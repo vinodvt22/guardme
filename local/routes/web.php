@@ -103,7 +103,6 @@ Route::post('/my_bookings', ['as'=>'my_bookings','uses'=>'MybookingsController@s
 
 
 Route::get('/wallet', 'WalletController@show');
-Route::get('/wallet/invoice/{id}', 'WalletController@invoice');
 Route::get('/wallet-dashboard', 'WalletController@view');
 
 Route::post('/wallet', ['as'=>'wallet','uses'=>'WalletController@sangvish_savedata']);
@@ -365,5 +364,9 @@ Route::get('/jobs/favourites/{id}', 'JobsController@getFavouriteJobs')->name('fa
 Route::post('/jobs/favourites/{id}', 'JobsController@postFavouriteJobs')->name('post.favorites.jobs');
 Route::get('/jobs/{id}', 'JobsController@getJobs')->name('get.jobs');
 Route::post('/jobs/{id}', 'JobsController@postJobs')->name('post.jobs');
+
+
+Route::get('/test', 'test@getTransactionsOfJobs');
+Route::get('/test2/{id}', 'test@getJobTransactionDetails');
 
 
