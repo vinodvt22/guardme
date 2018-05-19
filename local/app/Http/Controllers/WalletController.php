@@ -28,9 +28,9 @@ class WalletController extends Controller
 		// return view('wallet', compact('wallet_data'));
 		$user = auth()->user();
 		if($user->admin == 0){
-			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, security_jobs.per_hour_rate, security_jobs.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id);
+			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, security_jobs.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
 		}else if($user->admin == 2){
-			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, security_jobs.per_hour_rate, security_jobs.created_at from security_jobs, job_applications where job_applications.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id);
+			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, security_jobs.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' group by security_jobs.id');
 		}
 		// dd($jobs);
 		return view('wallet', compact('jobs', 'wallet_data'));
@@ -70,6 +70,7 @@ class WalletController extends Controller
                 ->where('status', 1)
                 ->where(function($query){
                     $query->orWhere('credit_payment_status', 'paid')
+                    	->orWhere('credit_payment_status', 'funded')
                         ->orWhere('type', 'vat_fee')
                         ->orWhere('type', 'admin_fee');
                 })
@@ -90,12 +91,12 @@ class WalletController extends Controller
 
 	        	$job = Job::find($id);
 	        	$to = User::find($job->created_by);
-	        	return view('invoice-freelancer', compact('all_transactions', 'balance', 'from', 'to', 'job_id'));
+	        	return view('invoice-freelancer', compact('all_transactions', 'balance', 'from', 'to', 'id'));
 	        }
 	        else if($user->admin == 0){
 	        	$from = $user;
 	        	$from->date = Carbon::now();
-	        	return view('invoice-employer', compact('all_transactions', 'balance', 'from', 'to', 'job_id'));
+	        	return view('invoice-employer', compact('all_transactions', 'balance', 'from', 'to', 'id'));
 	        }
         }
         return "";
