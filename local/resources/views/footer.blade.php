@@ -12,6 +12,25 @@ $setid=1;
 	<!-- footer-top -->
 	<section class="footer-top clearfix">
 		<div class="container">
+		
+				<div class="row text-center">
+		 
+@if ($message = Session::get('success'))
+<div class="alert alert-success alert-block">
+	<button type="button" class="close" data-dismiss="alert">×</button>	
+        <strong>{{ $message }}</strong>
+</div>
+@endif
+
+
+@if ($message = Session::get('error'))
+<div class="alert alert-danger alert-block">
+	<button type="button" class="close" data-dismiss="alert">×</button>	
+        <strong>{{ $message }}</strong>
+</div>
+@endif
+ 
+		</div>
 			<div class="row">
 				<!-- footer-widget -->
 				<div class="col-sm-3">
@@ -68,10 +87,10 @@ $setid=1;
 							<h3>Newsletter</h3>
 							<p>Jobs is Worldest leading Portal platform that brings!</p>
 							<!-- form -->
-							<form action="#">
-								<input type="email" class="form-control" placeholder="Your email id">
+							{{ Form::open(array('url' => 'post_newsletters_subscription','method' => 'POST')) }}
+ 		                        <input type="email" class="form-control" name="email" placeholder="Your email id">
 								<button type="submit" class="btn btn-primary">Sign Up</button>
-							</form><!-- form -->			
+                           {{ Form::close() }}		
 						</div>
 					</div><!-- footer-widget -->
 		</div>
