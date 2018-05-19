@@ -20,10 +20,10 @@
                 }
                 ,
                 {
-                    "title": '{{ $user_address->name }}',
-                    "lat": '{{ $user_address->address->latitude }}',
-                    "lng": '{{ $user_address->address->longitude }}',
-                    "description": '{{ $user_address->name }}, {{ $user_address->address->line1 }}, {{ $user_address->address->line2 }}, {{ $user_address->address->line3 }}'
+                    "title": '{{ @$user_address->name }}',
+                    "lat": '{{ @$user_address->address->latitude }}',
+                    "lng": '{{ @$user_address->address->longitude }}',
+                    "description": '{{ @$user_address->name }}, {{ @$user_address->address->line1 }}, {{ @$user_address->address->line2 }}, {{ @$user_address->address->line3 }}'
                 }
             ];
        <?php } else { ?>

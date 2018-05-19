@@ -115,6 +115,8 @@ class AuthController extends Controller
     public function profile()
     {
         $user = Auth::user();
+        $id = Auth::user()->id;
+        $address = Address::where('user_id', $id )->first();
         return response()->json([
             'id' => $user->id,
             'username' => $user->name,
@@ -128,6 +130,10 @@ class AuthController extends Controller
             'address_country' => $user->address ? $user->address->country : null,
             'address_postcode' => $user->address ? $user->address->postcode : null,
             'address_town' => $user->address ? $user->address->citytown : null,
+
+            'latitude' => $user->address ? $user->address->latitude : null,
+            'longitude' => $user->address ? $user->address->longitude : null,
+
             'phone' => $user->phone,
             'gender' => $user->gender,
             'dob' => $user->dob,
@@ -142,6 +148,7 @@ class AuthController extends Controller
             'visa_page' => $user->visa_page ? url("/local/images/userdoc/".$user->visa_page) : null,
             'sia_license' => $user->sia_doc ? url("/local/images/userdoc/".$user->sia_doc) : null,
             'address_proof' => $user->address_proof ? url("/local/images/userdoc/".$user->address_proof) : null,
+
         ]);
     }
 

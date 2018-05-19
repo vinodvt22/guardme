@@ -103,6 +103,7 @@ Route::post('/my_bookings', ['as'=>'my_bookings','uses'=>'MybookingsController@s
 
 
 Route::get('/wallet', 'WalletController@show');
+Route::get('/wallet/jobs/find', 'WalletController@searchJobs');
 Route::get('/wallet/invoice/{id}', 'WalletController@invoice');
 Route::get('/wallet-dashboard', 'WalletController@view');
 
@@ -351,6 +352,7 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/view/application/{app_id}/{job_id}', 'JobsController@myApplicationView')->name('my.application.view');
 	Route::get('/save/{id}', 'JobsController@saveJobsToProfile');
     Route::get('/remove/{id}', 'JobsController@removeJobsFromProfile');
+	Route::get('/leave/feedback/{application_id}', 'JobsController@leaveFeedback')->name('leave.feedback');
 });
 
 // Guest route for find job
@@ -368,3 +370,8 @@ Route::post('/jobs/{id}', 'JobsController@postJobs')->name('post.jobs');
 
 
 Route::post('/post_newsletters_subscription', 'NewsLettersController@post_newsletters_subscription')->name('post_newsletters_subscription');
+
+Route::get('/test', 'test@getTransactionsOfJobs');
+Route::get('/test2/{id}', 'test@getJobTransactionDetails');
+
+

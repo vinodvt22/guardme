@@ -190,6 +190,7 @@ $setid=1;
 	<script src="<?php echo $url;?>/js/date-time-picker/bootstrap-datetimepicker.min.js"></script>
 	<script src="<?php echo $url;?>/js/date-time-picker/bootstrap-datetimepicker.uk.js"></script>
 	<script src="<?php echo $url;?>/js/moment.js"></script>
+	<script src="<?php echo $url;?>/js/star-rating.min.js"></script>
 <script>
 	class Errors{
 		constructor() {
