@@ -166,6 +166,7 @@ return [
 		
 		Collective\Html\HtmlServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -236,6 +237,7 @@ return [
 	  'Input'     => Illuminate\Support\Facades\Input::class,
 	  'Image' => Intervention\Image\Facades\Image::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

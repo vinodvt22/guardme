@@ -13,7 +13,7 @@ $setid=1;
 	<section class="footer-top clearfix">
 		<div class="container">
 		
-				<div class="row text-center">
+						<div class="row text-center">
 		 
 @if ($message = Session::get('success'))
 <div class="alert alert-success alert-block">
@@ -33,6 +33,8 @@ $setid=1;
  
  
 		</div>
+		
+		
 			<div class="row">
 				<!-- footer-widget -->
 				<div class="col-sm-3">
@@ -83,7 +85,7 @@ $setid=1;
 							</ul>
 						</div>
 					</div>
-					<!-- footer-widget -->
+				<!-- footer-widget -->
 					<div class="col-sm-3">
 						<div class="footer-widget news-letter">
 							<h3>Newsletter</h3>
@@ -94,7 +96,8 @@ $setid=1;
 								<button type="submit" class="btn btn-primary">Sign Up</button>
                            {{ Form::close() }}		
 						</div>
-					</div><!-- footer-widget -->
+					</div><!-- footer-widget ends-->
+					
 		</div>
 	</section>
 
@@ -190,6 +193,7 @@ $setid=1;
 	<script src="<?php echo $url;?>/js/date-time-picker/bootstrap-datetimepicker.min.js"></script>
 	<script src="<?php echo $url;?>/js/date-time-picker/bootstrap-datetimepicker.uk.js"></script>
 	<script src="<?php echo $url;?>/js/moment.js"></script>
+	<script src="<?php echo $url;?>/js/star-rating.min.js"></script>
 <script>
 	class Errors{
 		constructor() {

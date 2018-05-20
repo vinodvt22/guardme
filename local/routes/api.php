@@ -61,7 +61,8 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     
     Route::get('my','JobsController@myJobs')->name('api.my.jobs');
     Route::get('proposals','JobsController@myProposals')->name('api.my.proposals');
-
+    Route::post('mark-application-as-complete/{id}', 'JobsController@markApplicationAsComplete')->name('api.mark.application.complete');
+    Route::post('leave/feedback/{application_id}', 'JobsController@leaveFeedback')->name('api.leave.feedback');
 });
 
 
@@ -75,4 +76,12 @@ Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
     Route::post('/find-jobs','JobsController@findJobs')->name('api.find.jobs');
     Route::post('/job-details','JobsController@jobDetailsLocation')->name('api.job.details');
     Route::post('/search','SearchController@getpersonnelsearch');
+});
+
+
+Route::group(['prefix' => 'wallet','namespace' => 'Api'], function(){
+
+    Route::get('/jobTrans', 'WalletController@getTransactionsOfJobs')->middleware('auth:api');;
+    Route::get('/details/{id}', 'WalletController@getJobTransactionDetails')->middleware('auth:api');;
+
 });
