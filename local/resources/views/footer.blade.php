@@ -96,7 +96,8 @@ $setid=1;
 								<button type="submit" class="btn btn-primary">Sign Up</button>
                            {{ Form::close() }}		
 						</div>
-					</div><!-- footer-widget -->
+					</div><!-- footer-widget ends-->
+					
 		</div>
 	</section>
 
