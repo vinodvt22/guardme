@@ -663,7 +663,47 @@ class JobsController extends Controller
 	
 	
 	
-	
+	public function markApplicationAsComplete($application_id) {
+        //@TODO check if user is authorized to mark it as complete, means it should be the user created job. and return suitable errors.
+        $application = JobApplication::find($application_id);
+        event(new JobHiredApplicationMarkedAsComplete($application));
+        return response()
+            ->json(['success'], 200);
+    }
+
+    public function leaveFeedback($application_id, Request $request) {
+        $posted_data = $request->all();
+        $application = JobApplication::find($application_id);
+        $job = Job::find($application->job_id);
+        $user_id = auth()->user()->id;
+        if ($job->created_by != $user_id) {
+            $return_data = ['You are not eligible to leave feedback'];
+            $return_status = 500;
+        } else {
+            $return_data = ['Un-know error'];
+            $return_status = 500;
+            $already = Feedback::where('application_id', $application_id)->get();
+            if (count($already)) {
+                $return_status = 500;
+                $return_data = ['You have already left feedback'];
+            } else {
+                $feedback = new Feedback();
+                $feedback->application_id = $application_id;
+                $feedback->appearance = !empty($posted_data['appearance']) ? ($posted_data['appearance']) : 1;
+                $feedback->punctuality = !empty($posted_data['punctuality']) ? ($posted_data['punctuality']) : 1;
+                $feedback->customer_focused = !empty($posted_data['customer_focused']) ? ($posted_data['customer_focused']) : 1;
+                $feedback->security_conscious = !empty($posted_data['security_conscious']) ? ($posted_data['security_conscious']) : 1;
+                $feedback->message = !empty($posted_data['feedback_message']) ? ($posted_data['feedback_message']) : null;
+                $ret = $feedback->save();
+                if ($ret) {
+                    $return_data = ['Feedback Submitted successfully'];
+                    $return_status = 200;
+                }
+            }
+        }
+        return response()
+            ->json($return_data, $return_status);
+    }
 	
 	
 	
