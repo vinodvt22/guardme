@@ -32,4 +32,5 @@ class CreateNotificationsSettingsTable extends Migration
     {
         Schema::dropIfExists('notifications_settings');
     }
+	
 }
