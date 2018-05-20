@@ -24,12 +24,18 @@ class WalletController extends Controller
 
         $jobDetails = Job::getMyJobs();
         $data = array() ;
+      //  $calc = array() ;
         foreach($jobDetails as $list){
-                $data[] = [ 'id'=>$list->id ,
-                            'title'=>$list->title ,
-                            'calc'=>Job::calculateJobAmount($list->id)
+            $calc = Job::calculateJobAmount($list->id);
+                $data[] = [
+                    'id'=>$list->id ,
+                     'title'=>$list->title ,
+                     'payment_date' => $list->end_date_time ,
+//                     'vat' => $calc['vat_fee'] ,
+//                     'amount' => $calc['grand_total']
 
-                ];
+                    ];
+
 
         }
 
@@ -54,12 +60,12 @@ class WalletController extends Controller
     }
 
 
-
     public function getJobTransactionDetails($id){
         $wallet_data = Transaction::where('job_id' , $id )->get();
-     //  $data = ['name'=> 'maysoon' , 'age'=> 26] ;
-       //echo json_encode($data);
+        $amount = Job::calculateJobAmount($id) ;
+       // $data[] = $amount->amount ;
 
+       // $data[] = [$wallet_data, $amount ];
         return response()
             ->json($wallet_data, 200);
 
