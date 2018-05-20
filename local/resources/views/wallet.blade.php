@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    
+
    @include('style')
-	<style src="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"></style>
-	<style src="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css"></style>
-	<style type="text/css">
-		button {
-			background: #00a651;
-			color: white;
-			padding-top: 10px;
-			margin: 0;
-			border: none;
-			border-radius: 5px;
-			padding-left: 20px;
-			padding-right: 20px;
-			height: 40px;
-		}
-	</style>
+	
+
+
+
+
 </head>
 <body>
 
@@ -38,13 +31,7 @@
 			</ol>						
 			<h2 class="title">Wallet</h2>
 		</div>
-		    <div class="banner-form banner-form-full job-list-form">
-                <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
-                    <input type="text" class="form-control" placeholder="Job search" name="keyword" value="{{old('keyword')}}">
-
-                    <button type="submit" class="btn btn-primary" value="Search">Search</button>
-                </form>
-            </div>
+	
 	
 
 
@@ -57,43 +44,32 @@
 						<div class="description-info">
 							<h2>Wallet</h2>
 							
-							<div class="row">
-								<form id="filters">
-							        <div class="col-sm-12">
-							        	<label class="col-sm-2">Transaction Date:</label>
-							            <div class="col-sm-3">
-							                <input type="text" class="start_date date-picker form-control" name="start_date" placeholder="Start Date">
-							                <span class="text-danger error-span"></span>
-							            </div>
-							            <div class="col-sm-3">
-							                <input type="text" class="end_date date-picker form-control" name="end_date" placeholder="End Date" data-date-end-date="0d">
-							                <span class="text-danger error-span"></span>
-							            </div>
-							            <div class="col-sm-1">
-							            	<a href="" class="btn btn-default">GO</a>
-							            </div>
-							        </div>
-								</form>
-							</div>
-							<table class="display nowrap table" id="table">
-							    <thead>
-							        <tr>
-							            <th>Reference Number</th>
-							            <th>Job Title</th>
-							            <th>Amount</th>
-							            <th>Posted Date</th>
-							        </tr>
-							    </thead>
-							    <tbody>
-							    	@foreach($jobs as $job)
-							        <tr>
-							            <td>{{$job->id}}</td>
-							            <td><a href="{{url('wallet/invoice/'.$job->id)}}">{{$job->title}}</a></td>
-							            <td>{{$job->amount}}</td>
-							            <td>{{date('d/m/Y',strtotime($job->created_at))}}</td>
-							        </tr>
-							        @endforeach
-							    </tbody>
+							
+							<table class="table table-striped">
+								<!-- <thead>
+									<tr>
+										<th>Title</th>
+										<th>Debit/Credit</th>
+										<th>Amount</th>
+									</tr>
+								</thead> -->
+								<tbody>
+								@if($wallet_data['all_transactions']->count() >0)
+									@foreach($wallet_data['all_transactions'] as $trans)
+										<tr>
+											<td>{{ $trans->title }}</td>
+											<td>{{ $trans->debit_credit_type }}</td>
+											<td>£ {{ $trans->amount }}</td>
+										</tr>
+									@endforeach
+								
+									<!-- <tr >
+										<td>title</td>
+										<td>credit/debit</td>
+										<td>amount</td>
+									</tr> -->
+								@endif
+								</tbody>
 							</table>
 						</div>
 					</div>
@@ -112,6 +88,8 @@
 									@endif
 								</p>
 							</li>
+							
+							
 						</ul>
 					</div>
 
@@ -167,64 +145,5 @@
 
 
       @include('footer')
-
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
-
-<script type="text/javascript">
-
-$(document).ready(function() {
-    var table = $('#table').DataTable( {
-        dom: 'Bfrtip',
-        searching: false,
-        sorting: true,
-        buttons: [
-            'csv', 'excel', 'pdf',
-        ],
-        page_length: 50,
-    } );
-
-    $('#table_paginate').css('display', 'none');
-
-    $('#table tbody').on( 'click', 'tr', function () {
-    	var data = table.row(this).data();
-    	window.location = "{{url('/wallet/invoice/')}}"+'/'+data[0];
-        
-    } );
-
-    $('.date-picker').datepicker({
-        //language:  'uk',
-        format: 'DD/MM/YYYY'
-    });
-
-	var start = new Date();
-	// set end date to max one year period:
-	var end = new Date(new Date().setYear(start.getFullYear()+1));
-
-    $('.start_date').datepicker({
-    	startDate : start,
-    	endDate   : end
-	// update "toDate" defaults whenever "fromDate" changes
-	}).on('changeDate', function(){
-	    // set the "toDate" start to not be later than "fromDate" ends:
-	    // $('.end_date').datepicker('setStartDate', new Date($(this).val()));
-	    var startDate = new Date(selected.date.valueOf());
-    	$('.end_date').datepicker('setStartDate', startDate);
-
-	}); 
-
-	$('.end_date').datepicker({
-	    startDate : start,
-	    endDate   : end
-	// update "fromDate" defaults whenever "toDate" changes
-	});
-} );
-</script>
 </body>
 </html>
