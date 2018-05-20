@@ -14,21 +14,22 @@
       <div class="container" style="width: 80%;">
           
         <div class="adpost-details post-resume">
-          <div class="clearfix">
+          <div class="clearfix" style="margin-bottom: 10px;">
             <a href="" onclick="printPage();" class="btn pull-right">Print</a>
-            <a href="{{url('wallet/pdf/').$id}}" onclick="printPage();" class="btn pull-right">PDF</a>
+            <!-- <a href="{{url('wallet/invoice/').'/'.$id.'?download=pdf'}}" class="btn pull-right">PDF</a> -->
           </div>
           <div class="clearfix">
             <h1>INVOICE</h1>
             <div id="company" class="clearfix">
-              <div>Caja Studios</div>
-              <div>88 Scollard St, Toronto,<br/> ON M5R 1G2, Canada</div>
-              <div>+1 416-964-8739</div>
+              <div>GuardME</div>
+              <div>Andrav Technologies UK</div>
+              <div>75 Archway Romford<br>Essex<br>RM3 7EH</div>
             </div>
             <div id="project">
               <div>NAME: {{$from->name}}</div>
-              <div>PHONE: {{$from->phone}}</div>
-              <div>DATE: {{date('d/m/Y',strtotime($from->date))}}</div>
+              <div>TRANSACTION NUMBER: @if($all_transactions != '') {{$all_transactions[0]->id}} @endif</div>
+              <div>DATE: @if($all_transactions != '') {{date('d/m/Y',strtotime($all_transactions[0]->created_at))}} @endif</div>
+              <DIV>TOTAL AMOUNT: {{$balance}}</DIV>
             </div>
           </div>
           <main class="clearfix">
