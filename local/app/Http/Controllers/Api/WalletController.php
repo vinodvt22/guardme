@@ -54,8 +54,6 @@ class WalletController extends Controller
     }
 
 
-    
-
 
     public function getJobTransactionDetails($id){
         $wallet_data = Transaction::where('job_id' , $id )->get();
