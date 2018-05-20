@@ -46,15 +46,15 @@
               <tbody>
                 @foreach($all_transactions as $transaction)
                   @if($transaction->title == 'Job Fee')
-                    @for($i = 0; $i < $transaction->number_of_freelancers; $i++)
+                    @foreach($transaction->user_id as $i => $user)
                     <tr>
-                      <td class="service">SLOT {{$i + 1}}</td>
+                      <td class="service"><a href="{{url('invoice').'?user_id='.$user->applied_by.'&id='.$id}}">SLOT {{$i + 1}}</a></td>
                       <td class="desc">{{$transaction->title}}</td>
                       <td class="unit">{{date('d/m/Y',strtotime($transaction->created_at))}}</td>
                       <td class="qty">{{$transaction->status}}</td>
                       <td class="total">{{$transaction->amount/$transaction->number_of_freelancers}}</td>
                     </tr>
-                    @endfor
+                    @endforeach
                   @else
                   <tr>
                     <td class="service"></td>
@@ -79,6 +79,10 @@
     <script type="text/javascript">
       function printPage(){
         window.print();
+      }
+
+      function invoice(user_id, job_id){
+        window.location = "{{url('invoice?user')}}"+"?user_id="+user_id+"&id="+job_id;
       }
     </script>
   </body>

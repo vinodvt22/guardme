@@ -106,6 +106,7 @@ Route::get('/wallet', 'WalletController@show');
 Route::get('/wallet/jobs/find', 'WalletController@searchJobs');
 Route::get('/wallet/invoice/{id}', 'WalletController@invoice');
 Route::get('/wallet-dashboard', 'WalletController@view');
+Route::get('/invoice', 'WalletController@freelancerInvoice');
 
 Route::post('/wallet', ['as'=>'wallet','uses'=>'WalletController@sangvish_savedata']);
 
