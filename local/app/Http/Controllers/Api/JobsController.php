@@ -244,6 +244,7 @@ class JobsController extends Controller
 		$job_id = @\Responsive\JobApplication::where('id',$application_id)->first(['job_id'])->job_id;
 		$applied_by = @\Responsive\JobApplication::where('id',$application_id)->first(['applied_by'])->applied_by;
 		$job_details = @\Responsive\Job::where('id',$job_id)->get();
+		
 		 
 		
 		$this->create_notification('job_awarded', $applied_by , $job_details);
