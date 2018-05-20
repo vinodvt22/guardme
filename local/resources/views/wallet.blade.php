@@ -62,11 +62,11 @@
 							        <div class="col-sm-12">
 							        	<label class="col-sm-2">Transaction Date:</label>
 							            <div class="col-sm-3">
-							                <input type="text" class="start_date date-picker form-control" name="start_date" placeholder="Start Date" required="true"  value="{{old('start_date')}}">
+							                <input type="text" class="start_date date-time-picker form-control" name="start_date" placeholder="Start Date" required="true"  value="{{old('start_date')}}">
 							                <span class="text-danger error-span"></span>
 							            </div>
 							            <div class="col-sm-3">
-							                <input type="text" class="end_date date-picker form-control" name="end_date" placeholder="End Date" data-date-end-date="0d" required="true"  value="{{old('end_date')}}">
+							                <input type="text" class="end_date date-time-picker form-control" name="end_date" placeholder="End Date" data-date-end-date="0d" required="true"  value="{{old('end_date')}}">
 							                <span class="text-danger error-span"></span>
 							            </div>
 							            <div class="col-sm-1">
@@ -198,16 +198,13 @@ $(document).ready(function() {
         
     } );
 
-    $('.date-picker').datepicker({
+	var date = new Date();
+	
+	$('.date-time-picker').datetimepicker({
         //language:  'uk',
-        format: 'DD/MM/YYYY'
+        maxDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
     });
 
-	var date = new Date();
-	var currentMonth = date.getMonth();
-	var currentDate = date.getDate();
-	var currentYear = date.getFullYear();
-	$('.date-picker').datepicker( "option", "maxDate", new Date(currentYear, currentMonth, currentDate));
 
 } );
 </script>

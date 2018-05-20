@@ -32,7 +32,9 @@ class WalletController extends Controller
 			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, security_jobs.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
 		}else if($user->admin == 2){
 			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, security_jobs.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' group by security_jobs.id');
-		}
+		}else{
+            $jobs = array();
+        }
 		// dd($jobs);
 		return view('wallet', compact('jobs', 'wallet_data'));
 	}
