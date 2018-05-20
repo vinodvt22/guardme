@@ -36,7 +36,7 @@
             <table>
               <thead>
                 <tr>
-                  <th class="service">TYPE</th>
+                  <th class="service">SLOT</th>
                   <th class="desc">DESCRIPTION</th>
                   <th class="unit">DATE</th>
                   <th class="qty">STATUS</th>
@@ -45,13 +45,25 @@
               </thead>
               <tbody>
                 @foreach($all_transactions as $transaction)
-                <tr>
-                  <td class="service">{{$transaction->debit_credit_type}}</td>
-                  <td class="desc">{{$transaction->title}}</td>
-                  <td class="unit">{{date('d/m/Y',strtotime($transaction->created_at))}}</td>
-                  <td class="qty">{{$transaction->credit_payment_status}}</td>
-                  <td class="total">{{$transaction->amount}}</td>
-                </tr>
+                  @if($transaction->title == 'Job Fee')
+                    @foreach($transaction->user_id as $i => $user)
+                    <tr>
+                      <td class="service"><a href="{{url('invoice').'?user_id='.$user->applied_by.'&id='.$id}}">SLOT {{$i + 1}}</a></td>
+                      <td class="desc">{{$transaction->title}}</td>
+                      <td class="unit">{{date('d/m/Y',strtotime($transaction->created_at))}}</td>
+                      <td class="qty">{{$transaction->status}}</td>
+                      <td class="total">{{$transaction->amount/$transaction->number_of_freelancers}}</td>
+                    </tr>
+                    @endforeach
+                  @else
+                  <tr>
+                    <td class="service"></td>
+                    <td class="qty">@if($transaction->title == 'Admin Fee') Commission @else {{$transaction->title}} @endif</td>
+                    <td class="unit">{{date('d/m/Y',strtotime($transaction->created_at))}}</td>
+                    <td class="qty">{{$transaction->status}}</td>
+                    <td class="total">{{$transaction->amount/$transaction->number_of_freelancers}}</td>
+                  </tr>
+                  @endif
                 @endforeach
                 <tr>
                   <td colspan="4" class="grand total">GRAND TOTAL</td>
@@ -67,6 +79,10 @@
     <script type="text/javascript">
       function printPage(){
         window.print();
+      }
+
+      function invoice(user_id, job_id){
+        window.location = "{{url('invoice?user')}}"+"?user_id="+user_id+"&id="+job_id;
       }
     </script>
   </body>

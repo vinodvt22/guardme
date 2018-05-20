@@ -205,8 +205,6 @@ $setid=1;
 		load() {
 			$(".error-span").addClass('hide');
 			$.each(this.formErrors, function(i, v) {
-				i = i.replace('[]', '');
-				i = i.split('.')[0];
 				if (typeof $('.'+ i) != 'undefined') {
 					$('.'+ i).siblings('.error-span').html(v);
 					$('.'+ i).siblings('.error-span').removeClass('hide');

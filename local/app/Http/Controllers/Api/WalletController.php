@@ -24,44 +24,46 @@ class WalletController extends Controller
 
         $jobDetails = Job::getMyJobs();
         $data = array() ;
+      //  $calc = array() ;
         foreach($jobDetails as $list){
-                $data[] = [ 'id'=>$list->id ,
-                            'title'=>$list->title ,
-                            'calc'=>Job::calculateJobAmount($list->id)
-
-                ];
-
+            $calc = Job::calculateJobAmount($list->id);
+                $data[] = [
+                    'id'=>$list->id ,
+                     'title'=>$list->title ,
+                     'payment_date' => $list->getJobTransactions['created_at'],
+//                     'vat' => $calc['vat_fee'] ,
+//                     'amount' => $calc['grand_total']
+                    ];
         }
 
         return response()
             ->json($data, 200);
-//        $jobDetails = Job::calculateJobAmount(1);
-
 
     }
-
-
-    public function getTransactionsOfJobs(){
-        $user_id = \Auth::user()->id;
-        //echo $user_id ;
-        $my_jobs = Job::select('id' ,'title')->with('getJobTransactions')->get();
-       // $user_transactions = Transaction::with(['getTransactionJob'])->where('user_id' , $user_id)->get();
-
-        //echo json_encode($user_transactions);
-        return response()
-            ->json($my_jobs , 200);
-
-    }
-
-
 
     public function getJobTransactionDetails($id){
-        $wallet_data = Transaction::where('job_id' , $id )->get();
-     //  $data = ['name'=> 'maysoon' , 'age'=> 26] ;
-       //echo json_encode($data);
+        $amount = Job::calculateJobAmount($id) ;
+        $job = Transaction::with(['getTransactionJob'])
+                           ->where('job_id' , $id)
+                           ->get();
+
+//        $job= Transaction::where('job_id' , $id )->get();
+        $data = array();
+        foreach($job as $list){
+            $data[] = ['title'=> $list->title ,
+                         'date_of_payment' =>$list->created_at ,
+                         'paypal_ref'=> $list->paypal_id ,
+                         'vat'=>  $amount['vat_fee'] ,
+                          'commission'=>  $amount['admin_fee']   ,
+                          'job_fee'=> $amount['basic_total']
+
+                        ];
+        }
+
+
 
         return response()
-            ->json($wallet_data, 200);
+            ->json($data, 200);
 
     }
 
