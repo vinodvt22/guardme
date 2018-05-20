@@ -29,9 +29,9 @@ class WalletController extends Controller
 		// return view('wallet', compact('wallet_data'));
 		$user = auth()->user();
 		if($user->admin == 0){
-			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, security_jobs.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
+			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
 		}else if($user->admin == 2){
-			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, security_jobs.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' group by security_jobs.id');
+			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, security_jobs.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and transactions.type = "job_fee" group by security_jobs.id');
 		}else{
             $jobs = array();
         }
@@ -88,42 +88,32 @@ class WalletController extends Controller
         $from = array();        
         $from = $user;
 	    $from->date = Carbon::now();
+        $all_transactions = array();
 
         if(!empty($user_id)) {
-            // // get sum of all active debits for user
-            // $debit = Transaction::select(DB::raw('SUM(amount) as total'))
-            //     ->groupBy('user_id')
-            //     ->where('user_id', $user_id)
-            //     ->where('job_id', $id)
-            //     ->where('status', 1)
-            //     ->where('debit_credit_type', 'debit')
-            //     ->get()->first();
-            // $total_debit = !empty($debit->total) ? ($debit->total) : 0;
-            // get sum of all active credits for user
-            $credit = Transaction::select(DB::raw('SUM(amount) as total'))
-                ->groupBy('user_id')
-                ->where('user_id', $user_id)
-                ->where('job_id', $id)
-                ->where('status', 1)
-                ->where(function($query){
-                    $query->orWhere('credit_payment_status', 'paid')
-                    	->orWhere('credit_payment_status', 'funded')
-                        ->orWhere('type', 'vat_fee')
-                        ->orWhere('type', 'admin_fee');
-                })
-                ->where('debit_credit_type', 'credit')
-                ->get()->first();
-            $total_credit = !empty($credit->total) ? ($credit->total) : 0;
-            $balance = $total_credit;
-        }
+            if($user->admin == 2){
+                $all_transactions = DB::select('select security_jobs.title, transactions.id, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = '.$id);
+            }else if($user->admin == 0){
+                $credit = Transaction::select(DB::raw('SUM(amount) as total'))
+                    ->groupBy('user_id')
+                    // ->where('user_id', $user_id)
+                    ->where('job_id', $id)
+                    ->where('status', 1)
+                    ->where(function($query){
+                        $query->orWhere('credit_payment_status', 'paid')
+                            ->orWhere('credit_payment_status', 'funded');
+                    })
+                    ->where('debit_credit_type', 'credit')
+                    ->get()->first();
+                $total_credit = !empty($credit->total) ? ($credit->total) : 0;
+                $balance = $total_credit;
 
-        $all_transactions = Transaction::where('status', 1)
-            ->where('user_id', $user_id)
-            ->where('job_id', $id)
-            ->get();
+                $all_transactions = DB::select('select transactions.title, transactions.id, transactions.created_at, transactions.amount, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and security_jobs.id = '.$id);
+                // dd($all_transactions);
+            }
+        }
         if (!empty($all_transactions)) {
 	        if($user->admin == 2){
-	        	
 	            if($request->has('download')){
 		            $pdf = PDF::loadView('invoice-freelancer', compact('all_transactions', 'balance', 'from', 'id'));
 		            return $pdf->download('invoice.pdf');
