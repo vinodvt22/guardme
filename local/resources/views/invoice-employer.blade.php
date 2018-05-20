@@ -11,12 +11,12 @@
 
     <!-- slider -->
     <section class="ad-details-page">
-      <div class="container">
+      <div class="container" style="width: 80%;">
           
         <div class="adpost-details post-resume">
           <div class="clearfix">
             <a href="" onclick="printPage();" class="btn pull-right">Print</a>
-            <a href="{{url('wallet/pdf/').$job_id}}" onclick="printPage();" class="btn pull-right">PDF</a>
+            <a href="{{url('wallet/pdf/').$id}}" onclick="printPage();" class="btn pull-right">PDF</a>
           </div>
           <div class="clearfix">
             <h1>INVOICE</h1>
@@ -31,7 +31,6 @@
               <div>DATE: {{date('d/m/Y',strtotime($from->date))}}</div>
             </div>
           </div>
-          <br/>
           <main class="clearfix">
             <table>
               <thead>
