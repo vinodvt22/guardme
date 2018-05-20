@@ -1,5 +1,7 @@
 Now what is my plan for Notifications = 
 
+
+
 I will create 2 table ===
 
     table 1. = notifications (notification_type , message , user_id , notification_by_user_id , is_read )
