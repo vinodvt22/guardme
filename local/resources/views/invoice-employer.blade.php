@@ -10,11 +10,11 @@
       @include('header')
 
     <!-- slider -->
-    <section class="ad-details-page">
-      <div class="container" style="width: 80%;">
+    <section class="job-bg ad-details-page">
+      <div class="container" style="width: 85%;">
           
-        <div class="adpost-details post-resume">
-          <div class="clearfix" style="margin-bottom: 10px;">
+        <div class="section postdetails" style="border: 1px #cbc9c6 solid;">
+          <div class="clearfix" style="margin: 10px;">
             <a href="" onclick="printPage();" class="btn pull-right">Print</a>
             <!-- <a href="{{url('wallet/invoice/').'/'.$id.'?download=pdf'}}" class="btn pull-right">PDF</a> -->
           </div>
