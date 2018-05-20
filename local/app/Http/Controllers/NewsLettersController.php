@@ -35,7 +35,7 @@ class NewsLettersController extends Controller
 		if($e > 0)
 		{
 			
-			return back()->with('error','You are already subscribed to NewsLetters');
+			return back()->with('error','You are already subscribed to GuardME newsletters');
 		}
 		 
 		
@@ -56,7 +56,7 @@ class NewsLettersController extends Controller
          $flight->save();
 		}
 		
-	   return back()->with('success','You are Successfully subscribed to NewsLetters');
+	   return back()->with('success','You are successfully subscribed to GuardME newsletters');
 	}
 
  
