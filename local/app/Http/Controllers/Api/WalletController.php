@@ -2,8 +2,8 @@
 
 namespace Responsive\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\DB;
 
-use Illuminate\Http\Request;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Transaction;
 use Responsive\Job;
@@ -20,6 +20,26 @@ class WalletController extends Controller
     }
 
 
+    public function JobsList(){
+
+        $jobDetails = Job::getMyJobs();
+        $data = array() ;
+        foreach($jobDetails as $list){
+                $data[] = [ 'id'=>$list->id ,
+                            'title'=>$list->title ,
+                            'calc'=>Job::calculateJobAmount($list->id)
+
+                ];
+
+        }
+
+        return response()
+            ->json($data, 200);
+//        $jobDetails = Job::calculateJobAmount(1);
+
+
+    }
+
 
     public function getTransactionsOfJobs(){
         $user_id = \Auth::user()->id;
@@ -35,7 +55,7 @@ class WalletController extends Controller
 
 
     public function getJobTransactionDetails($id){
-        $wallet_data = Transaction::where('job_id' , $id )->first();
+        $wallet_data = Transaction::where('job_id' , $id )->get();
      //  $data = ['name'=> 'maysoon' , 'age'=> 26] ;
        //echo json_encode($data);
 
