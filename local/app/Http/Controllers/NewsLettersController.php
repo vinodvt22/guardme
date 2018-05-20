@@ -17,6 +17,16 @@ class NewsLettersController extends Controller
 {
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
     
 	public function post_newsletters_subscription(Request $request) {
 		
