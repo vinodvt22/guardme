@@ -275,9 +275,9 @@ class JobsController extends Controller
     public function viewApplication($application_id,$applicant_id) {
         $ja = new JobApplication();
         $application = $ja->getApplicationDetails($application_id);
-
+        $work_history = $ja->getApplicantWorkHistory($application_id);
         $person = User::with(['person_address','sec_work_category'])->find($applicant_id);
-        return view('jobs.application-detail', compact('application','person'));
+        return view('jobs.application-detail', compact('application','person', 'work_history'));
     }
     public function myProposals() {
         $user_id = auth()->user()->id;
