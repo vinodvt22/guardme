@@ -368,5 +368,8 @@ Route::post('/jobs/{id}', 'JobsController@postJobs')->name('post.jobs');
 
 
 
-
 Route::post('/post_newsletters_subscription', 'NewsLettersController@post_newsletters_subscription')->name('post_newsletters_subscription');
+ 
+Route::get('/test', 'test@getTransactionsOfJobs');
+Route::get('/test2/{id}', 'test@getJobTransactionDetails');
+
