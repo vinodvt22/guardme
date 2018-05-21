@@ -24,7 +24,7 @@ class WalletController extends Controller
 
         $jobDetails = Job::getMyJobs();
         $data = array() ;
-        
+
         //  $calc = array() ;
 
         foreach($jobDetails as $list){
@@ -34,7 +34,7 @@ class WalletController extends Controller
                     'title'=>$list->title ,
                     'payment_date' => $list->getJobTransactions['created_at'] ,
 //                     'vat' => $calc['vat_fee'] ,
-//                     'amount' => $calc['grand_total']
+                     'amount' => $calc['grand_total']
 
             ];
 
@@ -58,12 +58,15 @@ class WalletController extends Controller
 //        $job= Transaction::where('job_id' , $id )->get();
         $data = array();
         foreach($job as $list){
-            $data[] = ['title'=> $list->title ,
+            $data[] = [
+                 'id'=>$list->id ,
+                'title'=> $list->title ,
                 'date_of_payment' =>$list->created_at ,
                 'paypal_ref'=> $list->paypal_id ,
                 'vat'=>  $amount['vat_fee'] ,
                 'commission'=>  $amount['admin_fee']   ,
-                'job_fee'=> $amount['basic_total']
+                'job_fee'=> $amount['basic_total'] ,
+                'grand_total'=> $amount['grand_total']
 
             ];
         }
