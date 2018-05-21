@@ -24,7 +24,9 @@ class WalletController extends Controller
 
         $jobDetails = Job::getMyJobs();
         $data = array() ;
+        
         //  $calc = array() ;
+
         foreach($jobDetails as $list){
             $calc = Job::calculateJobAmount($list->id);
             $data[] = [
