@@ -24,7 +24,7 @@ class WalletController extends Controller
 
         $jobDetails = Job::getMyJobs();
         $data = array() ;
-        
+
         //  $calc = array() ;
 
         foreach($jobDetails as $list){
@@ -34,7 +34,7 @@ class WalletController extends Controller
                     'title'=>$list->title ,
                     'payment_date' => $list->getJobTransactions['created_at'] ,
 //                     'vat' => $calc['vat_fee'] ,
-//                     'amount' => $calc['grand_total']
+                     'amount' => $calc['grand_total']
 
             ];
 
