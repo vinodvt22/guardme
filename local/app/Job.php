@@ -287,6 +287,6 @@ class Job extends Model
     }
 
     public function getJobTransactions(){
-        return $this->hasMany(Transaction::class) ;
+        return $this->hasOne(Transaction::class) ;
     }
 }
