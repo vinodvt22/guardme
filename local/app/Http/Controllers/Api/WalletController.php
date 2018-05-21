@@ -25,27 +25,18 @@ class WalletController extends Controller
         $jobDetails = Job::getMyJobs();
         $data = array() ;
         //  $calc = array() ;
-       if(count($jobDetails) ==0 ){
-           $data[] = [
-               'message'=>'failed',
-               'message_txt'=>'not items to display'
-
-           ];
-           return response()
-               ->json($data, 200);
-       } else{
         foreach($jobDetails as $list){
             $calc = Job::calculateJobAmount($list->id);
             $data[] = [
-                'message'=>'success',[
                     'id'=>$list->id ,
                     'title'=>$list->title ,
-//                    'payment_date' => $list->getJobTransactions['created_at'] ,
+                    'payment_date' => $list->getJobTransactions['created_at'] ,
 //                     'vat' => $calc['vat_fee'] ,
 //                     'amount' => $calc['grand_total']
-                ]
+
             ];
-           }
+
+
 
             return response()
                 ->json($data, 200);
