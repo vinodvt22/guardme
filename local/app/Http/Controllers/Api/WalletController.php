@@ -34,8 +34,6 @@ class WalletController extends Controller
            return response()
                ->json($data, 200);
        } else{
-
-           
         foreach($jobDetails as $list){
             $calc = Job::calculateJobAmount($list->id);
             $data[] = [
@@ -48,7 +46,6 @@ class WalletController extends Controller
                 ]
             ];
            }
-
 
             return response()
                 ->json($data, 200);
