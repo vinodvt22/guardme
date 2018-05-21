@@ -24,40 +24,48 @@ class WalletController extends Controller
 
         $jobDetails = Job::getMyJobs();
         $data = array() ;
-      //  $calc = array() ;
+        
+        //  $calc = array() ;
+
         foreach($jobDetails as $list){
             $calc = Job::calculateJobAmount($list->id);
-                $data[] = [
+            $data[] = [
                     'id'=>$list->id ,
-                     'title'=>$list->title ,
-                     'payment_date' => $list->getJobTransactions['created_at'],
+                    'title'=>$list->title ,
+                    'payment_date' => $list->getJobTransactions['created_at'] ,
 //                     'vat' => $calc['vat_fee'] ,
 //                     'amount' => $calc['grand_total']
-                    ];
+
+            ];
+
+
+
+            return response()
+                ->json($data, 200);
         }
 
-        return response()
-            ->json($data, 200);
+
+
 
     }
 
     public function getJobTransactionDetails($id){
         $amount = Job::calculateJobAmount($id) ;
         $job = Transaction::with(['getTransactionJob'])
-                           ->where('job_id' , $id)
-                           ->get();
+            ->where('job_id' , $id)
+            ->get();
 
 //        $job= Transaction::where('job_id' , $id )->get();
         $data = array();
         foreach($job as $list){
             $data[] = ['title'=> $list->title ,
-                         'date_of_payment' =>$list->created_at ,
-                         'paypal_ref'=> $list->paypal_id ,
-                         'vat'=>  $amount['vat_fee'] ,
-                          'commission'=>  $amount['admin_fee']   ,
-                          'job_fee'=> $amount['basic_total']
+                'date_of_payment' =>$list->created_at ,
+                'paypal_ref'=> $list->paypal_id ,
+                'vat'=>  $amount['vat_fee'] ,
+                'commission'=>  $amount['admin_fee']   ,
+                'job_fee'=> $amount['basic_total']
 
-                        ];
+            ];
         }
 
 
