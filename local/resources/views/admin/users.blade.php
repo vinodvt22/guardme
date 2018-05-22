@@ -82,9 +82,6 @@
                         <a href="<?php echo $url;?>/admin/adduser" class="btn btn-primary">Add User</a>
 						<?php } ?>
                         <div class="content">
-                            <div class="col-md-3">
-                                <h5>Filter:</h5>
-                            </div>
                             <form class="form-inline">
                                 <div class="form-group">
                                     <label for="location_filter" class="control-label">Location:</label>
