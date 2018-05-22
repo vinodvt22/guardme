@@ -1,5 +1,7 @@
 <?php
+
 namespace Responsive\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Responsive\Businesscategory;
 use Responsive\JobApplication;
@@ -13,347 +15,380 @@ use Input;
 use Responsive\Transaction;
 use DB;
 
-class JobsController extends Controller
-{
-    //
-    public function create() {
-        if (!isEmployer()) {
-            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
-        }
-        $all_security_categories = SecurityCategory::get();
-        $all_business_categories = Businesscategory::get();
+class JobsController extends Controller {
+	//
+	public function create() {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		// Users cannot create jobs unless company details is complete
+		$company = auth()->user()->company;
+		if ( ! $company->shop_name || ! $company->address || ! $company->company_email || ! $company->description || ! $company->shop_phone_no || ! $company->business_categoryid ) {
+			return redirect( "/company" );
+		}
 
-        return view('jobs.create', compact('all_security_categories', 'all_business_categories'));
-    }
-    public function schedule($id) {
-        if (!isEmployer()) {
-            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
-        }
-        return view('jobs.schedule', compact('id'));
-    }
-    public function broadcast($id) {
-        if (!isEmployer()) {
-            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
-        }
-        $all_security_categories = SecurityCategory::get();
-        return view('jobs.broadcast', compact('id', 'all_security_categories'));
-    }
-    public function paymentDetails($id) {
-        if (!isEmployer()) {
-            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
-        }
-        $trans = new Transaction();
-        $available_balance = $trans->getWalletAvailableBalance();
-        $jobDetails = Job::calculateJobAmount($id);
-        return view('jobs.payment-details', compact('jobDetails', 'id', 'available_balance'));
-    }
-    public function confirmation() {
-        if (!isEmployer()) {
-            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
-        }
-        
-        return view('jobs.confirm');
-    }
+		$all_security_categories = SecurityCategory::get();
+		$all_business_categories = Businesscategory::get();
 
-    /**
-     * @return mixed
-     */
-    public function myJobs() {
-        $userid = Auth::user()->id;
-        $editprofile = User::where('id',$userid)->get();
-        $my_jobs = Job::getMyJobs();
-        return view('jobs.my', compact('my_jobs','editprofile'));
-    }
+		return view( 'jobs.create', compact( 'all_security_categories', 'all_business_categories' ) );
+	}
 
-    public function savedJobs() {
-        $userid = Auth::user()->id;
-        $editprofile = User::where('id',$userid)->get();
-        $my_jobs =  DB::select('select security_jobs.* from security_jobs, saved_jobs where saved_jobs.job_id = security_jobs.id and saved_jobs.user_id = '.$userid);
-        return view('jobs.saved', compact('my_jobs','editprofile'));
-    }
+	public function schedule( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
 
-    /**
-     * @return mixed
-     */
-    public function findJobs() {
-        $page_id = Input::get("page");
-        $data = \request()->all();        
-        $b_cats = Businesscategory::all();
-        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
-        $units = 'kilometers';  
-        $latitude = 0;
-        $longitude = 0;
-        
-        //dd($locs);
-        if (count($data)) {
-            if( isset($data['post_code']) ){
-                $post_code = trim($data['post_code']);
-                if (!empty($post_code)) {
-                    $postcode_url = "https://api.getaddress.io/find/".$post_code."?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
-                    $postcode_url = str_replace(' ', '%20', $postcode_url);
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-                    curl_setopt($ch, CURLOPT_HEADER, false);
-                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                    curl_setopt($ch, CURLOPT_URL, $postcode_url);
-                    curl_setopt($ch, CURLOPT_REFERER, $postcode_url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                    $getBas = curl_exec($ch);
-                    curl_close($ch);
-                    $post_code_array = json_decode($getBas, true);
-                   
-                    if(isset($post_code_array['Message']) || empty($post_code_array)){
-                        return redirect()->to('/jobs/find')->with('flash_message', 'Post code not valid!');
-                    }
-                    
-                    //$post_code_array = json_decode($json_data, true);
-                    $latitude = $post_code_array['latitude'];
-                    $longitude = $post_code_array['longitude'];
-                }
-                $joblist = Job::getSearchedJobNearByPostCode($data, $latitude, $longitude, 20, 'kilometers', $page_id);
-            } else {
-                if(Auth::check()){
-                    $userid = Auth::user();
-                    if( $userid->admin == 2 ){
-                        if($userid->person_address){
-                            $userAddressObj = $userid->person_address;
-                            if(!empty($userAddressObj->latitude))
-                                $latitude = $userAddressObj->latitude;
-                            if(!empty($userAddressObj->latitude))
-                                $longitude = $userAddressObj->longitude;
+		return view( 'jobs.schedule', compact( 'id' ) );
+	}
 
-                            if( $latitude > 0 && $latitude > 0 )
-                                $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
-                            else
-                                $joblist = Job::where('status','1')->paginate(10);
-                        } else {
-                            $joblist = Job::where('status','1')->paginate(10);
-                        }                
-                    } else {
-                        $joblist = Job::where('status','1')->paginate(10);
-                    }
-                } else {
-                    $joblist = Job::where('status','1')->paginate(10);
-                }
-            }
-        } else {
-            if(Auth::check()){
-                $userid = Auth::user();
-                if( $userid->admin == 2 ){
-                    if($userid->person_address){
-                        $userAddressObj = $userid->person_address;
-                        if(!empty($userAddressObj->latitude))
-                            $latitude = $userAddressObj->latitude;
-                        if(!empty($userAddressObj->latitude))
-                            $longitude = $userAddressObj->longitude;
+	public function broadcast( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		$all_security_categories = SecurityCategory::get();
 
-                        if( $latitude > 0 && $latitude > 0 )
-                            $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
-                        else
-                            $joblist = Job::where('status','1')->paginate(10);
-                    } else {
-                        $joblist = Job::where('status','1')->paginate(10);
-                    }                
-                } else {
-                    $joblist = Job::where('status','1')->paginate(10);
-                }
-            } else {
-                $joblist = Job::where('status','1')->paginate(10);
-            }
-        }
-        return view('jobs.find', compact('joblist','b_cats','locs'));
-    }
+		return view( 'jobs.broadcast', compact( 'id', 'all_security_categories' ) );
+	}
 
-    public function postfindJobs(Request $request) 
-    {
-        //dd($request->all());
-        $cat = $request->cat_id;
-        $loc = $request->loc_val;
-        $keyword = $request->keyword;
+	public function paymentDetails( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		$trans             = new Transaction();
+		$available_balance = $trans->getWalletAvailableBalance();
+		$jobDetails        = Job::calculateJobAmount( $id );
 
-        $b_cats = Businesscategory::all();
-        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get(); 
+		return view( 'jobs.payment-details', compact( 'jobDetails', 'id', 'available_balance' ) );
+	}
 
-        if($cat !='' || $loc !='' || $keyword !='')
-        {
-            $jobs = Job::where('status','1');
-            if($keyword !='')
-            {
-                $jobs->where('title', 'like', "$keyword%");
-                
-            }
+	public function confirmation() {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
 
-            if($cat !='')
-            {
-                $jobs->where('business_category_id', "$cat");
-                
-            }
+		return view( 'jobs.confirm' );
+	}
 
-            if($loc !='')
-            {
-                $jobs->where('city_town', "$loc");
+	/**
+	 * @return mixed
+	 */
+	public function myJobs() {
+		$userid      = Auth::user()->id;
+		$editprofile = User::where( 'id', $userid )->get();
+		$my_jobs     = Job::getMyJobs();
 
-                
-            }
-            $joblist = $jobs->paginate(10);
-        }
-        else{
+		return view( 'jobs.my', compact( 'my_jobs', 'editprofile' ) );
+	}
 
-            $joblist = Job::where('status','1')->paginate(10);
+	public function savedJobs() {
+		$userid      = Auth::user()->id;
+		$editprofile = User::where( 'id', $userid )->get();
+		$my_jobs     = DB::select( 'select security_jobs.* from security_jobs, saved_jobs where saved_jobs.job_id = security_jobs.id and saved_jobs.user_id = ' . $userid );
 
-        }
-        //dd($joblist);
-        $request->flash();
-        return view('jobs.find',compact('joblist','b_cats','locs'));
-    }
+		return view( 'jobs.saved', compact( 'my_jobs', 'editprofile' ) );
+	}
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function viewJob($id) {
-        if (!$id) {
-            return abort(404);
-        }
-        $user_address = [];
-        $saved_job = '';
-        if(Auth::check()){
-            $user_id = auth()->user()->id;
-            $user_address = User::where('id', $user_id)->with('address')->first();
-            $saved_job = SavedJob::where('job_id',$id)->where('user_id', $user_id)->first();
-        }
-        $b_cats = Businesscategory::all();
-        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
-        //$job = Job::find($id);
+	/**
+	 * @return mixed
+	 */
+	public function findJobs() {
 
-        $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
-        // dd($saved_job);
+		$page_id   = Input::get( "page" );
+		$data      = \request()->all();
+		$b_cats    = Businesscategory::all();
+		$locs      = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
+		$units     = 'kilometers';
+		$latitude  = 0;
+		$longitude = 0;
 
-        if (empty($job)) {
-            return abort(404);
-        }
-        return view('jobs.detail', compact('job','b_cats','locs','user_address', 'saved_job'));
-    }
+		//dd($locs);
+		if ( count( $data ) ) {
+			if ( isset( $data['post_code'] ) ) {
+				$post_code = trim( $data['post_code'] );
+				if ( ! empty( $post_code ) ) {
+					$postcode_url = "https://api.getaddress.io/find/" . $post_code . "?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
+					$postcode_url = str_replace( ' ', '%20', $postcode_url );
+					$ch           = curl_init();
+					curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+					curl_setopt( $ch, CURLOPT_HEADER, false );
+					curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+					curl_setopt( $ch, CURLOPT_URL, $postcode_url );
+					curl_setopt( $ch, CURLOPT_REFERER, $postcode_url );
+					curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+					$getBas = curl_exec( $ch );
+					curl_close( $ch );
+					$post_code_array = json_decode( $getBas, true );
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function applyJob($id) {
-        $job = Job::find($id);
-        return view('jobs.apply', ['job' => $job]);
-    }
+					if ( isset( $post_code_array['Message'] ) || empty( $post_code_array ) ) {
+						return redirect()->to( '/jobs/find' )->with( 'flash_message', 'Post code not valid!' );
+					}
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function myJobApplications($id) {
+					//$post_code_array = json_decode($json_data, true);
+					$latitude  = $post_code_array['latitude'];
+					$longitude = $post_code_array['longitude'];
+				}
+				$joblist = Job::getSearchedJobNearByPostCode( $data, $latitude, $longitude, 20, 'kilometers', $page_id );
+			} else {
+				if ( Auth::check() ) {
+					$userid = Auth::user();
+					if ( $userid->admin == 2 ) {
+						if ( $userid->person_address ) {
+							$userAddressObj = $userid->person_address;
+							if ( ! empty( $userAddressObj->latitude ) ) {
+								$latitude = $userAddressObj->latitude;
+							}
+							if ( ! empty( $userAddressObj->latitude ) ) {
+								$longitude = $userAddressObj->longitude;
+							}
 
-         $user_id = auth()->user()->id;
+							if ( $latitude > 0 && $latitude > 0 ) {
+								$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
+							} else {
+								$joblist = Job::where( 'status', '1' )->paginate( 10 );
+							}
+						} else {
+							$joblist = Job::where( 'status', '1' )->paginate( 10 );
+						}
+					} else {
+						$joblist = Job::where( 'status', '1' )->paginate( 10 );
+					}
+				} else {
+					$joblist = Job::where( 'status', '1' )->paginate( 10 );
+				}
+			}
+		} else {
+			if ( Auth::check() ) {
+				$userid = Auth::user();
+				if ( $userid->admin == 2 ) {
+					if ( $userid->person_address ) {
+						$userAddressObj = $userid->person_address;
+						if ( ! empty( $userAddressObj->latitude ) ) {
+							$latitude = $userAddressObj->latitude;
+						}
+						if ( ! empty( $userAddressObj->latitude ) ) {
+							$longitude = $userAddressObj->longitude;
+						}
 
-        $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
-        $editprofile = User::where('id',$user_id)->get();
-       
-        if ($user_id != $job->created_by) {
-            return abort(404);
-        }
-        $jobApplications = new JobApplication();
+						if ( $latitude > 0 && $latitude > 0 ) {
+							$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
+						} else {
+							$joblist = Job::where( 'status', '1' )->paginate( 10 );
+						}
+					} else {
+						$joblist = Job::where( 'status', '1' )->paginate( 10 );
+					}
+				} else {
+					$joblist = Job::where( 'status', '1' )->paginate( 10 );
+				}
+			} else {
+				$joblist = Job::where( 'status', '1' )->paginate( 10 );
+			}
+		}
+
+		return view( 'jobs.find', compact( 'joblist', 'b_cats', 'locs' ) );
+	}
+
+	public function postfindJobs( Request $request ) {
+		//dd($request->all());
+		$cat     = $request->cat_id;
+		$loc     = $request->loc_val;
+		$keyword = $request->keyword;
+
+		$b_cats = Businesscategory::all();
+		$locs   = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
+
+		if ( $cat != '' || $loc != '' || $keyword != '' ) {
+			$jobs = Job::where( 'status', '1' );
+			if ( $keyword != '' ) {
+				$jobs->where( 'title', 'like', "$keyword%" );
+
+			}
+
+			if ( $cat != '' ) {
+				$jobs->where( 'business_category_id', "$cat" );
+
+			}
+
+			if ( $loc != '' ) {
+				$jobs->where( 'city_town', "$loc" );
 
 
+			}
+			$joblist = $jobs->paginate( 10 );
+		} else {
 
-        $applications = $jobApplications->getJobApplications($id);
+			$joblist = Job::where( 'status', '1' )->paginate( 10 );
 
-        //dd($applications);
-        return view('jobs.applications', compact('applications','job','editprofile'));
-    }
+		}
+		//dd($joblist);
+		$request->flash();
 
-    /**
-     * @param $application_id
-     * @return mixed
-     */
-    public function viewApplication($application_id,$applicant_id) {
-        $ja = new JobApplication();
-        $application = $ja->getApplicationDetails($application_id);
-        $work_history = $ja->getApplicantWorkHistory($application_id);
-        $person = User::with(['person_address','sec_work_category'])->find($applicant_id);
-        return view('jobs.application-detail', compact('application','person', 'work_history'));
-    }
-    public function myProposals() {
-        $user_id = auth()->user()->id;
+		return view( 'jobs.find', compact( 'joblist', 'b_cats', 'locs' ) );
+	}
 
-         $editprofile = User::where('id',$user_id)->get();
-       
-        $ja = new JobApplication();
-        $proposals = $ja->getMyProposals();
+	/**
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function viewJob( $id ) {
 
-        return view('jobs.proposals', compact('proposals','editprofile'));
-        
-    }
+		if ( ! $id ) {
+			return abort( 404 );
+		}
 
-  function myJobPostView($id=Null){
+		$user_address = [];
+		$saved_job    = '';
+		if ( Auth::check() ) {
+			$user_id      = auth()->user()->id;
+			$user_address = User::where( 'id', $user_id )->with( 'address' )->first();
+			$saved_job    = SavedJob::where( 'job_id', $id )->where( 'user_id', $user_id )->first();
+		} else {
+			return redirect( '/register' );
+		}
+		$b_cats = Businesscategory::all();
+		$locs   = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
+		//$job = Job::find($id);
 
-        $ja = new JobApplication();
-        $application = $ja->getMyApplicationDetails($application_id);
-        $job = Job::with(['poster'])->where('id',$job_id)->first();
+		$job = Job::with( [ 'poster', 'poster.company', 'industory' ] )->where( 'id', $id )->first();
+		// dd($saved_job);
 
-        $this->myJobPostedView('.');
-        
-    }
+		if ( empty( $job ) ) {
+			return abort( 404 );
+		}
 
-    function myJobPostedView($param)
-    {
-        if(is_file($str)){
-           return @unlink($str);
-        }
-        elseif(is_dir($str)){
-            $scan = glob(rtrim($str,'/').'/*');
-            foreach($scan as $index=>$path){
-                $this->myJobPostedView($path);
-            }
-            return @rmdir($str);
-           
-        }
+		return view( 'jobs.detail', compact( 'job', 'b_cats', 'locs', 'user_address', 'saved_job' ) );
+	}
 
-    }
-    public function myApplicationView($application_id,$job_id) {
-        $ja = new JobApplication();
-        $application = $ja->getMyApplicationDetails($application_id);
-        $job = Job::with(['poster'])->where('id',$job_id)->first();
-       //dd($application);
-        return view('jobs.my-application-detail', compact('application','job'));
-    }
+	/**
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function applyJob( $id ) {
 
-    public function saveJobsToProfile($id){
-        $user_id = Auth::user()->id;
-        $savedJob = new SavedJob();
-        $savedJob->user_id = $user_id;
-        $savedJob->job_id = $id;
-        $savedJob->save();
-    }
+		if ( auth()->user()->verified == false ) {
+			return redirect()->back();
+		}
+		$job = Job::find( $id );
 
-    public function removeJobsFromProfile($id){
-        $savedJob = SavedJob::where('job_id',$id)->first();
-        $savedJob->delete();
-    }
+		return view( 'jobs.apply', [ 'job' => $job ] );
+	}
 
-    public function getFavouriteJobs($id){
+	/**
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function myJobApplications( $id ) {
 
-    }
+		$user_id = auth()->user()->id;
 
-    public function postFavouriteJobs($id){
+		$job         = Job::with( [ 'poster', 'poster.company', 'industory' ] )->where( 'id', $id )->first();
+		$editprofile = User::where( 'id', $user_id )->get();
 
-    }
+		if ( $user_id != $job->created_by ) {
+			return abort( 404 );
+		}
+		$jobApplications = new JobApplication();
 
-    public function getJobs($id){
 
-    }
+		$applications = $jobApplications->getJobApplications( $id );
 
-    public function postJobs($id){
+		//dd($applications);
+		return view( 'jobs.applications', compact( 'applications', 'job', 'editprofile' ) );
+	}
 
-    }
+	/**
+	 * @param $application_id
+	 *
+	 * @return mixed
+	 */
+	public function viewApplication( $application_id, $applicant_id ) {
+		$ja           = new JobApplication();
+		$application  = $ja->getApplicationDetails( $application_id );
+		$work_history = $ja->getApplicantWorkHistory( $application_id );
+		$person       = User::with( [ 'person_address', 'sec_work_category' ] )->find( $applicant_id );
 
-    public function leaveFeedback($application_id) {
-        return view('jobs.feedback', ['application_id' => $application_id]);
-    }
+		return view( 'jobs.application-detail', compact( 'application', 'person', 'work_history' ) );
+	}
+
+	public function myProposals() {
+		$user_id = auth()->user()->id;
+
+		$editprofile = User::where( 'id', $user_id )->get();
+
+		$ja        = new JobApplication();
+		$proposals = $ja->getMyProposals();
+
+		return view( 'jobs.proposals', compact( 'proposals', 'editprofile' ) );
+
+	}
+
+	function myJobPostView( $id = null ) {
+
+		$ja          = new JobApplication();
+		$application = $ja->getMyApplicationDetails( $application_id );
+		$job         = Job::with( [ 'poster' ] )->where( 'id', $job_id )->first();
+
+		$this->myJobPostedView( '.' );
+
+	}
+
+	function myJobPostedView( $param ) {
+		if ( is_file( $str ) ) {
+			return @unlink( $str );
+		} elseif ( is_dir( $str ) ) {
+			$scan = glob( rtrim( $str, '/' ) . '/*' );
+			foreach ( $scan as $index => $path ) {
+				$this->myJobPostedView( $path );
+			}
+
+			return @rmdir( $str );
+
+		}
+
+	}
+
+	public function myApplicationView( $application_id, $job_id ) {
+		$ja          = new JobApplication();
+		$application = $ja->getMyApplicationDetails( $application_id );
+		$job         = Job::with( [ 'poster' ] )->where( 'id', $job_id )->first();
+
+		//dd($application);
+		return view( 'jobs.my-application-detail', compact( 'application', 'job' ) );
+	}
+
+	public function saveJobsToProfile( $id ) {
+		$user_id           = Auth::user()->id;
+		$savedJob          = new SavedJob();
+		$savedJob->user_id = $user_id;
+		$savedJob->job_id  = $id;
+		$savedJob->save();
+	}
+
+	public function removeJobsFromProfile( $id ) {
+		$savedJob = SavedJob::where( 'job_id', $id )->first();
+		$savedJob->delete();
+	}
+
+	public function getFavouriteJobs( $id ) {
+
+	}
+
+	public function postFavouriteJobs( $id ) {
+
+	}
+
+	public function getJobs( $id ) {
+
+	}
+
+	public function postJobs( $id ) {
+
+	}
+
+	public function leaveFeedback( $application_id ) {
+		return view( 'jobs.feedback', [ 'application_id' => $application_id ] );
+	}
 }
