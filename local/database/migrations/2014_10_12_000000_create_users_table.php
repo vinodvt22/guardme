@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
 			$table->string('phone');
 			$table->string('photo');
 			$table->integer('admin');
+			$table->boolean('doc_verified'); // add this collumn to documents Verification
             $table->rememberToken();
             $table->timestamps();
         });

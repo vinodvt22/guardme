@@ -341,7 +341,9 @@
                 </div> -->
                     
                 <div class="ad-info">
-                    <span><a href="{{ route('view.job',$job->id) }}" class="title">{{$job->title}}</a> </span>
+
+                    <span><a href="{{ (Auth::check())?route('view.job',$job->id):URL::to("/register") }}" class="title">{{$job->title}}</a> </span>
+
                     <div class="ad-meta">
                         <ul>
                             <li><a href="{{ route('view.job',$job->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>
