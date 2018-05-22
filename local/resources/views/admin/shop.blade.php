@@ -5,11 +5,7 @@
     @include('admin.title')
 
     @include('admin.style')
-    <style>
-        .dataTables_filter {
-            display: none;
-        }
-    </style>
+
 </head>
 
 <body>
@@ -80,31 +76,26 @@
                             <!-- <p class="category">Here is a subtitle for this table</p> -->
                         </div>
                         <div class="content">
-
-                            <form class="form-horizontal">
-                                <h5 class="col-md-3">Filter:</h5>
+                            <h5>Filter:</h5>
+                            <form class="form-inline" >
                                 <div class="form-group">
-                                    <h5 class="col-md-3">Location:</h5>
-                                    <div class="col-md-5">
-                                        <input type="text" class="form-control" name="location" id="location_filter">
-                                    </div>
+                                    <label for="location_filter" class="control-label">Location:</label>
+                                    <input type="text" class="form-control" name="location" id="location_filter">
                                 </div>
                             </form>
-                            <form class="form-inline">
-                                <p class="col-md-3 col-lg-3">Registration date range :</p>
+                            <form class="form-inline" >
+                                <h3>Registration date range</h3>
                                 <div class="form-group">
                                     <label for="gender" class="control-label">Max</label>
-                                    <input type="date" class="form-control daterangepicker" id="date_filter_max"
-                                           name="reg_date_max">
+                                    <input type="date" class="form-control daterangepicker" id="date_filter_max" name="reg_date_max">
                                 </div>
                                 <div class="form-group">-</div>
                                 <div class="form-group">
                                     <label for="gender" class="control-label">Min</label>
-                                    <input type="date" class="form-control daterangepicker" id="date_filter_min"
-                                           name="reg_date_min">
+                                    <input type="date" class="form-control daterangepicker" id="date_filter_min" name="reg_date_min">
                                 </div>
                                 <div class="form-group">
-                                    <label for="gender" class="control-label"> </label>
+                                    <label for="gender" class="control-label">   </label>
                                     <input type="button" class="btn btn-info" id="date_reset" value="Reset">
                                 </div>
                             </form>
@@ -156,12 +147,10 @@
                                            class="btn btn-success">Edit</a>
                                         @if($viewshop->status=='approved')
                                             <a href="<?php echo $url;?>/admin/suspend/{{ $viewshop->id }}"
-                                               class="btn btn-danger"
-                                               onclick="return confirm('Are you sure you want to suspend this?')">suspend</a>
+                                               class="btn btn-danger" onclick="return confirm('Are you sure you want to suspend this?')">suspend</a>
                                         @else
                                             <a href="<?php echo $url;?>/admin/unsuspend/{{ $viewshop->id }}"
-                                               class="btn btn-success"
-                                               onclick="return confirm('Are you sure you want to unsuspend this?')">unsuspend</a>
+                                               class="btn btn-success" onclick="return confirm('Are you sure you want to unsuspend this?')">unsuspend</a>
                                         @endif
 										<?php } ?>
 										<?php if(config( 'global.demosite' ) == "yes"){?>
@@ -196,9 +185,7 @@
 <script>
     //    User Filtering
     $(document).ready(function () {
-        var table = $('#datatable-company').DataTable({
-
-        });
+        var table = $('#datatable-company').DataTable();
 
         $('#location_filter').on('keyup', function () {
             table
@@ -213,15 +200,16 @@
         })
 
         $.fn.dataTable.ext.search.push(
-            function (settings, data, dataIndex) {
+            function( settings, data, dataIndex ) {
                 var min = moment($('#date_filter_max').val()).format('YYYYMMDD');
                 var max = moment($('#date_filter_min').val()).format('YYYYMMDD');
-                var age = parseFloat(data[3]) || 0; // use data for the age column
+                var age = parseFloat( data[3] ) || 0; // use data for the age column
 
-                if (( isNaN(min) && isNaN(max) ) ||
-                    ( isNaN(min) && age <= max ) ||
-                    ( min <= age && isNaN(max) ) ||
-                    ( min <= age && age <= max )) {
+                if ( ( isNaN( min ) && isNaN( max ) ) ||
+                    ( isNaN( min ) && age <= max ) ||
+                    ( min <= age   && isNaN( max ) ) ||
+                    ( min <= age   && age <= max ) )
+                {
                     return true;
                 }
                 return false;
@@ -233,6 +221,7 @@
         });
         //   End User  Filtering
     });
+
 
 
 </script>
