@@ -6,7 +6,6 @@ namespace Responsive\Http\Controllers\Admin;
 
 use File;
 use Image;
-use Responsive\Businesscategory;
 use Responsive\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Auth;
@@ -14,7 +13,6 @@ use Mail;
 
 use Responsive\Http\Requests;
 use Illuminate\Http\Request;
-use Responsive\Shop;
 use Responsive\User;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
@@ -29,10 +27,9 @@ class ShopController extends Controller
     public function index()
     {
         $shop = DB::table('shop')
-	            ->leftJoin( 'users', 'users.id', '=', 'shop.user_id' )
-		        ->orderBy('shop.id','desc')
+		        ->orderBy('id','desc')
 			   ->get();
-//		dd($shop);
+		
 		$data=array('shop' => $shop);
 
         return view('admin.shop')->with($data);
@@ -40,14 +37,51 @@ class ShopController extends Controller
 	
 	
 	public function showform($id) {
+      $editshop = DB::select('select * from shop where id = ?',[$id]);
+	  
+	 $usermail=$editshop[0]->seller_email;
+	 
+	 $userdata=DB::select('select * from users where email = ?',[$usermail]);
+	  
+	  if($editshop[0]->start_time > 12)
+					{
+						$start=$editshop[0]->start_time - 12;
+						$stime=$start."PM";
+					}
+					else
+					{
+						$stime=$editshop[0]->start_time."AM";
+					}
+					if($editshop[0]->end_time>12)
+					{
+						$end=$editshop[0]->end_time-12;
+						$etime=$end."PM";
+					}
+					else
+					{
+						$etime=$editshop[0]->end_time."AM";
+					}
+	  
+	  
+	   $shop = DB::table('shop')->get();
+	   
+	   $sid=$editshop[0]->shop_date;
+						$sel=explode(",",$sid);
+						$lev=count($sel);
+						
+						
+		$viewgallery = DB::table('shop_gallery')
+		->where('shop_id', $id)
+		->orderBy('id','desc')
+		->get();
 
-
-		$editshop = Shop::where('id',$id)->get()->first();
-		$b_cats = Businesscategory::all();
-	  return view('admin.edit-shop')
-		  ->with('editshop',$editshop)
-		  ->with('b_cats',$b_cats);
-
+        $siteid=1;
+		$site_setting=DB::select('select * from settings where id = ?',[$siteid]);
+	   
+	  $data=array('shop' => $shop, 'editshop' => $editshop, 'stime' => $stime, 'etime' => $etime, 'sel' => $sel, 'lev' => $lev, 'viewgallery' => $viewgallery, 
+	  'userdata' => $userdata, 'site_setting' => $site_setting);
+	  return view('admin.edit-shop')->with($data);
+      
    }
 	
 	
@@ -70,27 +104,9 @@ class ShopController extends Controller
       return back();
       
    }
-
-	/**
-	 * @param $id
-	 * This method use to suspend a Company
-	 */
-	public function suspend($id) {
-		$shop=Shop::find($id);
-		$shop->status='unapproved';
-		$shop->save();
-		return redirect()->back();
-   }
-	/**
-	 * @param $id
-	 * This method use to unsuspend a Company
-	 */
-	public function unsuspend($id) {
-		$shop=Shop::find($id);
-		$shop->status='approved';
-		$shop->save();
-		return redirect()->back();
-	}
+   
+   
+   
    
    
    protected function savedata(Request $request)
