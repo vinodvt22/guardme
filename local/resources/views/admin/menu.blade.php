@@ -24,5 +24,4 @@ $url = URL::to("/");
   <li><a href="<?php echo $url;?>/admin/pages"><i class="ti-files"></i><p> Pages</p> </a></li>
   <li><a href="<?php echo $url;?>/admin/shop"><i class="ti-briefcase"></i><p> Companies </p></a></li>
   <li><a href="<?php echo $url;?>/admin/settings"><i class="ti-settings"></i> <p>Settings </p></a></li>
-  <li><a href="<?php echo $url;?>/admin/Verification"><i class="ti-settings"></i><p>Verification</p></a></li>
 </ul>
