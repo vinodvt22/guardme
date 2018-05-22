@@ -293,7 +293,6 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	Route::get( '/admin/edit-shop/{id}', 'Admin\ShopController@showform' );
 	Route::post( '/admin/edit-shop', [ 'as' => 'admin.edit-shop', 'uses' => 'Admin\ShopController@savedata' ] );
 	Route::get( '/admin/shop/{id}', 'Admin\ShopController@destroy' );
-
 	Route::get( '/admin/suspend/{id}', 'Admin\ShopController@suspend' );
 	Route::get( '/admin/unsuspend/{id}', 'Admin\ShopController@unsuspend' );
 

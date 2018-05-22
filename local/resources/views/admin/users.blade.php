@@ -5,11 +5,7 @@
     @include('admin.title')
 
     @include('admin.style')
-    <style>
-        .dataTables_filter {
-            display: none;
-        }
-    </style>
+
 </head>
 <body>
 <div class="wrapper">
@@ -82,10 +78,8 @@
                         <a href="<?php echo $url;?>/admin/adduser" class="btn btn-primary">Add User</a>
 						<?php } ?>
                         <div class="content">
-                            <div class="col-md-3">
-                                <h5>Filter:</h5>
-                            </div>
-                            <form class="form-inline">
+                            <h5>Filter:</h5>
+                            <form class="form-inline" >
                                 <div class="form-group">
                                     <label for="location_filter" class="control-label">Location:</label>
                                     <input type="text" class="form-control" name="location" id="location_filter">
@@ -99,26 +93,22 @@
                                     </select>
                                 </div>
                             </form>
-                            <br>
-                            <form class="form-inline">
-                                <p class="col-md-3 col-lg-3">Registration date range :</p>
+                            <form class="form-inline" >
+                                <h3>Registration date range</h3>
                                 <div class="form-group">
                                     <label for="gender" class="control-label">Max</label>
-                                    <input type="date" class="form-control daterangepicker" id="date_filter_max"
-                                           name="reg_date_max">
+                                    <input type="date" class="form-control daterangepicker" id="date_filter_max" name="reg_date_max">
                                 </div>
                                 <div class="form-group">-</div>
                                 <div class="form-group">
                                     <label for="gender" class="control-label">Min</label>
-                                    <input type="date" class="form-control daterangepicker" id="date_filter_min"
-                                           name="reg_date_min">
+                                    <input type="date" class="form-control daterangepicker" id="date_filter_min" name="reg_date_min">
                                 </div>
                                 <div class="form-group">
-                                    <label for="gender" class="control-label"> </label>
+                                    <label for="gender" class="control-label">   </label>
                                     <input type="button" class="btn btn-info" id="date_reset" value="Reset">
                                 </div>
                             </form>
-
                         </div>
 
                         <div class="content table-responsive table-full-width">
@@ -131,7 +121,7 @@
                                     <th>Sno</th>
                                     <th class="hidden">gender</th>
                                     <th class="hidden">location</th>
-                                    <th class="hidden">Registration date</th>
+                                    <th  class="hidden">Registration date </th>
                                     <th>Photo</th>
                                     <th>Username</th>
                                     <th>Email</th>
@@ -147,8 +137,8 @@
 								$i = 1;
 								foreach ($users as $user) {
 
-								$sta = $user->admin;
-								if ( $sta == 1 ) {
+									$sta = $user->admin;
+									if ( $sta == 1 ) {
 									$viewst = "Admin";
 								} else if ( $sta == 2 ) {
 									$viewst = "Freelancer";
@@ -234,7 +224,7 @@
 <script src="{{asset('/js/moment.js')}}"></script>
 
 <script>
-    //    User Filtering
+//    User Filtering
     $(document).ready(function () {
         var table = $('#datatable-asdsd').DataTable();
 
@@ -257,15 +247,16 @@
         })
 
         $.fn.dataTable.ext.search.push(
-            function (settings, data, dataIndex) {
+            function( settings, data, dataIndex ) {
                 var min = moment($('#date_filter_max').val()).format('YYYYMMDD');
                 var max = moment($('#date_filter_min').val()).format('YYYYMMDD');
-                var age = parseFloat(data[3]) || 0; // use data for the age column
+                var age = parseFloat( data[3] ) || 0; // use data for the age column
 
-                if (( isNaN(min) && isNaN(max) ) ||
-                    ( isNaN(min) && age <= max ) ||
-                    ( min <= age && isNaN(max) ) ||
-                    ( min <= age && age <= max )) {
+                if ( ( isNaN( min ) && isNaN( max ) ) ||
+                    ( isNaN( min ) && age <= max ) ||
+                    ( min <= age   && isNaN( max ) ) ||
+                    ( min <= age   && age <= max ) )
+                {
                     return true;
                 }
                 return false;
@@ -277,6 +268,7 @@
         });
         //   End User  Filtering
     });
+
 
 
 </script>
