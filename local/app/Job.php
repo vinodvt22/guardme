@@ -278,7 +278,7 @@ class Job extends Model
     }
 
     function poster(){
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class,'created_by' ,'id');
     }
 
     public function applications()
@@ -287,6 +287,6 @@ class Job extends Model
     }
 
     public function getJobTransactions(){
-        return $this->hasOne(Transaction::class) ;
+        return $this->hasMany(Transaction::class) ;
     }
 }
