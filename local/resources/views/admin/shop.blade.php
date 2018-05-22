@@ -82,7 +82,6 @@
                         <div class="content">
 
                             <form class="form-horizontal">
-                                <h5 class="col-md-3">Filter:</h5>
                                 <div class="form-group">
                                     <h5 class="col-md-3">Location:</h5>
                                     <div class="col-md-5">

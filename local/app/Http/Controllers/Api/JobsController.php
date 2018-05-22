@@ -17,7 +17,6 @@ class JobsController extends Controller
     use JobsTrait;
     
     public function create(Request $request) {
-    	dd($request->all());
         $this->validate($request, [
             'title' => 'required|max:255',
             'description' => 'required',
