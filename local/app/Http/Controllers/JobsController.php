@@ -3,6 +3,7 @@
 namespace Responsive\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Responsive\Businesscategory;
 use Responsive\JobApplication;
 use Responsive\SecurityCategory;
@@ -22,8 +23,16 @@ class JobsController extends Controller {
 			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
 		}
 		// Users cannot create jobs unless company details is complete
+
 		$company = auth()->user()->company;
+		if ($company==null ) {
+			Session::flash( 'error', 'Please Add your company profile before you can create a job.' );
+			return redirect( "/addcompany" );
+		}
+
 		if ( ! $company->shop_name || ! $company->address || ! $company->company_email || ! $company->description || ! $company->shop_phone_no || ! $company->business_categoryid ) {
+			Session::flash( 'error', 'Please complete your company profile before you can create a job.' );
+
 			return redirect( "/company" );
 		}
 
