@@ -76,7 +76,9 @@ class ShopController extends Controller
 	 * This method use to suspend a Company
 	 */
 	public function suspend($id) {
+
 		$shop=Shop::find($id);
+		dd($shop);
 		$shop->status='unapproved';
 		$shop->save();
 		return redirect()->back();
