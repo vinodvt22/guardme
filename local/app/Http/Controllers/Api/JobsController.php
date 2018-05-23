@@ -254,6 +254,8 @@ class JobsController extends Controller
         if ($is_eligible_to_hire) {
             $ja = JobApplication::find($application_id);
             $ja->is_hired = 1;
+            //@TODO add Job awarded event to perform transaction adjustments and escrow amount.
+            
             if($ja->save()) {
                 $return_data = ['Hired Successfully'];
                 $return_status = 200;

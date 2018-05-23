@@ -161,6 +161,8 @@ class JobApplication extends Model
             ->where('sj.created_by', $user_id)
             ->where('ja.id', $application_id)
             ->where('sj.status', 1)->get();
+        //@TODO also have to check if the user has not already hired number of freelancers selected for this job, and he should have sufficient funds in his escrow for this job.
+        
         return count($results);
     }
 
