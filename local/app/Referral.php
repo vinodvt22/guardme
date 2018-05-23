@@ -25,4 +25,9 @@ class Referral extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    public function getUsers(){
+      return $this->belongsTo(User::class , 'who' , 'id');
+
+    }
 }
