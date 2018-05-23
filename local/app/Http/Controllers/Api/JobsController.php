@@ -12,6 +12,7 @@ use Responsive\Businesscategory;
 use Responsive\SecurityCategory;
 use Responsive\Events\JobHiredApplicationMarkedAsComplete;
 use Responsive\Feedback;
+use Responsive\Events\AwardJob;
 class JobsController extends Controller
 {
     use JobsTrait;
@@ -241,18 +242,14 @@ class JobsController extends Controller
         // check if user is authorized to mark this application as hired.
         $job_application = new JobApplication();
         $is_eligible_to_hire = $job_application->isEligibleToMarkHired($application_id);
-        if ($is_eligible_to_hire) {
+        if ($is_eligible_to_hire['status_code'] == 200) {
             $ja = JobApplication::find($application_id);
-            $ja->is_hired = 1;
-            if($ja->save()) {
-                $return_data = ['Hired Successfully'];
-                $return_status = 200;
-            } else {
-                $return_data = ['Un know error occureds'];
-                $return_status = 500;
-            }
+            event(new AwardJob($ja));
+            $return_data = ['Hired Successfully'];
+            $return_status = 200;
         } else {
-            $return_data = ['You are not authorized to hire on this application'];
+            $error_message = $is_eligible_to_hire['error_message'];
+            $return_data = [$error_message];
             $return_status = 500;
         }
 
