@@ -155,15 +155,28 @@ class JobApplication extends Model
     }
 
     public function isEligibleToMarkHired($application_id) {
+        $error_message = '';
+        $status_code = 200;
+        $ja_with_job = JobApplication::with('job')
+            ->where('id', $application_id)
+            ->get()->first();
+        $job = $ja_with_job->job;
+
+        $total_number_of_freelancers = $job->number_of_freelancers;
+        $job_hired_applications = JobApplication::where('is_hired', true)
+            ->where('job_id', $job->id);
+        $number_of_already_hired_freelancers = count($job_hired_applications);
+        $vacant_positions = $total_number_of_freelancers - $number_of_already_hired_freelancers;
         $user_id = auth()->user()->id;
-        $results = DB::table($this->table . ' as ja')
-            ->join('security_jobs as sj', 'sj.id', '=', 'ja.job_id')
-            ->where('sj.created_by', $user_id)
-            ->where('ja.id', $application_id)
-            ->where('sj.status', 1)->get();
-        //@TODO also have to check if the user has not already hired number of freelancers selected for this job, and he should have sufficient funds in his escrow for this job.
-        
-        return count($results);
+        if (!intval($vacant_positions)) {
+            $status_code = 500;
+            $error_message = 'Sorry, All vacancies for this job are already filled.';
+        }
+        if ($job->created_by != $user_id) {
+            $status_code = 500;
+            $error_message = 'You are not authorized to perform this action';
+        }
+        return ['error_message' => $error_message, 'status_code' => $status_code];
     }
 
     public function isHired($application_id) {
