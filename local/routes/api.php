@@ -61,7 +61,8 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     
     Route::get('my','JobsController@myJobs')->name('api.my.jobs');
     Route::get('proposals','JobsController@myProposals')->name('api.my.proposals');
-
+    Route::post('mark-application-as-complete/{id}', 'JobsController@markApplicationAsComplete')->name('api.mark.application.complete');
+    Route::post('leave/feedback/{application_id}', 'JobsController@leaveFeedback')->name('api.leave.feedback');
 });
 
 
@@ -80,16 +81,7 @@ Route::group(['namespace' => 'Api', 'middleware' => 'auth:api'], function(){
 
 Route::group(['prefix' => 'wallet','namespace' => 'Api'], function(){
 
-    Route::get('/jobTrans', 'WalletController@JobsList')->middleware('auth:api');
-    Route::get('/details/{id}', 'WalletController@getJobTransactionDetails')->middleware('auth:api');
+    Route::get('/jobTrans', 'WalletController@JobsList')->middleware('auth:api');;
+    Route::get('/details/{id}', 'WalletController@getJobTransactionDetails')->middleware('auth:api');;
 
 });
-
-Route::group(['prefix' => 'loyalty','namespace' => 'Api'], function(){
-
-    Route::get('/users', 'LoyaltyController@getUsers')->middleware('auth:api');
-    Route::get('/items', 'LoyaltyController@getItemsBought')->middleware('auth:api');
-
-});
-
-
