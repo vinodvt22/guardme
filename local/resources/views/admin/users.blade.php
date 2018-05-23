@@ -84,7 +84,8 @@
                         <div class="content">
                             <form class="form-inline">
                                 <div class="form-group">
-                                    <label for="location_filter" class="control-label">Location:</label>
+
+                                    <label class="col-md-3 col-lg-3" class="control-label">Location:</label>
                                     <input type="text" class="form-control" name="location" id="location_filter">
                                 </div>
                                 <div class="form-group">
@@ -98,7 +99,9 @@
                             </form>
                             <br>
                             <form class="form-inline">
-                                <p class="col-md-3 col-lg-3">Registration date range :</p>
+                                <div class="col-md-3 col-lg-3 ">
+                                    Registration date range :
+                                </div>
                                 <div class="form-group">
                                     <label for="gender" class="control-label">Max</label>
                                     <input type="date" class="form-control daterangepicker" id="date_filter_max"

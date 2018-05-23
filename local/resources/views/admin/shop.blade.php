@@ -81,16 +81,18 @@
                         </div>
                         <div class="content">
 
-                            <form class="form-horizontal">
+                            <form class="form-inline">
                                 <div class="form-group">
-                                    <h5 class="col-md-3">Location:</h5>
+                                    <label class="col-md-3 col-lg-3" for="location_filter" class="control-label">Location:</label>
                                     <div class="col-md-5">
                                         <input type="text" class="form-control" name="location" id="location_filter">
                                     </div>
                                 </div>
                             </form>
                             <form class="form-inline">
-                                <p class="col-md-3 col-lg-3">Registration date range :</p>
+                                <div class="col-md-3 col-lg-3">
+                                    Registration date range :
+                                </div>
                                 <div class="form-group">
                                     <label for="gender" class="control-label">Max</label>
                                     <input type="date" class="form-control daterangepicker" id="date_filter_max"
@@ -195,9 +197,7 @@
 <script>
     //    User Filtering
     $(document).ready(function () {
-        var table = $('#datatable-company').DataTable({
-
-        });
+        var table = $('#datatable-company').DataTable({});
 
         $('#location_filter').on('keyup', function () {
             table

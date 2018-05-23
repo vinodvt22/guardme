@@ -348,7 +348,7 @@ Route::group( [ 'prefix' => '/support/tickets', 'middleware' => 'auth' ], functi
 /*Start Security Jobs Routes*/
 
 Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
-	Route::get( '/create', 'JobsController@create' )->name( 'job.create' );
+	Route::get( '/create', 'JobsController@create')->name( 'job.create' );
 	Route::get( '/schedule/{id}', 'JobsController@schedule' )->name( 'job.schedule' );
 	Route::get( '/broadcast/{id}', 'JobsController@broadcast' )->name( 'job.broadcast' );
 	Route::get( '/payment-details/{id}', 'JobsController@paymentDetails' )->name( 'job.payment.details' );
